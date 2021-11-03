@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly LibraryCmsShared.Context _context = null;
@@ -21,7 +19,7 @@ namespace LibraryCms.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("action")]
+        [HttpPost]
         public IActionResult AddUser([FromBody]User user)
         {
             try
