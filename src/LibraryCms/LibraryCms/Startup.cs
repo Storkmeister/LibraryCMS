@@ -60,10 +60,11 @@ namespace LibraryCms
                 app.UseHsts();
             }
 
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
