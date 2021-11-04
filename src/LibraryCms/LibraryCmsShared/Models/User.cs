@@ -11,7 +11,7 @@ namespace LibraryCmsShared.Models
     {
         public User()
         {
-            Rentals = new List<RentalTable>();
+            Rentals = new List<Rental>();
         }
         public int Id { get; set; }
         [Required, StringLength(80)]
@@ -24,6 +24,6 @@ namespace LibraryCmsShared.Models
         public bool ApprovedUser { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
-        public ICollection<RentalTable> Rentals { get; set; }
+        public ICollection<Rental> Rentals { get; set; }
     }
 }

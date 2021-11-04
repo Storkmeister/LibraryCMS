@@ -14,7 +14,7 @@ namespace LibraryCmsShared.Models
         {
             Authors = new List<Author>();
             Genres = new List<Genre>();
-            Rentals = new List<RentalTable>();
+            Rentals = new List<Rental>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -34,6 +34,6 @@ namespace LibraryCmsShared.Models
 
         public ICollection<Author> Authors { get; set; }
         public ICollection<Genre> Genres { get; set; }
-        public ICollection<RentalTable> Rentals { get; set; }
+        public ICollection<Rental> Rentals { get; set; }
     }
 }

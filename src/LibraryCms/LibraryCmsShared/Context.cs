@@ -13,7 +13,7 @@ namespace LibraryCmsShared
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<RentalTable> Rentals { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
         public DbSet<User> Users { get; set; }
 
 
@@ -22,6 +22,12 @@ namespace LibraryCmsShared
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<Book>()
+                .HasIndex(b => b.Title)
+                .IsUnique();
+
+            //modelBuilder.Entity<User>()
         }
 
 
