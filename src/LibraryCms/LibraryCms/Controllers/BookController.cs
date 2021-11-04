@@ -21,7 +21,7 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult GetAllRentableBooks(string searchtext)
+        public IActionResult SearchAllRentableBooks(string searchtext)
         {
             List<Book> Books = new List<Book>();
 
@@ -64,7 +64,6 @@ namespace LibraryCms.Controllers
                 data.Add("description", "Book Could not be added!");
                 data.Add("data", "");
 
-                string Failiure = "Book already exists or Data is not valid! Check required fields.";
                 var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = BadRequest(json);
                 return response;
