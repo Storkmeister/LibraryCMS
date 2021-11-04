@@ -85,35 +85,38 @@ export class Test extends Component {
    * @param {object} book 
    * @returns {boolean} state
    */
-  createNewBook = (book) => {
+  createBook = (book) => {
     console.log(book);
-    /*
-    fetch('/api/book/' + this.props.match.params.id)
-    .then(function (response) {
-      return response.json();
-    }).then((response) => {
-      console.log(response[0])
-      if(response.state === true){
-        return true;
-      } else {
-        return false;
-      }
-    });
-    */
+    fetch('/Book/CreateBook', {
+        method: 'POST',
+        mode: "cors",
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify({
+          Title: "name",
+          Resume: "some text",
+          PicturePath: "//urlpath/picture.png",
+          PageCount: 104,
+          Publisher: "egedahl",
+          PublishedOn: parseInt(new Date().getTime() / 1000),
+          Status: 1,
+          DefaultRentalDays: 3,
+          BooksInStock: 5,
+          Authors: ["GG NO RE", "HC ANDERSEN", "GEORGE J R R MARTIN"],
+          Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
+          Rentals: [] 
+      })
+      })
+      .then(function (response) {
+        return response.json();
+      }).then((response) => {
+        console.log(response)
+        if(response.state === true){
+          return true;
+        } else {
+          return false;
+        }
+      });
     //Dummy data
-    return {
-      id: 0,
-      title: "Harry Potter",
-      summary: "lorem ipsum ...",
-      genre: "fantasy",
-      picturePath: "./picture1.png",
-      pagesTotal: 100,
-      author: "JK rowling",
-      publisher: "Gyldendal",
-      releaseDate: "01-01-2000",
-      status: 10,
-      lendPeriodeLimit: 31
-    }
   }
 
   /**
@@ -218,7 +221,7 @@ export class Test extends Component {
    */
   createUser = (user) => {
     console.log(user);
-      fetch('/User/AddUser', {
+      fetch('/User/CreateUser', {
         method: 'POST',
         mode: "cors",
         headers: {'Content-type': 'application/json'},
@@ -229,14 +232,17 @@ export class Test extends Component {
         })
       })
       .then(function (response) {
+        console.log(response.status)
         return response.json();
       }).then((response) => {
-        console.log(response[0])
+        console.log(response)
         if(response.state === true){
           return true;
         } else {
           return false;
         }
+      }).catch((error) => {
+        console.log(error);
       });
     //Dummy data
     return true
@@ -329,7 +335,7 @@ export class Test extends Component {
           <div><button onClick={this.createUser.bind(this, this.state.user)}>Click here</button></div>
           <h3>Opret ny bog</h3>
           <p>Opret bog til udvalget af bøger der kan reserveres via hjemmesiden.</p>
-          <div><button onClick={this.createNewBook.bind(this, this.state.book)}>Click here</button></div>
+          <div><button onClick={this.createBook.bind(this, this.state.book)}>Click here</button></div>
           <h3>Rediger bog</h3>
           <p>Rediger bog i udvalget af bøger der kan reserveres via hjemmesiden.</p>
           <div><button onClick={this.updateBook.bind(this, this.state.book)}>Click here</button></div>

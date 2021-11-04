@@ -20,7 +20,7 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult AddUser([FromBody]User user)
+        public IActionResult CreateUser([FromBody]User user)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace LibraryCms.Controllers
             }
             catch
             {
-                string Failiure = "User already exists";
+                string Failiure = $"User with email {user.Email} already exists";
                 var json = JsonConvert.SerializeObject(Failiure, Formatting.Indented);
                 IActionResult response = BadRequest(json);
                 return response;
