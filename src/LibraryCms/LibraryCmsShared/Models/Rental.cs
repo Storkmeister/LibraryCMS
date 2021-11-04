@@ -17,6 +17,5 @@ namespace LibraryCmsShared.Models
 
         public virtual User User { get; set; }
         public virtual Book Book { get; set; }
-
     }
 }
