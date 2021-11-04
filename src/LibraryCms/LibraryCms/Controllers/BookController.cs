@@ -34,6 +34,9 @@ namespace LibraryCms.Controllers
         [HttpPost]
         public IActionResult CreateBook([FromBody]Book book)
         {
+            //prepare response data
+            Dictionary<string, string> data =
+                new Dictionary<string, string>();
             //TODO: Verify that user is admin. Then proceed to create a new book
 
             try
@@ -41,8 +44,12 @@ namespace LibraryCms.Controllers
                 _context.Books.Add(book);
                 _context.SaveChanges();
 
-                string success = "Succesfully added book!";
-                var json = JsonConvert.SerializeObject(success, Formatting.Indented);
+                //set response data
+                data.Add("state", "true");
+                data.Add("description", "Book successfully added!");
+                data.Add("data", "");
+
+                var json = JsonConvert.SerializeObject(data ,Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
             }
