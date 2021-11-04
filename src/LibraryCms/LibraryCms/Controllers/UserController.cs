@@ -22,6 +22,9 @@ namespace LibraryCms.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody]User user)
         {
+            //prepare response data
+            Dictionary<string, string> data =
+                new();
             try
             {
                 _context.Users.Add(user);
@@ -32,15 +35,22 @@ namespace LibraryCms.Controllers
 
                 _context.SaveChanges();
 
-                string success = "User created successfully";
-                var json = JsonConvert.SerializeObject(success, Formatting.Indented);
+                //set response data
+                data.Add("state", "true");
+                data.Add("description", "User successfully added!");
+                data.Add("data", "");
+                //string success = "User created successfully";
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
             }
             catch
             {
-                string Failiure = $"User with email {user.Email} already exists";
-                var json = JsonConvert.SerializeObject(Failiure, Formatting.Indented);
+                data.Add("state", "false");
+                data.Add("description", $"User with email {user.Email} already exists");
+                data.Add("data", "");
+                //string Failiure = $"User with email {user.Email} already exists";
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = BadRequest(json);
                 return response;
             }

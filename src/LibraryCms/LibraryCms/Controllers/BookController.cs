@@ -36,7 +36,7 @@ namespace LibraryCms.Controllers
         {
             //prepare response data
             Dictionary<string, string> data =
-                new Dictionary<string, string>();
+                new();
             //TODO: Verify that user is admin. Then proceed to create a new book
 
             try
