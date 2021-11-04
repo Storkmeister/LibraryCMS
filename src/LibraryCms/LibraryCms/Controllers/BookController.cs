@@ -21,13 +21,13 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult GetAllRentableBooks()
+        public IActionResult GetAllRentableBooks(string searchtext)
         {
             List<Book> Books = new List<Book>();
 
             Books = _context.Books
-                .Where(b => b.BooksInStock > 0)
                 .Where(b => b.Status == 1)
+                .Where(b => b.Title.Contains(searchtext))
                 .ToList();
 
             var json = JsonConvert.SerializeObject(Books, Formatting.Indented);
