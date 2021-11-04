@@ -221,11 +221,12 @@ export class Test extends Component {
       fetch('/User/AddUser', {
         method: 'POST',
         mode: "cors",
-        body: {
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify({
           'Email': user.email,
           'Password': user.password,
           'FullAddress': user.fullAddress
-        }
+        })
       })
       .then(function (response) {
         return response.json();
