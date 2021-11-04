@@ -55,6 +55,10 @@ namespace LibraryCms.Controllers
             }
             catch
             {
+                data.Add("state", "false");
+                data.Add("description", "Book Could not be added!");
+                data.Add("data", "");
+
                 string Failiure = "Book already exists or Data is not valid! Check required fields.";
                 var json = JsonConvert.SerializeObject(Failiure, Formatting.Indented);
                 IActionResult response = BadRequest(json);
