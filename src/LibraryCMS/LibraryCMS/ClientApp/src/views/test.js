@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import './../style/test.css';
-
+import moment from 'moment';
 export class Test extends Component {
   static displayName = Test.name;
   constructor() {
@@ -10,6 +10,7 @@ export class Test extends Component {
       userId: undefined,
       userLevel: undefined,
       book: {},
+      books:[],
       user: {},
       lend: {}
     }
@@ -21,9 +22,13 @@ export class Test extends Component {
     this.setState({ book: book });
     const getUserById = await this.getUserById();
     this.setState({ user: getUserById });
+    const getAllBooks = await this.getAllBooks();
+    this.setState({ books: getAllBooks });
 
     console.log(this.state.book);
+    console.log(this.state.books);
     console.log(this.state.user);
+    console.log(moment().format());
   }
 
   /*
@@ -31,6 +36,39 @@ export class Test extends Component {
     Book functions
     ====================
   */
+
+
+    /**
+   * Fetch all books from the database
+   * 
+   * @returns database data as objects in array
+   */
+  getAllBooks = () => {
+
+    fetch('/Book/GetAllRentableBooks',{
+      method:"get"
+    })
+    .then(function (response) {
+      return response.json();
+    }).then((response) => {
+      console.log(response)
+ /*
+      return {
+            id: response[0].book.id,
+            title: response[0].book.title,
+            summary: response[0].book.summary,
+            genre: response[0].book.genre,
+            picturePath: response[0].book.picturePath,
+            author: response[0].book.author,
+            publisher: response[0].book.publisher,
+            releaseDate: response[0].book.releaseDate,
+            status: response[0].book.status,
+            lendPeriodeLimit: response[0].book.lendPeriodeLimit
+      }*/
+    });
+  }
+
+
 
   /**
    * Fetch a book from the database by the books primary key
@@ -61,23 +99,6 @@ export class Test extends Component {
             lendPeriodeLimit: response[0].book.lendPeriodeLimit
       }*/
     });
-
-    //Dummy data
-    /*
-    return {
-      id: 0,
-      title: "Harry Potter",
-      summary: "lorem ipsum ...",
-      genre: "fantasy",
-      picturePath: "./picture1.png",
-      pagesTotal: 100,
-      author: "JK rowling",
-      publisher: "Gyldendal",
-      releaseDate: "01-01-2000",
-      status: 10,
-      lendPeriodeLimit: 31
-    }
-    */
   }
 
   /**
@@ -92,25 +113,25 @@ export class Test extends Component {
         mode: "cors",
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({
-          Title: "name",
-          Resume: "some text",
-          PicturePath: "//urlpath/picture.png",
-          PageCount: 104,
-          Publisher: "egedahl",
-          PublishedOn: parseInt(new Date().getTime() / 1000),
-          Status: 1,
-          DefaultRentalDays: 3,
-          BooksInStock: 5,
-          Authors: ["GG NO RE", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-          Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-          Rentals: [] 
+          'Title': "Star wars",
+          'Resume': "giga sci-fi",
+          'PicturePath': "//urlpath/picture.png",
+          'PageCount': 104,
+          'Publisher': "egedahl",
+          'PublishedOn': moment().format(),
+          'Status': 1,
+          'DefaultRentalDays': 3,
+          'BooksInStock': 5,
+          'Authors': [{'Name': "GG NO RE"}, {'Name':"HC ANDERSEN"}, {'Name':"GEORGE J R R MARTIN"}],
+          'Genres': [{'Name':"Horror"}, {'Name':"Sci-fi"}, {'Name':"Adventure"}, {'Name':"Grimdark"}],
+          'Rentals': [] 
       })
       })
       .then(function (response) {
         return response.json();
       }).then((response) => {
         console.log(response)
-        if(response.state === true){
+        if(response.state == true){
           return true;
         } else {
           return false;
@@ -236,7 +257,7 @@ export class Test extends Component {
         return response.json();
       }).then((response) => {
         console.log(response)
-        if(response.state === true){
+        if(response.state == true){
           return true;
         } else {
           return false;
