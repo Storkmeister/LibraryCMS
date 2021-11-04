@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import './../style/test.css';
-
+import moment from 'moment';
 export class Test extends Component {
   static displayName = Test.name;
   constructor() {
@@ -24,6 +24,7 @@ export class Test extends Component {
 
     console.log(this.state.book);
     console.log(this.state.user);
+    console.log(moment().format());
   }
 
   /*
@@ -92,25 +93,25 @@ export class Test extends Component {
         mode: "cors",
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({
-          Title: "name",
-          Resume: "some text",
-          PicturePath: "//urlpath/picture.png",
-          PageCount: 104,
-          Publisher: "egedahl",
-          PublishedOn: parseInt(new Date().getTime() / 1000),
-          Status: 1,
-          DefaultRentalDays: 3,
-          BooksInStock: 5,
-          Authors: ["GG NO RE", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-          Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-          Rentals: [] 
+          'Title': "name",
+          'Resume': "some text",
+          'PicturePath': "//urlpath/picture.png",
+          'PageCount': 104,
+          'Publisher': "egedahl",
+          'PublishedOn': moment().format(),
+          'Status': 1,
+          'DefaultRentalDays': 3,
+          'BooksInStock': 5,
+          'Authors': [{'Name': "GG NO RE"}, {'Name':"HC ANDERSEN"}, {'Name':"GEORGE J R R MARTIN"}],
+          'Genres': [{'Name':"Horror"}, {'Name':"Sci-fi"}, {'Name':"Adventure"}, {'Name':"Grimdark"}],
+          'Rentals': [] 
       })
       })
       .then(function (response) {
         return response.json();
       }).then((response) => {
         console.log(response)
-        if(response.state === true){
+        if(response.state == true){
           return true;
         } else {
           return false;
@@ -236,7 +237,7 @@ export class Test extends Component {
         return response.json();
       }).then((response) => {
         console.log(response)
-        if(response.state === true){
+        if(response.state == true){
           return true;
         } else {
           return false;
