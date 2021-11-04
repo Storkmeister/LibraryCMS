@@ -21,11 +21,16 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult GetResponse()
+        public IActionResult GetAllRentableBooks()
         {
+            List<Book> Books = new List<Book>();
 
-            string success = "Succesfully retrieved get response.";
-            var json = JsonConvert.SerializeObject(success, Formatting.Indented);
+            Books = _context.Books
+                .Where(b => b.BooksInStock > 0)
+                .Where(b => b.Status == 1)
+                .ToList();
+
+            var json = JsonConvert.SerializeObject(Books, Formatting.Indented);
             IActionResult response = Ok(json);
             return response;
         }
