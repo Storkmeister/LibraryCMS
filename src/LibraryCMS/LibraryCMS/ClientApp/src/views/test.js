@@ -28,7 +28,6 @@ export class Test extends Component {
     console.log(this.state.book);
     console.log(this.state.books);
     console.log(this.state.user);
-    console.log(moment().format());
   }
 
   /*
@@ -43,9 +42,9 @@ export class Test extends Component {
    * 
    * @returns database data as objects in array
    */
-  getAllBooks = () => {
-
-    fetch('/Book/GetAllRentableBooks',{
+  getAllBooks = (keyword) => {
+    const endpoint = 'SearchAllRentableBooks';
+    fetch(`/Book/${endpoint}?searchtext=${keyword}`,{
       method:"get"
     })
     .then(function (response) {
@@ -236,7 +235,7 @@ export class Test extends Component {
   }
 
   /**
-   * 
+   * Create a new user in the system
    * @param {object} user 
    * @returns {boolean} state
    */
@@ -252,21 +251,16 @@ export class Test extends Component {
           'FullAddress': user.fullAddress
         })
       })
-      .then(function (response) {
-        console.log(response.status)
-        return response.json();
-      }).then((response) => {
-        console.log(response)
-        if(response.state == true){
+      .then(response => response.json().then(jsonResponse => [response.status, jsonResponse]))
+      .then(([status, jsonResponse]) => {
+        if(status === 200){
+          console.log(jsonResponse);
           return true;
         } else {
+          console.log(jsonResponse);
           return false;
         }
-      }).catch((error) => {
-        console.log(error);
-      });
-    //Dummy data
-    return true
+      })
   }
 
 

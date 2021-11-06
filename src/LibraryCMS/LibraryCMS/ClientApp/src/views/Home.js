@@ -1,36 +1,69 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import './../style/home.css';
 
 export class Home extends Component {
     static displayName = Home.name;
     constructor(){
         super();
         this.state = {
-            userName: 'Yoo'
+            categories: [
+                {
+                    title: "Krimi",
+                    keyword: "krimi"
+                },
+                {
+                    title: "Fantasy",
+                    keyword: "fantasy"
+                },
+                {
+                    title: "Humor",
+                    keyword: "humor"
+                },
+                {
+                    title: "Gys",
+                    keyword: "gys"
+                },
+                {
+                    title: "Eventyr",
+                    keyword: "eventyr"
+                },
+                {
+                    title: "Science fiction",
+                    keyword: "sci-fi"
+                },
+                {
+                    title: "Dagbøger",
+                    keyword: "dagboeger"
+                },
+                
+            ]
         }
     }
 
     componentDidMount(){
-        console.log('Hello mate');
-    }
 
-
-    onInputChange = (e) => {
-        console.log(e.currentTarget.value)
-        this.setState({userName: e.currentTarget.value})
     }
 
     render(){
         return (
         <div>
-            <p>Username:</p>
-            <input onChange={this.onInputChange}/>
+            <h3>Kategori</h3>
+            <p>Vælg en kategori du finder interessant og lån en bog online!</p>
+            <div className="category-container">
+                {
+                    this.state.categories.map((item) => {
+                        const element = 
+                        <Link key={item.keyword} to={item.keyword}>
+                            <p>{item.title}</p>
+                        </Link>
 
+                        return element
+                    })
 
-            <h1>Profile name:</h1>
-            <h2>{this.state.userName}</h2>
-
-
+                    
+                }
+            </div>
         </div>
         )}
 }

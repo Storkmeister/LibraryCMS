@@ -1,0 +1,26 @@
+.search-result-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "div"
+        "table"
+}
+
+#search-table-title {
+    width: 25%;
+}
+#search-table-description {
+    width: 50%;
+}
+#search-table-link {
+    width: 10%;
+}
+
+#search-results > tbody > tr > td > div {
+    display: flex;
+    flex-direction: row;
+}
+
+#search-results > tbody > tr > td[class="table-action"] {
+    text-align: center;
+}

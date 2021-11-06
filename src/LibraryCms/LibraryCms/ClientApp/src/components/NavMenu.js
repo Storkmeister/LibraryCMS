@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import './NavMenu.css';
+import './../style/NavMenu.css';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -23,7 +23,31 @@ export class NavMenu extends Component {
 
   render () {
     return (
-      <header>
+        <header className="navbar-header">
+            <Container>
+            <div className="navbar-container">
+              <div className="nav-container">
+                <Link to="/">
+                  <h4>Library CMS</h4>
+                </Link>
+              </div>
+              <div className="search_container">
+                <input placeholder="Indtast title, genre ..."/>
+                <button>Søg</button>
+              </div>
+              <ul className="nav-container navbar-nav flex-grow">
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
+                </NavItem>
+              </ul>
+              
+            {/*
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
             <NavbarBrand tag={Link} to="/">LibraryCms</NavbarBrand>
@@ -41,8 +65,11 @@ export class NavMenu extends Component {
                 </NavItem>
               </ul>
             </Collapse>
-          </Container>
+          </Container>  
         </Navbar>
+            */}
+                    </div>
+            </Container>
       </header>
     );
   }

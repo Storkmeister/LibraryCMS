@@ -52,9 +52,9 @@ export class NavSideBar extends Component {
               About us
             </summary>
               <ul>
-                <li><Link to={'/test'}>Fantasy</Link></li>
-                <li><Link to={'/counter'}>Horror</Link></li>
-                <li><Link to={'/fetch-data'}>Romantic</Link></li>
+                <li><Link to={'/'}>Front page</Link></li>
+                <li><Link to={'/search'}>Search list</Link></li>
+                <li><Link to={'/item'}>Display item</Link></li>
               </ul>
           </details>
         </nav>
