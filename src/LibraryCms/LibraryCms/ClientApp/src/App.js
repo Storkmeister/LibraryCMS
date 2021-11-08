@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './views/Home';
 import { DisplayItem } from './views/DisplayItem';
 import { SearchResults } from './views/searchResults';
+import { Category } from './views/Category';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Test } from './views/test';
@@ -19,7 +20,8 @@ export default class App extends Component {
         <Switch>
           <Route exact path='/' component={Home} />
           <Route exact path='/search' component={SearchResults} />
-          <Route exact path='/Item' component={DisplayItem} />
+          <Route exact path='/books/category/:genre' component={Category} />
+          <Route exact path='/books/:id' component={DisplayItem} />
           <Route path='/counter' component={Counter} />
           <Route path='/fetch-data' component={FetchData} />
           <Route path='/test' component={Test} />

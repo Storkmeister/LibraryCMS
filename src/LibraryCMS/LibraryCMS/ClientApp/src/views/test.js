@@ -22,7 +22,7 @@ export class Test extends Component {
     this.setState({ book: book });
     const getUserById = await this.getUserById();
     this.setState({ user: getUserById });
-    const getAllBooks = await this.getAllBooks();
+    const getAllBooks = await this.getAllBooks('star');
     this.setState({ books: getAllBooks });
 
     console.log(this.state.book);
@@ -147,8 +147,7 @@ export class Test extends Component {
   updateBook = (book) => {
 
     console.log(book);
-    /*
-    fetch('/api/book/' + this.props.match.params.id)
+    fetch('/book/' + this.props.match.params.id)
     .then(function (response) {
       return response.json();
     }).then((response) => {
@@ -158,7 +157,6 @@ export class Test extends Component {
         return false;
       }
     });
-    */
     //Dummy data
     return true;
   }

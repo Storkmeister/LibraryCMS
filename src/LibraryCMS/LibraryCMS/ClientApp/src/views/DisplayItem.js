@@ -26,7 +26,38 @@ export class DisplayItem extends Component {
     }
 
     componentDidMount(){
+        this.getBookById(this.props.match.params.id);
+    }
 
+    /**
+     * Fetch a book from the database by the books primary key
+     * 
+     * @param  {int} id The primary key of the book you want to retreive from the database
+     * @returns database data in object format
+     */
+    getBookById = (id) => {
+
+    fetch('/Book/GetResponse',{
+        method:"get"
+    })
+    .then(function (response) {
+        return response.json();
+    }).then((response) => {
+        console.log(response)
+    /*
+        return {
+            id: response[0].book.id,
+            title: response[0].book.title,
+            summary: response[0].book.summary,
+            genre: response[0].book.genre,
+            picturePath: response[0].book.picturePath,
+            author: response[0].book.author,
+            publisher: response[0].book.publisher,
+            releaseDate: response[0].book.releaseDate,
+            status: response[0].book.status,
+            lendPeriodeLimit: response[0].book.lendPeriodeLimit
+        }*/
+    });
     }
 
     render(){

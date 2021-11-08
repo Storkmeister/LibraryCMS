@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import './../style/searchResults.css';
 
-export class SearchResults extends Component {
-    static displayName = SearchResults.name;
+export class Category extends Component {
+    static displayName = Category.name;
     constructor(){
         super();
         this.state = {
             genre: "Eventyr",
             items: [
                 {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -24,6 +25,7 @@ export class SearchResults extends Component {
                 Rentals: []
             },
             {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -38,6 +40,7 @@ export class SearchResults extends Component {
                 Rentals: []
             },
             {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -52,6 +55,7 @@ export class SearchResults extends Component {
                 Rentals: []
             },
             {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -66,6 +70,7 @@ export class SearchResults extends Component {
                 Rentals: []
             },
             {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow - This is an extra long title for lols",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -80,6 +85,7 @@ export class SearchResults extends Component {
                 Rentals: []
             },
             {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -94,6 +100,7 @@ export class SearchResults extends Component {
                 Rentals: []
             },
             {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -108,6 +115,7 @@ export class SearchResults extends Component {
                 Rentals: []
             },
             {
+                id: 0,
                 title: "Harry Potter and the Deadly Hallow",
                 resume: "This is a description of the selected item...",
                 PicturePath: '/img/harrypotter.jpg',
@@ -126,8 +134,27 @@ export class SearchResults extends Component {
     }
 
     componentDidMount(){
-
+        this.getAllBooks(this.props.match.params.genre);
     }
+
+    /**
+     * Fetch all books from the database
+     * 
+     * @returns database data as objects in array
+     */
+    getAllBooks = (keyword) => {
+        const endpoint = 'SearchAllRentableBooks';
+        fetch(`/Book/${endpoint}?searchtext=${keyword}`,{
+          method:"get"
+        })
+        .then(function (response) {
+          return response.json();
+        }).then((response) => {
+          console.log(response)
+        });
+      } 
+    
+
 
     render(){
         return (
@@ -140,13 +167,13 @@ export class SearchResults extends Component {
                     this.state.items.map((item, key) => {
                         const element = 
                         <div key={key} className="item-card">
-                            <Link to="/img">
+                            <Link to={`/books/${item.id}`}>
                                 <div>
                                     <img src={item.PicturePath} alt="BookCover"/>
                                 </div>
                             </Link>
-                            <Link to="/title"><h3>{item.title}</h3></Link>
-                            <Link to="/author"><p>{item.Authors[0]}</p></Link>
+                            <Link to={`/books/${item.id}`}><h3>{item.title}</h3></Link>
+                            <Link to={`/books/${item.id}`}><p>{item.Authors[0]}</p></Link>
                         </div>
 
                         return element;

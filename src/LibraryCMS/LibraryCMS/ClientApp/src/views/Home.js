@@ -54,14 +54,11 @@ export class Home extends Component {
                 {
                     this.state.categories.map((item) => {
                         const element = 
-                        <Link key={item.keyword} to={item.keyword}>
+                        <Link key={item.keyword} to={`books/category/${item.keyword}`}>
                             <p>{item.title}</p>
                         </Link>
-
                         return element
                     })
-
-                    
                 }
             </div>
         </div>
