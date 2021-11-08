@@ -21,11 +21,12 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult RentBook([FromBody] Rental rental, DateTime LoanDate)
+        public IActionResult RentBook([FromBody] Rental rental, DateTime RentalDate)
         {
 
             Book bookToRent = _context.Books.Find(rental.BookId);
-            rental.ReturnDeadline = LoanDate.AddDays(bookToRent.DefaultRentalDays);
+            rental.ReturnDeadline = RentalDate.AddDays(bookToRent.DefaultRentalDays);
+            rental.RentalDate = RentalDate;
             _context.Books.Attach(bookToRent);
 
             var bookEntry = _context.Entry(bookToRent);
