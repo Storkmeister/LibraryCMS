@@ -23,7 +23,8 @@ namespace LibraryCms.Controllers
         [HttpGet]
         public IActionResult SearchAllRentableBooks(string searchtext)
         {
-            List<Book> Books = new List<Book>();
+            List<Book> Books 
+                = new ();
 
             Books = _context.Books
                 .Where(b => b.Status == 1)
