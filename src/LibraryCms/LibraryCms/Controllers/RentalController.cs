@@ -21,7 +21,7 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult RentBook([FromBody] Rental rental, DateTime RentalDate)
+        public IActionResult RentBook([FromBody] Rental rental)
         {
 
             Book bookToRent = _context.Books.Find(rental.BookId);
