@@ -23,37 +23,30 @@ namespace LibraryCms.Controllers
         [HttpPost]
         public IActionResult RentBook([FromBody] Rental rental)
         {
-
+            //finding the book from the rentals bookid provided by the body
             Book bookToRent = _context.Books.Find(rental.BookId);
+
+            //setting the return deadline to be the rental date provided by the body + 
+            //the books default rental days
             rental.ReturnDeadline = rental.RentalDate.AddDays(bookToRent.DefaultRentalDays);
+
+            //Attaching the book to rent to the context
             _context.Books.Attach(bookToRent);
 
-            var bookEntry = _context.Entry(bookToRent);
+            //modifying the books rental table
             bookToRent.Rentals = (ICollection<Rental>)rental;
+            
+            //setting the rental state to modified so the changes will be saved by EF
+            var bookEntry = _context.Entry(bookToRent);
+            bookEntry.State = System.Data.Entity.EntityState.Modified;
 
+            //saving the changes
             _context.SaveChanges();
 
+            //returning the rental object so the frontend knows what was saved to the db if everything went well.
             var json = JsonConvert.SerializeObject(rental, Formatting.Indented);
-            IActionResult response = Ok(rental);
+            IActionResult response = Ok(json);
             return response;
-
-            //if (bookToRent.BooksInStock > 0 /* && 
-            //                                * User.ApprovedUser && 
-            //                                * User.LoanLimit !> 
-            //                                * (amount of books user has actively loaned right now.) */)
-            //{
-            //    //newRental.UserId = User.Id;
-            //}
-            //else
-            //{
-            //    //need to add alternative add method
-            //    var json = JsonConvert.SerializeObject(rental, Formatting.Indented);
-            //    IActionResult response = BadRequest(rental);
-            //    return response;
-            //}
-
         }
-
-
     }
 }
