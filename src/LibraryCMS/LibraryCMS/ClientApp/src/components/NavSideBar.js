@@ -4,6 +4,26 @@ import { Link } from "react-router-dom";
 export class NavSideBar extends Component {
   static displayName = NavSideBar.name;
 
+
+
+async componentDidMount(){
+  const genres = await this.getAllGenres();
+  console.log(genres);
+}
+
+
+getAllGenres = async () => {
+  return await fetch(`/book/getAllGenres`,{
+    method:"get"
+  })
+  .then(function (response) {
+    return response.json();
+  }).then((response) => {
+    console.log(response)
+  });
+}
+
+
   render () {
     return (
         <nav>

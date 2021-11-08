@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import moment from 'moment';
 import './../style/displayitem.css';
 
 export class DisplayItem extends Component {
@@ -25,8 +26,14 @@ export class DisplayItem extends Component {
     }
 
     async componentDidMount(){
-        const item = await this.getBookById(this.props.match.params.id);
+        let item = await this.getBookById(this.props.match.params.id);
+        //Handle date format
+        item.PublishedOn = this.parseDate(item.PublishedOn);
         this.setState({item: item});
+    }
+
+    parseDate = date => {
+        return moment(date).format("DD MMMM YYYY");
     }
 
     /**

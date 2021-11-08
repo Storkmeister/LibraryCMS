@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import './../style/searchResults.css';
+import './../style/bookCategory.css';
 
 export class Category extends Component {
     static displayName = Category.name;

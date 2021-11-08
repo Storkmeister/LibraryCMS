@@ -45,6 +45,41 @@ export class Home extends Component {
 
     }
 
+      /*
+    ====================
+    Book functions
+    ====================
+  */
+  /**
+   * Fetch all books from the database
+   * 
+   * @returns database data as objects in array
+   */
+  getAllBooks = (keyword) => {
+    const endpoint = 'SearchAllRentableBooks';
+    fetch(`/book/${endpoint}?searchtext=${keyword}`,{
+      method:"get"
+    })
+    .then(function (response) {
+      return response.json();
+    }).then((response) => {
+      console.log(response)
+ /*
+      return {
+            id: response[0].book.id,
+            title: response[0].book.title,
+            summary: response[0].book.summary,
+            genre: response[0].book.genre,
+            picturePath: response[0].book.picturePath,
+            author: response[0].book.author,
+            publisher: response[0].book.publisher,
+            releaseDate: response[0].book.releaseDate,
+            status: response[0].book.status,
+            lendPeriodeLimit: response[0].book.lendPeriodeLimit
+      }*/
+    });
+  }
+
     render(){
         return (
         <div>

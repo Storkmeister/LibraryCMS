@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './views/Home';
 import { DisplayItem } from './views/DisplayItem';
+import { Profile } from './views/Profile';
 import { SearchResults } from './views/searchResults';
 import { Category } from './views/Category';
 import { FetchData } from './components/FetchData';
@@ -22,6 +23,7 @@ export default class App extends Component {
           <Route exact path='/search' component={SearchResults} />
           <Route exact path='/books/category/:genre' component={Category} />
           <Route exact path='/books/:id' component={DisplayItem} />
+          <Route exact path='/profile' component={Profile} />
           <Route path='/counter' component={Counter} />
           <Route path='/fetch-data' component={FetchData} />
           <Route path='/test' component={Test} />

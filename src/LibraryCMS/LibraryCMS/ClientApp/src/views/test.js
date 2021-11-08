@@ -35,16 +35,14 @@ export class Test extends Component {
     Book functions
     ====================
   */
-
-
-    /**
+  /**
    * Fetch all books from the database
    * 
    * @returns database data as objects in array
    */
   getAllBooks = (keyword) => {
     const endpoint = 'SearchAllRentableBooks';
-    fetch(`/Book/${endpoint}?searchtext=${keyword}`,{
+    fetch(`/book/${endpoint}?searchtext=${keyword}`,{
       method:"get"
     })
     .then(function (response) {
