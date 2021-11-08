@@ -36,6 +36,18 @@ namespace LibraryCms.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
+        public IActionResult GetBook(int Id)
+        {
+            Book book = (Book)_context.Books
+                .Where(b => b.Id == Id);
+
+            var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+            IActionResult response = Ok(json);
+            return response;
+        }
+
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult CreateBook([FromBody]Book book)
         {
