@@ -40,12 +40,23 @@ namespace LibraryCms.Controllers
         [HttpGet]
         public IActionResult GetBook(int Id)
         {
-            Book book = (Book)_context.Books
-                .Where(b => b.Id == Id);
+            Book gotBook = new Book();
 
-            var json = JsonConvert.SerializeObject(book, Formatting.Indented);
-            IActionResult response = Ok(json);
-            return response;
+            gotBook = _context.Books
+                .Where(b => b.Id == Id)
+                .SingleOrDefault();
+            if (gotBook != null)
+            {
+                var json = JsonConvert.SerializeObject(gotBook, Formatting.Indented);
+                IActionResult response = Ok(json);
+                return response;
+            }
+            else
+            {
+                var json = JsonConvert.SerializeObject(gotBook, Formatting.Indented);
+                IActionResult response = BadRequest(json);
+                return response;
+            }
         }
 
         [AllowAnonymous]

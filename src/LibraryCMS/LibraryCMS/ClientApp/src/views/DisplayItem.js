@@ -8,8 +8,8 @@ export class DisplayItem extends Component {
         super();
         this.state = {
             item: {
-                title: "Harry potter",
-                resume: "This is a description of the selected item...",
+                Title: "Harry potter",
+                Resume: "This is a description of the selected item...",
                 PicturePath: '',
                 PageCount: 104,
                 Publisher: "Egedahl",
@@ -19,14 +19,14 @@ export class DisplayItem extends Component {
                 BooksInStock: 5,
                 Authors: ["GG NO RE", "HC ANDERSEN", "GEORGE J R R MARTIN"],
                 Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: [] 
-
+                Rentals: []
             }
         }
     }
 
-    componentDidMount(){
-        this.getBookById(this.props.match.params.id);
+    async componentDidMount(){
+        const item = await this.getBookById(this.props.match.params.id);
+        this.setState({item: item});
     }
 
     /**
@@ -35,30 +35,20 @@ export class DisplayItem extends Component {
      * @param  {int} id The primary key of the book you want to retreive from the database
      * @returns database data in object format
      */
-    getBookById = (id) => {
+    getBookById = async (id) => {
 
-    fetch('/Book/GetResponse',{
-        method:"get"
-    })
-    .then(function (response) {
-        return response.json();
-    }).then((response) => {
-        console.log(response)
-    /*
-        return {
-            id: response[0].book.id,
-            title: response[0].book.title,
-            summary: response[0].book.summary,
-            genre: response[0].book.genre,
-            picturePath: response[0].book.picturePath,
-            author: response[0].book.author,
-            publisher: response[0].book.publisher,
-            releaseDate: response[0].book.releaseDate,
-            status: response[0].book.status,
-            lendPeriodeLimit: response[0].book.lendPeriodeLimit
-        }*/
-    });
+        const result = await fetch(`/Book/GetBook/${parseInt(id)}`,{
+            method:"get"
+        })
+        .then(function (response) {
+            return response.json();
+        }).then((response) => {
+            console.log(response)
+            return response;
+        });
+        return result
     }
+        
 
     render(){
         return (
@@ -66,8 +56,8 @@ export class DisplayItem extends Component {
             <div className="item-grid">
                 <img alt="image"/>
                 <div>
-                    <h4>{this.state.item.title}</h4>
-                    <p>{this.state.item.resume}</p>
+                    <h4>{this.state.item.Title}</h4>
+                    <p>{this.state.item.Resume}</p>
                 </div>
                 <table id="item-table">
                     <tbody>
