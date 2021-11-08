@@ -25,8 +25,7 @@ namespace LibraryCms.Controllers
         {
 
             Book bookToRent = _context.Books.Find(rental.BookId);
-            rental.ReturnDeadline = RentalDate.AddDays(bookToRent.DefaultRentalDays);
-            rental.RentalDate = RentalDate;
+            rental.ReturnDeadline = rental.RentalDate.AddDays(bookToRent.DefaultRentalDays);
             _context.Books.Attach(bookToRent);
 
             var bookEntry = _context.Entry(bookToRent);
