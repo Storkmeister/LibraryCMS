@@ -1,5 +1,7 @@
-﻿using LibraryCmsShared.Models;
+﻿using LibraryCmsShared.Migrations;
+using LibraryCmsShared.Models;
 using System;
+
 using System.Data.Entity;
 
 namespace LibraryCmsShared
@@ -8,7 +10,7 @@ namespace LibraryCmsShared
     {
         public Context()
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<Context>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Configuration>());
         }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
@@ -26,10 +28,6 @@ namespace LibraryCmsShared
             modelBuilder.Entity<Book>()
                 .HasIndex(b => b.Title)
                 .IsUnique();
-
-            //modelBuilder.Entity<User>()
         }
-
-
     }
 }

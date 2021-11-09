@@ -7,13 +7,13 @@ namespace LibraryCmsShared.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class Initial : IMigrationMetadata
+    public sealed partial class InitialNew : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialNew));
         
         string IMigrationMetadata.Id
         {
-            get { return "202111031256353_Initial"; }
+            get { return "202111091052586_InitialNew"; }
         }
         
         string IMigrationMetadata.Source

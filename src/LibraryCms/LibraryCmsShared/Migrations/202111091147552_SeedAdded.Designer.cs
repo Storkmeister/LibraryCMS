@@ -7,13 +7,13 @@ namespace LibraryCmsShared.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class ChangedRentalTableNameAddedUniqueFields : IMigrationMetadata
+    public sealed partial class SeedAdded : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangedRentalTableNameAddedUniqueFields));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SeedAdded));
         
         string IMigrationMetadata.Id
         {
-            get { return "202111041016586_ChangedRentalTableNameAddedUniqueFields"; }
+            get { return "202111091147552_SeedAdded"; }
         }
         
         string IMigrationMetadata.Source

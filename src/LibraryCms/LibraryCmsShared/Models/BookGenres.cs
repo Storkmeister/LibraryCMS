@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibraryCmsShared.Models
 {
-    public class Rental
+    public class BookGenres
     {
+        //explicit bridge table
         public int Id { get; set; }
-        public int UserId { get; set; }
         public int BookId { get; set; }
-        public string BookTitle { get; set; }
-        public DateTime RentalDate { get; set; }
-        public DateTime ReturnDeadline { get; set; }
-
-        public User User { get; set; }
+        public int GenreId { get; set; }
         public Book Book { get; set; }
+        public Genre Genre { get; set; }
     }
 }

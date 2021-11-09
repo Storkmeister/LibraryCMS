@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class InitialNew : DbMigration
     {
         public override void Up()
         {
@@ -12,12 +12,9 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 60),
-                        Book_Id = c.Int(),
+                        Name = c.String(),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Books", t => t.Book_Id)
-                .Index(t => t.Book_Id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.BookAuthors",
@@ -26,15 +23,12 @@
                         Id = c.Int(nullable: false, identity: true),
                         BookId = c.Int(nullable: false),
                         AuthorId = c.Int(nullable: false),
-                        GenreId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Authors", t => t.AuthorId, cascadeDelete: true)
                 .ForeignKey("dbo.Books", t => t.BookId, cascadeDelete: true)
-                .ForeignKey("dbo.Genres", t => t.GenreId, cascadeDelete: true)
                 .Index(t => t.BookId)
-                .Index(t => t.AuthorId)
-                .Index(t => t.GenreId);
+                .Index(t => t.AuthorId);
             
             CreateTable(
                 "dbo.Books",
@@ -51,7 +45,22 @@
                         DefaultRentalDays = c.Int(nullable: false),
                         BooksInStock = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Title, unique: true);
+            
+            CreateTable(
+                "dbo.BookGenres",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        BookId = c.Int(nullable: false),
+                        GenreId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Books", t => t.BookId, cascadeDelete: true)
+                .ForeignKey("dbo.Genres", t => t.GenreId, cascadeDelete: true)
+                .Index(t => t.BookId)
+                .Index(t => t.GenreId);
             
             CreateTable(
                 "dbo.Genres",
@@ -59,19 +68,17 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        Book_Id = c.Int(),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Books", t => t.Book_Id)
-                .Index(t => t.Book_Id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.RentalTables",
+                "dbo.Rentals",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         UserId = c.Int(nullable: false),
                         BookId = c.Int(nullable: false),
+                        BookTitle = c.String(),
                         RentalDate = c.DateTime(nullable: false),
                         ReturnDeadline = c.DateTime(nullable: false),
                     })
@@ -93,29 +100,31 @@
                         ApprovedUser = c.Boolean(nullable: false),
                         IsAdmin = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Email, unique: true);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.BookAuthors", "GenreId", "dbo.Genres");
+            DropForeignKey("dbo.Rentals", "UserId", "dbo.Users");
+            DropForeignKey("dbo.Rentals", "BookId", "dbo.Books");
+            DropForeignKey("dbo.BookGenres", "GenreId", "dbo.Genres");
+            DropForeignKey("dbo.BookGenres", "BookId", "dbo.Books");
             DropForeignKey("dbo.BookAuthors", "BookId", "dbo.Books");
-            DropForeignKey("dbo.RentalTables", "UserId", "dbo.Users");
-            DropForeignKey("dbo.RentalTables", "BookId", "dbo.Books");
-            DropForeignKey("dbo.Genres", "Book_Id", "dbo.Books");
-            DropForeignKey("dbo.Authors", "Book_Id", "dbo.Books");
             DropForeignKey("dbo.BookAuthors", "AuthorId", "dbo.Authors");
-            DropIndex("dbo.RentalTables", new[] { "BookId" });
-            DropIndex("dbo.RentalTables", new[] { "UserId" });
-            DropIndex("dbo.Genres", new[] { "Book_Id" });
-            DropIndex("dbo.BookAuthors", new[] { "GenreId" });
+            DropIndex("dbo.Users", new[] { "Email" });
+            DropIndex("dbo.Rentals", new[] { "BookId" });
+            DropIndex("dbo.Rentals", new[] { "UserId" });
+            DropIndex("dbo.BookGenres", new[] { "GenreId" });
+            DropIndex("dbo.BookGenres", new[] { "BookId" });
+            DropIndex("dbo.Books", new[] { "Title" });
             DropIndex("dbo.BookAuthors", new[] { "AuthorId" });
             DropIndex("dbo.BookAuthors", new[] { "BookId" });
-            DropIndex("dbo.Authors", new[] { "Book_Id" });
             DropTable("dbo.Users");
-            DropTable("dbo.RentalTables");
+            DropTable("dbo.Rentals");
             DropTable("dbo.Genres");
+            DropTable("dbo.BookGenres");
             DropTable("dbo.Books");
             DropTable("dbo.BookAuthors");
             DropTable("dbo.Authors");
