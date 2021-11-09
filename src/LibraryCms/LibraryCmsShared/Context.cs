@@ -29,9 +29,6 @@ namespace LibraryCmsShared
                 .HasIndex(b => b.Title)
                 .IsUnique();
 
-            modelBuilder.Entity<Genre>()
-                .HasIndex(g => g.Name)
-                .IsUnique();
         }
     }
 }

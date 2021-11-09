@@ -7,8 +7,8 @@ export class Category extends Component {
     constructor(){
         super();
         this.state = {
-            genre: "Eventyr",
-            items: [
+            genre: 1,
+            xitems: [
                 {
                 id: 0,
                 title: "Harry Potter and the Deadly Hallow",
@@ -129,12 +129,14 @@ export class Category extends Component {
                 Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
                 Rentals: []
             },
-        ]
+        ],
+        items:[]
         };
     }
 
-    componentDidMount(){
-        this.getAllBooks(this.props.match.params.genre);
+    async componentDidMount(){
+        this.setState({items: await this.getBooksByGenre(this.props.match.params.genre)});
+
     }
 
     /**
@@ -142,9 +144,9 @@ export class Category extends Component {
      * 
      * @returns database data as objects in array
      */
-    getAllBooks = (keyword) => {
-        const endpoint = 'SearchAllRentableBooks';
-        fetch(`/Book/${endpoint}?searchtext=${keyword}`,{
+     getBooksByGenre = async (keyword) => {
+        const endpoint = 'GetBooksByGenreId';
+        fetch(`/Book/${endpoint}?Id=${keyword}`,{
           method:"get"
         })
         .then(function (response) {
