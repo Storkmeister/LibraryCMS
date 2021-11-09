@@ -22,6 +22,23 @@ export class NavMenu extends Component {
   }
 
   render () {
+
+    function LoggedIn(props){
+      if(props.isLoggedIn){
+        const element = 
+          <NavItem>
+            <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
+          </NavItem>
+        return element;
+      } else {
+        const element = 
+          <NavItem>
+            <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
+          </NavItem>
+        return element;
+      }
+    }
+
     return (
         <header className="navbar-header">
             <Container>
@@ -39,9 +56,7 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
-                </NavItem>
+                <LoggedIn isLoggedIn={false} />
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
                 </NavItem>

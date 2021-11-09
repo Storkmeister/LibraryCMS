@@ -7,135 +7,13 @@ export class Category extends Component {
     constructor(){
         super();
         this.state = {
-            genre: 1,
-            xitems: [
-                {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow - This is an extra long title for lols",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                id: 0,
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-        ],
-        items:[]
+            items:[]
         };
     }
 
     async componentDidMount(){
-        this.setState({items: await this.getBooksByGenre(this.props.match.params.genre)});
+        const items = await this.getBooksByGenre(this.props.match.params.genre)
+        this.setState({items: items});
 
     }
 
@@ -146,13 +24,13 @@ export class Category extends Component {
      */
      getBooksByGenre = async (keyword) => {
         const endpoint = 'GetBooksByGenreId';
-        fetch(`/Book/${endpoint}?Id=${keyword}`,{
+        return await fetch(`/Book/${endpoint}?Id=${keyword}`,{
           method:"get"
         })
         .then(function (response) {
           return response.json();
         }).then((response) => {
-          console.log(response)
+          return response;
         });
       } 
     

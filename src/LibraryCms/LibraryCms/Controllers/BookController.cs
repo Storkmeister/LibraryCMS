@@ -68,11 +68,17 @@ namespace LibraryCms.Controllers
                 new ();
 
             books = _context.Books
-                .Include(b => b.Genres.Select(g => g.Genre).Where(g => g.Id == Id))
+                .Include(b => b.Genres)
+                .Where(b => b.Genres.Select(g => g.Id).Contains(Id))
                 .ToList();
 
             if (books != null)
             {
+                foreach (var book in books)
+                {
+                    book.Genres.Clear();
+                }
+
                 var json = JsonConvert.SerializeObject(books, Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
