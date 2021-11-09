@@ -28,6 +28,10 @@ namespace LibraryCmsShared
             modelBuilder.Entity<Book>()
                 .HasIndex(b => b.Title)
                 .IsUnique();
+
+            modelBuilder.Entity<Genre>()
+                .HasIndex(g => g.Name)
+                .IsUnique();
         }
     }
 }

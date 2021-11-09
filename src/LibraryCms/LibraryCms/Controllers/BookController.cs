@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
@@ -58,6 +59,32 @@ namespace LibraryCms.Controllers
                 return response;
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult GetBooksByGenreId(int Id)
+        {
+            List<Book> books = 
+                new ();
+
+            books = _context.Books
+                .Include(b => b.Genres.Select(g => g.Genre).Where(g => g.Id == Id))
+                .ToList();
+
+            if (books != null)
+            {
+                var json = JsonConvert.SerializeObject(books, Formatting.Indented);
+                IActionResult response = Ok(json);
+                return response;
+            }
+            else
+            {
+                var json = JsonConvert.SerializeObject(books, Formatting.Indented);
+                IActionResult response = BadRequest(json);
+                return response;
+            }
+        }
+
 
         [AllowAnonymous]
         [HttpPost]
