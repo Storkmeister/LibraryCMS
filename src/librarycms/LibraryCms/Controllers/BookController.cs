@@ -147,7 +147,7 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult CreateBook([FromBody] Book book)
+        public IActionResult CreateBook([FromBody] Book book, Genre genre)
         {
             //prepare response data
             Dictionary<string, string> data =
@@ -157,6 +157,10 @@ namespace LibraryCms.Controllers
             try
             {
                 _context.Books.Add(book);
+                if(genre != null || genre.Name != "")
+                {
+                    book.AddGenre(genre);
+                }
                 _context.SaveChanges();
 
                 //set response data
@@ -182,7 +186,7 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpPut]
-        public IActionResult UpdateBook([FromBody] Book book)
+        public IActionResult UpdateBook([FromBody] Book book, Genre genre)
         {
 
             //TODO: Verify that user is admin. Then proceed to create a new book
@@ -206,13 +210,18 @@ namespace LibraryCms.Controllers
                 book.Status = currentBook.Status;
                 book.DefaultRentalDays = currentBook.DefaultRentalDays;
                 book.BooksInStock = currentBook.BooksInStock;
+                if(genre != null || genre.Name != "")
+                {
+                    book.AddGenre(genre);
+                }
 
                 _context.Books.Attach(book);
 
                 var bookEntry = _context.Entry(book);
 
                 bookEntry.Property("Id").IsModified = false;
-                
+                _context.Entry(book).State = EntityState.Modified;
+                _context.SaveChanges();
 
                 var json = JsonConvert.SerializeObject(book, Formatting.Indented);
                 IActionResult response = Ok(json);
