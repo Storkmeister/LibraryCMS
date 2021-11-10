@@ -19,8 +19,8 @@ export default class AuthService{
         return await fetch();
       }
     
-      signout = () => {
-    
+      signOut = () => {
+        console.log('Signin you out')
       }
 
 }
