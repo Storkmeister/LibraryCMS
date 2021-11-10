@@ -7,12 +7,15 @@ export class Category extends Component {
     constructor(){
         super();
         this.state = {
-            items:[]
+            title: "",
+            items: []
         };
     }
 
     async componentDidMount(){
-        const items = await this.getBooksByGenre(this.props.match.params.genre)
+        const title = await this.getGenreById(this.props.match.params.genre);
+        const items = await this.getBooksByGenre(this.props.match.params.genre);
+        this.setState({title: title.Name});
         this.setState({items: items});
 
     }
@@ -32,28 +35,37 @@ export class Category extends Component {
         }).then((response) => {
           return response;
         });
-      } 
+      }
     
-
+      getGenreById = async (id) => {
+        return await fetch(`/Genre/getGenreById?Id=${id}`,{
+          method:"get"
+        })
+        .then(function (response) {
+          return response.json();
+        }).then((response) => {
+          return response;
+        });
+      } 
 
     render(){
         return (
         <div>
             <div className="search-result-grid">
-                <h2>{this.state.genre}</h2>
+                <h2>{this.state.title}</h2>
                 <div className="category-filter-container">
 
                 {
                     this.state.items.map((item, key) => {
                         const element = 
                         <div key={key} className="item-card">
-                            <Link to={`/books/${item.id}`}>
+                            <Link to={`/books/${item.Id}`}>
                                 <div>
-                                    <img src={item.PicturePath} alt="BookCover"/>
+                                    <img src={`/img/${item.PicturePath}`} alt="BookCover"/>
                                 </div>
                             </Link>
-                            <Link to={`/books/${item.id}`}><h3>{item.title}</h3></Link>
-                            <Link to={`/books/${item.id}`}><p>{item.Authors[0]}</p></Link>
+                            <Link to={`/books/${item.Id}`}><h3>{item.Title}</h3></Link>
+                            <Link to={`/books/${item.Id}`}><p>{item.Authors[0]}</p></Link>
                         </div>
 
                         return element;

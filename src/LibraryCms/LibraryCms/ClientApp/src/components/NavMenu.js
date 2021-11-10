@@ -23,8 +23,13 @@ export class NavMenu extends Component {
 
   render () {
 
-    function LoggedIn(props){
-      if(props.isLoggedIn){
+    /**
+     * Can switch between different elements to render, based on the authentication status
+     * @param {object} authenticated object from props - are you logged in or not
+     * @returns Element to render in the navbar
+     */
+    function LoggedIn(authenticated){
+      if(authenticated.authenticated){
         const element = 
           <NavItem>
             <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
@@ -56,7 +61,7 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                <LoggedIn isLoggedIn={false} />
+                <LoggedIn authenticated={this.props.Authenticated} />
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
                 </NavItem>
