@@ -43,5 +43,29 @@ namespace LibraryCms.Controllers
                 return response;
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult GetGenreById(int Id)
+        {
+            Genre gotGenre = new Genre();
+
+            gotGenre = _context.Genres
+                .Where(g => g.Id == Id)
+                .SingleOrDefault();
+
+            if (gotGenre != null)
+            {
+                var json = JsonConvert.SerializeObject(gotGenre, Formatting.Indented);
+                IActionResult response = Ok(json);
+                return response;
+            }
+            else
+            {
+                var json = JsonConvert.SerializeObject(gotGenre, Formatting.Indented);
+                IActionResult response = BadRequest(json);
+                return response;
+            }
+        }
     }
 }

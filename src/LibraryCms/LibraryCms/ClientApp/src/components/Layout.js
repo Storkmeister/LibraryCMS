@@ -9,7 +9,10 @@ export class Layout extends Component {
   render () {
     return (
       <div>
-        <NavMenu />
+        <NavMenu 
+          Authenticated={this.props.Authenticated} 
+          userType={this.props.userType}
+        />
         <div className="content-container container">
           <NavSideBar />
           <Container>
