@@ -24,8 +24,8 @@ namespace LibraryCms.Controllers
         [HttpGet]
         public IActionResult SearchAllRentableBooks(string searchtext)
         {
-            List<Book> Books 
-                = new ();
+            List<Book> Books
+                = new();
 
             Books = _context.Books
                 .Where(b => b.Status == 1)
@@ -35,6 +35,59 @@ namespace LibraryCms.Controllers
             var json = JsonConvert.SerializeObject(Books, Formatting.Indented);
             IActionResult response = Ok(json);
             return response;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult SearchBooksByAuthor(string searchtext)
+        {
+            List<Book> Books
+                = new();
+
+            Books = _context.Books
+                .Where(b => b.Status == 1)
+                .Where(b => b.Author.Contains(searchtext))
+                .ToList();
+
+            foreach (Book book in Books)
+            {
+                
+            }
+
+            var json = JsonConvert.SerializeObject(Books, Formatting.Indented);
+            IActionResult response = Ok(json);
+            return response;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult SearchBooksByGenre(string searchtext)
+        {
+            List<Book> books =
+                new();
+
+            books = _context.Books
+                .Include(b => b.Genres)
+                .Where(b => b.Genres.Select(g => g.Genre.Name).Contains(searchtext))
+                .ToList();
+
+            if (books != null)
+            {
+                foreach (var book in books)
+                {
+                    book.Genres.Clear();
+                }
+
+                var json = JsonConvert.SerializeObject(books, Formatting.Indented);
+                IActionResult response = Ok(json);
+                return response;
+            }
+            else
+            {
+                var json = JsonConvert.SerializeObject(books, Formatting.Indented);
+                IActionResult response = BadRequest(json);
+                return response;
+            }
         }
 
         [AllowAnonymous]
@@ -94,7 +147,7 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult CreateBook([FromBody]Book book)
+        public IActionResult CreateBook([FromBody] Book book)
         {
             //prepare response data
             Dictionary<string, string> data =
@@ -111,7 +164,7 @@ namespace LibraryCms.Controllers
                 data.Add("description", "Book successfully added!");
                 data.Add("data", "");
 
-                var json = JsonConvert.SerializeObject(data ,Formatting.Indented);
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
             }
@@ -122,6 +175,52 @@ namespace LibraryCms.Controllers
                 data.Add("data", "");
 
                 var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                IActionResult response = BadRequest(json);
+                return response;
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPut]
+        public IActionResult UpdateBook([FromBody] Book book)
+        {
+
+            //TODO: Verify that user is admin. Then proceed to create a new book
+
+            try
+            {
+                var currentBook = _context.Books
+                    .Where(b => b.Id == book.Id)
+                    .SingleOrDefault();
+
+                _context.Entry(currentBook).State = EntityState.Detached;
+
+                book.Id = currentBook.Id;
+                book.Title = currentBook.Title;
+                book.Author = currentBook.Author;
+                book.Resume = currentBook.Resume;
+                book.PicturePath = currentBook.PicturePath;
+                book.PageCount = currentBook.PageCount;
+                book.Publisher = currentBook.Publisher;
+                book.PublishedOn = currentBook.PublishedOn;
+                book.Status = currentBook.Status;
+                book.DefaultRentalDays = currentBook.DefaultRentalDays;
+                book.BooksInStock = currentBook.BooksInStock;
+
+                _context.Books.Attach(book);
+
+                var bookEntry = _context.Entry(book);
+
+                bookEntry.Property("Id").IsModified = false;
+                
+
+                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                IActionResult response = Ok(json);
+                return response;
+            }
+            catch
+            {
+                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
                 IActionResult response = BadRequest(json);
                 return response;
             }

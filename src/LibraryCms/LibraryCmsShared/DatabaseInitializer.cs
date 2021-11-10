@@ -13,7 +13,6 @@ namespace LibraryCmsShared
         protected override void Seed(Context context)
         {
             //This is our database's seed data
-
             Genre Adventure = new Genre()
             {
                 Name = "Eventyr"
@@ -43,26 +42,6 @@ namespace LibraryCmsShared
                 Name = "Humor"
             };
 
-            Author Rowling = new Author()
-            {
-                Name = "J. K. Rowling"
-            };
-
-            Author GeorgeLucas = new Author()
-            {
-                Name = "George Lucas"
-            };
-
-            Author Tolkien = new Author()
-            {
-                Name = "J.R.R. Tolkien"
-            };
-
-            Author GeorgeMartin = new Author()
-            {
-                Name = "George R. R. Martin"
-            };
-
             var bookHarryPotter = new Book()
             {
                 Title = "Harry Potter & the Half Blood Prince",
@@ -75,7 +54,6 @@ namespace LibraryCmsShared
                 DefaultRentalDays = 14,
                 BooksInStock = 3
             };
-            bookHarryPotter.AddAuthor(Rowling);
             bookHarryPotter.AddGenre(Fantasy);
             bookHarryPotter.AddGenre(Adventure);
 
