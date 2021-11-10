@@ -6,6 +6,7 @@ import { Home } from './views/Home';
 import { DisplayItem } from './views/DisplayItem';
 import { Profile } from './views/Profile';
 import { Login } from './views/Login';
+import { Logout } from './views/Logout';
 import { CreateUser } from './views/CreateUser';
 import { SearchResults } from './views/searchResults';
 import { Category } from './views/Category';
@@ -66,6 +67,7 @@ export default class App extends Component {
 
           </AdminRoute>
           <Route exact path='/login' component={Login} />
+          <Route exact path='/logout' component={Logout} />
           <Route exact path='/create-user' component={CreateUser} />
           <Route path='/counter' component={Counter} />
           <Route path='/fetch-data' component={FetchData} />

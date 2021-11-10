@@ -25,22 +25,39 @@ export class NavMenu extends Component {
 
     /**
      * Can switch between different elements to render, based on the authentication status
-     * @param {object} authenticated object from props - are you logged in or not
+     * 
+     * This element can be rendered with 2 different types
+     * - profile: display profile anchor element if logged in
+     * - login: dependent on the loginstatus, render the fitting button
+     * 
+     * @param {object} props object with different props - variables such as authenticated and type has to be included
      * @returns Element to render in the navbar
      */
-    function LoggedIn(authenticated){
-      if(authenticated.authenticated){
-        const element = 
-          <NavItem>
-            <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
-          </NavItem>
-        return element;
-      } else {
-        const element = 
-          <NavItem>
-            <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
-          </NavItem>
-        return element;
+    function LoggedIn(props){
+      let element;
+      if(props.type === 'profile'){
+        if(props.authenticated){
+          element = 
+            <NavItem>
+              <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
+            </NavItem>
+          return element;
+        } else {
+        }
+      } else if(props.type === 'login'){
+        if(!props.authenticated){
+          element =
+            <NavItem>
+              <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
+            </NavItem>
+        } else {
+          element = 
+            <NavItem>
+              <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>
+            </NavItem>
+            
+          return element;
+        }
       }
     }
 
@@ -61,7 +78,8 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                <LoggedIn authenticated={this.props.Authenticated} />
+                <LoggedIn type="profile" authenticated={this.props.Authenticated} />
+                <LoggedIn type="login" authenticated={this.props.Authenticated} />
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
                 </NavItem>
