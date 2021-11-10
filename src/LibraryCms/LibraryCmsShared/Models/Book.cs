@@ -12,7 +12,6 @@ namespace LibraryCmsShared.Models
     {
         public Book()
         {
-            Authors = new List<BookAuthors>();
             Genres = new List<BookGenres>();
             Rentals = new List<Rental>();
         }
@@ -21,6 +20,7 @@ namespace LibraryCmsShared.Models
         public int Id { get; set; }
         [Required, StringLength(60)]
         public string Title { get; set; }
+        public string Author { get; set; }
         [Required, StringLength(2500)]
         public string Resume { get; set; }
         public string PicturePath { get; set; }
@@ -31,18 +31,8 @@ namespace LibraryCmsShared.Models
         public int DefaultRentalDays { get; set; }
         public int BooksInStock { get; set; }
 
-        public ICollection<BookAuthors> Authors { get; set; }
         public ICollection<BookGenres> Genres { get; set; }
         public ICollection<Rental> Rentals { get; set; }
-
-        //for DB initializer class
-        public void AddAuthor(Author author)
-        {
-            Authors.Add(new BookAuthors()
-            {
-                Author = author
-            });
-        }
 
         public void AddGenre(Genre genre)
         {
@@ -51,16 +41,6 @@ namespace LibraryCmsShared.Models
                 Genre = genre
             });
         }
-
-        //for Migrations configuration class
-        public void AddAuthor(int authorId)
-        {
-            Authors.Add(new BookAuthors()
-            {
-                AuthorId = authorId
-            });
-        }
-
 
         public void AddGenre(int genreId)
         {
