@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import moment from 'moment';
+import MyDatePicker from './../components/DatePicker';
 import './../style/displayitem.css';
 
 export class DisplayItem extends Component {
@@ -9,20 +10,22 @@ export class DisplayItem extends Component {
         super();
         this.state = {
             item: {
-                Title: "Harry potter",
-                Resume: "This is a description of the selected item...",
+                Title: "",
+                Resume: "",
                 PicturePath: '',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
+                PageCount: 0,
+                Publisher: "",
+                PublishedOn: '',
                 Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["GG NO RE", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
+                DefaultRentalDays: 0,
+                BooksInStock: 0,
+                Authors: [],
+                Genres: [],
                 Rentals: []
-            }
-        }
+            },
+            date: new Date()
+        };
+        this.handleDateChange = this.handleDateChange.bind(this);
     }
 
     async componentDidMount(){
@@ -32,8 +35,17 @@ export class DisplayItem extends Component {
         this.setState({item: item});
     }
 
+    handleDateChange(date){
+        //const dateFormatted = moment(date).format();
+        this.setState({date: date});
+    }
+
     parseDate = date => {
         return moment(date).format("DD MMMM YYYY");
+    }
+
+    calcEndDate(startDate, periode) {
+        return moment(startDate).add(periode, 'days').toDate();
     }
 
     /**
@@ -57,7 +69,14 @@ export class DisplayItem extends Component {
     }
         
 
+    setStartDate = () => {
+
+    }
+
     render(){
+
+        
+
         return (
         <div>
             <div className="item-grid">
@@ -70,13 +89,7 @@ export class DisplayItem extends Component {
                     <tbody>
                         <tr>
                             <td>Forfatter:</td>
-                            <td>
-                            {
-                                this.state.item.Authors.map((item, key) => {
-                                    return <div key={key}>{item}</div>
-                                })
-                            }
-                            </td>
+                            <td>{this.state.item.Author}</td>
                         </tr>
                         <tr>
                             <td>Udgivelse:</td>
@@ -100,6 +113,11 @@ export class DisplayItem extends Component {
                     </tbody>
                 </table>
                 <div>
+                    <MyDatePicker 
+                        selectedDate={this.state.date} 
+                        endDate={this.calcEndDate(this.state.date, this.state.item.DefaultRentalDays)} 
+                        onDateChange={this.handleDateChange} 
+                    />
                     <button>Lån</button>
                 </div>
             </div>
