@@ -15,6 +15,7 @@ export class Category extends Component {
     async componentDidMount(){
         const title = await this.getGenreById(this.props.match.params.genre);
         const items = await this.getBooksByGenre(this.props.match.params.genre);
+        console.log(items);
         this.setState({title: title.Name});
         this.setState({items: items});
 
@@ -65,7 +66,7 @@ export class Category extends Component {
                                 </div>
                             </Link>
                             <Link to={`/books/${item.Id}`}><h3>{item.Title}</h3></Link>
-                            <Link to={`/books/${item.Id}`}><p>{item.Authors[0]}</p></Link>
+                            <Link to={`/books/${item.Id}`}><p>{item.Author}</p></Link>
                         </div>
 
                         return element;

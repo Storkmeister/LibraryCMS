@@ -110,19 +110,19 @@ export class Test extends Component {
         mode: "cors",
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({
-          'Title': "Star wars",
-          'Resume': "giga sci-fi",
-          'PicturePath': "//urlpath/picture.png",
-          'PageCount': 104,
-          'Publisher': "egedahl",
-          'PublishedOn': moment().format(),
-          'Status': 1,
-          'DefaultRentalDays': 3,
-          'BooksInStock': 5,
-          'Authors': [{'Name': "GG NO RE"}, {'Name':"HC ANDERSEN"}, {'Name':"GEORGE J R R MARTIN"}],
-          'Genres': [{'Name':"Horror"}, {'Name':"Sci-fi"}, {'Name':"Adventure"}, {'Name':"Grimdark"}],
-          'Rentals': [] 
-      })
+              'Title': "Star wars",
+              'Resume': "giga sci-fi",
+              'PicturePath': "//urlpath/picture.png",
+              'PageCount': 104,
+              'Publisher': "egedahl",
+              'PublishedOn': moment().format(),
+              'Status': 1,
+              'DefaultRentalDays': 3,
+              'BooksInStock': 5,
+              'Authors': [{'Name': "GG NO RE"}, {'Name':"HC ANDERSEN"}, {'Name':"GEORGE J R R MARTIN"}],
+              'Genres': [{"Id": 1}, {'Name':"Sci-fi", "PicturePath": "/genretest"}, {'Name':"Adventure", "PicturePath": "/genretest"}, {'Name':"Grimdark", "PicturePath": "/genretest"}],
+              'Rentals': [] 
+        })
       })
       .then(function (response) {
         return response.json();

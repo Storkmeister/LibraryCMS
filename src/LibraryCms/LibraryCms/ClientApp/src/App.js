@@ -6,7 +6,7 @@ import { Home } from './views/Home';
 import { DisplayItem } from './views/DisplayItem';
 import { Profile } from './views/Profile';
 import { Login } from './views/Login';
-import { Logout } from './views/Logout';
+import Logout from './views/Logout';
 import { CreateUser } from './views/CreateUser';
 import { SearchResults } from './views/searchResults';
 import { Category } from './views/Category';

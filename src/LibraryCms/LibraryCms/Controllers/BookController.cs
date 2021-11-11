@@ -160,14 +160,8 @@ namespace LibraryCms.Controllers
 
                 foreach (var bookGenres in book.Genres)
                 {
-                    if(bookGenres.Genre.Name != null || bookGenres.Genre.Name == "")
-                    {
-                        book.AddGenre(bookGenres.Genre.Id);
-                    }
-                    else 
-                    { 
-                        book.AddGenre(bookGenres.Genre);
-                    }
+                    Genre genre = new Genre() { Id = bookGenres.Genre.Id, Name = bookGenres.Genre.Name, PicturePath = bookGenres.Genre.PicturePath };
+                    book.AddGenre(genre);
                 }
 
                 _context.SaveChanges();

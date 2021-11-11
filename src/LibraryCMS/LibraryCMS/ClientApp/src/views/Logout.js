@@ -5,26 +5,12 @@ import './../style/login.css';
 
 let Auth = new AuthService();
 
-export class Logout extends Component {
-    static displayName = Logout.name;
-    constructor(){
-        super();
-        this.state = {
-            categories: []
-        }
-    }
+const Logout = () => {
+    Auth.signOut();
+    const history = useHistory();
+    history.push('/');
 
-    /**
-     * Remove session and redirect to '/'
-     */
-    async componentDidMount(){
-        Auth.signOut();
-        const history = useHistory();
-        history.push('/');
-    }
-
-    render(){
-        return null;
-    }
-    
+    return null;
 }
+
+export default Logout;
