@@ -150,32 +150,38 @@ namespace LibraryCms.Controllers
         public IActionResult CreateBook([FromBody] Book book)
         {
             //prepare response data
+            Dictionary<string, string> data =
+                new();
             //TODO: Verify that user is admin. Then proceed to create a new book
 
             try
             {
                 _context.Books.Add(book);
-                _context.Books.Attach(book);
 
-                List<Genre> genres = book.Genres
-                    .Select(g => g.Genre).ToList();
-
-                foreach (var genre in genres)
+                foreach (var bookGenres in book.Genres)
                 {
+                    Genre genre = new Genre() { Id = bookGenres.Genre.Id, Name = bookGenres.Genre.Name, PicturePath = bookGenres.Genre.PicturePath };
                     book.AddGenre(genre);
                 }
 
                 _context.SaveChanges();
 
                 //set response data
+                data.Add("state", "true");
+                data.Add("description", "Book successfully added!");
+                data.Add("data", "");
 
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
             }
             catch
             {
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                data.Add("state", "false");
+                data.Add("description", "Book Could not be added!");
+                data.Add("data", "");
+
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = BadRequest(json);
                 return response;
             }
