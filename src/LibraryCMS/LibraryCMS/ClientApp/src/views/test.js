@@ -112,15 +112,15 @@ export class Test extends Component {
         body: JSON.stringify({
               'Title': "Star wars",
               'Resume': "giga sci-fi",
-              'PicturePath': "//urlpath/picture.png",
+              'PicturePath': "books/picture.png",
               'PageCount': 104,
               'Publisher': "egedahl",
               'PublishedOn': moment().format(),
               'Status': 1,
               'DefaultRentalDays': 3,
               'BooksInStock': 5,
-              'Authors': [{'Name': "GG NO RE"}, {'Name':"HC ANDERSEN"}, {'Name':"GEORGE J R R MARTIN"}],
-              'Genres': [{"Id": 1}, {'Name':"Sci-fi", "PicturePath": "/genretest"}, {'Name':"Adventure", "PicturePath": "/genretest"}, {'Name':"Grimdark", "PicturePath": "/genretest"}],
+              'Author': 'H.C. Andersen',
+              'Genres': [{'Id':"6"}, {'Id':"4"}, {'Id':"14"}],
               'Rentals': [] 
         })
       })

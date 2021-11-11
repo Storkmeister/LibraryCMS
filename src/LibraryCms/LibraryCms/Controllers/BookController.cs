@@ -155,7 +155,7 @@ namespace LibraryCms.Controllers
             try
             {
                 _context.Books.Add(book);
-                _context.Books.Attach(book);
+                //_context.Books.Attach(book);
 
                 List<Genre> genres = book.Genres
                     .Select(g => g)
@@ -163,20 +163,21 @@ namespace LibraryCms.Controllers
 
                 foreach (var genre in genres)
                 {
-                    book.AddGenre(genre);
+                    book.AddGenre(genre.Id);
                 }
 
                 _context.SaveChanges();
 
                 //set response data
-
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                var responseText = "Book succesfully created";
+                var json = JsonConvert.SerializeObject(responseText, Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
             }
             catch
             {
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                var responseText = "Book not created";
+                var json = JsonConvert.SerializeObject(responseText, Formatting.Indented);
                 IActionResult response = BadRequest(json);
                 return response;
             }
