@@ -34,7 +34,7 @@ namespace LibraryCms.Controllers
             _context.Books.Attach(bookToRent);
 
             //modifying the books rental table
-            bookToRent.Rentals = (ICollection<Rental>)rental;
+            bookToRent.AddRental(rental);
             
             //setting the rental state to modified so the changes will be saved by EF
             var bookEntry = _context.Entry(bookToRent);

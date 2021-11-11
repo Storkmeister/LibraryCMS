@@ -147,7 +147,7 @@ namespace LibraryCms.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult CreateBook([FromBody] Book book, Genre genre)
+        public IActionResult CreateBook([FromBody] Book book)
         {
             //prepare response data
             Dictionary<string, string> data =
@@ -157,10 +157,12 @@ namespace LibraryCms.Controllers
             try
             {
                 _context.Books.Add(book);
-                if(genre != null || genre.Name != "")
+
+                foreach (var bookGenres in book.Genres)
                 {
-                    book.AddGenre(genre);
+                    book.AddGenre(bookGenres.Genre);
                 }
+
                 _context.SaveChanges();
 
                 //set response data

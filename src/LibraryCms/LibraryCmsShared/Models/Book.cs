@@ -42,6 +42,18 @@ namespace LibraryCmsShared.Models
             });
         }
 
+        public void AddRental(Rental rental)
+        {
+            Rentals.Add(new Rental()
+            {
+                BookTitle = rental.BookTitle,
+                RentalDate = rental.RentalDate,
+                ReturnDeadline = rental.ReturnDeadline,
+                UserId = rental.UserId,
+                BookId = rental.BookId
+            });
+        }
+
         public void AddGenre(int genreId)
         {
             Genres.Add(new BookGenres()

@@ -27,6 +27,7 @@
             const int IdFantasy = 5;
             const int IdGrimdark = 6;
             const int IdHumor = 7;
+            const int IdMystery = 8;
 
             context.Genres.AddOrUpdate(
                 g => g.Name,
@@ -36,7 +37,8 @@
                 new Genre() { Id = IdCrime, Name = "Krimi", PicturePath = @"genres/crime.png" },
                 new Genre() { Id = IdFantasy, Name = "Fantasi", PicturePath = @"genres/fantasy.png" },
                 new Genre() { Id = IdGrimdark, Name = "Grimdark", PicturePath = @"genres/grimdark.png" },
-                new Genre() { Id = IdHumor, Name = "Humor", PicturePath = @"genres/humor.png" }
+                new Genre() { Id = IdHumor, Name = "Humor", PicturePath = @"genres/humor.png" },
+                new Genre() { Id = IdMystery, Name = "Mysterie", PicturePath = @"genres/mystery.png" }
                 );
 
             var HarryPotterHalfblood = new Book()
@@ -162,6 +164,26 @@
             };
 
             CrimeCity.AddGenre(IdCrime);
+
+            context.Books.AddOrUpdate(b => b.Id,
+                CrimeCity);
+
+            var MysteryMeat = new Book()
+            {
+                Id = 7,
+                Title = "Mysteriet om kødet",
+                Author = "Bogus Gas Man",
+                Resume = "Find ud af hvor kødet kommer fra!",
+                PicturePath = @"books/MysteryMeat.png",
+                PageCount = 80,
+                Publisher = "CoolPublishersInc",
+                PublishedOn = DateTime.Parse("21-02-2021"),
+                Status = 1,
+                DefaultRentalDays = 4,
+                BooksInStock = 1
+            };
+
+            CrimeCity.AddGenre(IdMystery);
 
             context.Books.AddOrUpdate(b => b.Id,
                 CrimeCity);
