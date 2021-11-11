@@ -9,9 +9,11 @@
 
     internal sealed class Configuration : DbMigrationsConfiguration<LibraryCmsShared.Context>
     {
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+
         }
 
         protected override void Seed(LibraryCmsShared.Context context)

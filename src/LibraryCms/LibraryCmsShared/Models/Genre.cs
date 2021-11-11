@@ -6,12 +6,12 @@ namespace LibraryCmsShared.Models
     {
         public Genre()
         {
-            Books = new List<BookGenres>();
+            Books = new List<Book>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
         public string PicturePath { get; set; }
+        public ICollection<Book> Books { get; set; }
 
-        public ICollection<BookGenres> Books { get; set; }
     }
 }

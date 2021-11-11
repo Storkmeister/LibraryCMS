@@ -7,13 +7,13 @@ namespace LibraryCmsShared.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class ImagesAddedToGenres : IMigrationMetadata
+    public sealed partial class InitialNew : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ImagesAddedToGenres));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialNew));
         
         string IMigrationMetadata.Id
         {
-            get { return "202111101155377_ImagesAddedToGenres"; }
+            get { return "202111111123142_InitialNew"; }
         }
         
         string IMigrationMetadata.Source

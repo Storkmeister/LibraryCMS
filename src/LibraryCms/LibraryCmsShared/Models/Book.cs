@@ -12,7 +12,7 @@ namespace LibraryCmsShared.Models
     {
         public Book()
         {
-            Genres = new List<BookGenres>();
+            Genres = new List<Genre>();
             Rentals = new List<Rental>();
         }
 
@@ -31,14 +31,16 @@ namespace LibraryCmsShared.Models
         public int DefaultRentalDays { get; set; }
         public int BooksInStock { get; set; }
 
-        public ICollection<BookGenres> Genres { get; set; }
+        public ICollection<Genre> Genres { get; set; }
         public ICollection<Rental> Rentals { get; set; }
+
 
         public void AddGenre(Genre genre)
         {
-            Genres.Add(new BookGenres()
+            Genres.Add(new Genre()
             {
-                Genre = genre
+                Name = genre.Name,
+                PicturePath = genre.PicturePath
             });
         }
 
@@ -56,9 +58,9 @@ namespace LibraryCmsShared.Models
 
         public void AddGenre(int genreId)
         {
-            Genres.Add(new BookGenres()
+            Genres.Add(new Genre()
             {
-                GenreId = genreId
+                Id = genreId
             });
         }
     }

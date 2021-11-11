@@ -68,7 +68,7 @@ namespace LibraryCms.Controllers
 
             books = _context.Books
                 .Include(b => b.Genres)
-                .Where(b => b.Genres.Select(g => g.Genre.Name).Contains(searchtext))
+                .Where(b => b.Genres.Select(g => g.Name).Contains(searchtext))
                 .ToList();
 
             if (books != null)
@@ -158,7 +158,8 @@ namespace LibraryCms.Controllers
                 _context.Books.Attach(book);
 
                 List<Genre> genres = book.Genres
-                    .Select(g => g.Genre).ToList();
+                    .Select(g => g)
+                    .ToList();
 
                 foreach (var genre in genres)
                 {

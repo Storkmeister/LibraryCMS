@@ -17,15 +17,15 @@ namespace LibraryCmsShared
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<User> Users { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<User>()
+        //        .HasIndex(u => u.Email)
+        //        .IsUnique();
 
-            modelBuilder.Entity<Book>()
-                .HasIndex(b => b.Title)
-                .IsUnique();
-        }
+        //    modelBuilder.Entity<Book>()
+        //        .HasIndex(b => b.Title)
+        //        .IsUnique();
+        //}
     }
 }
