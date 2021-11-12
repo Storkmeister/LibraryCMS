@@ -11,41 +11,21 @@ export class BookForm extends Component {
         super();
         this.state = {
             book: {
-                Id: 0,
+                Id: undefined,
                 Title: "",
                 Resume: "",
                 PicturePath: '',
-                PageCount: 0,
+                PageCount: "",
                 Publisher: "",
                 PublishedOn: '',
-                Status: 1,
-                DefaultRentalDays: 0,
-                BooksInStock: 0,
+                Status: "",
+                DefaultRentalDays: "",
+                BooksInStock: "",
                 Author: "",
                 Genres: [],
                 Rentals: []
             },
             books: [
-                {
-                    Title: "Hello",
-                    Id: 1
-                },
-                {
-                    Title: "Hello1",
-                    Id: 2
-                },
-                {
-                    Title: "Hello2",
-                    Id: 3
-                },
-                {
-                    Title: "Hello3",
-                    Id: 4
-                },
-                {
-                    Title: "Hello4",
-                    Id: 5
-                },
             ],
             selected: {
                 Title: "Vælg bog",
@@ -124,7 +104,7 @@ export class BookForm extends Component {
                     renderInput={(params) => <TextField {...params} label={props.selected} variant="outlined" />}
               />
             } else {
-                element = null;
+                element = <div></div>;
             }
             return element
         }

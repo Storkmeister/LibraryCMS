@@ -34,7 +34,7 @@ export default class App extends Component {
     this.state = {
       tokenValues: {
         userType: 2,
-        Authenticated: true
+        Authenticated: false
       }
     }
   }

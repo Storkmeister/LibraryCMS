@@ -13,8 +13,9 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
-    
-    public class AuthenticationController : Controller
+    [Route("[controller]")]
+    [ApiController]
+    public class AuthenticationController : ControllerBase
     {
 
         private IConfiguration _config;
