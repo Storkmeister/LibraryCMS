@@ -119,7 +119,7 @@ namespace LibraryCms.Controllers
 
             books = _context.Books
                 .Include(b => b.Genres)
-                .Where(b => b.Genres.Select(g => g.Id).Contains(Id))
+                .Where(b => b.Genres.Select(g => g.GenreId).Contains(Id))
                 .ToList();
 
             if (books != null)
