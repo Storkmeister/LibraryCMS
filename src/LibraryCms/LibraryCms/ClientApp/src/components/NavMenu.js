@@ -43,6 +43,7 @@ export class NavMenu extends Component {
             </NavItem>
           return element;
         } else {
+          return null;
         }
       } else if(props.type === 'login'){
         if(!props.authenticated){
@@ -58,6 +59,20 @@ export class NavMenu extends Component {
             
           return element;
         }
+      } else {
+        return null;
+      }
+    }
+
+    function Admin(props){
+      if(props.authenticated && props.userType === 2){
+            const element = 
+            <NavItem>
+              <NavLink tag={Link} className="text-dark" to="/dashboard">Dashboard</NavLink>
+            </NavItem>
+            return element;
+      } else {
+        return null;
       }
     }
 
@@ -75,9 +90,7 @@ export class NavMenu extends Component {
                 <button>Søg</button>
               </div>
               <ul className="nav-container navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem>
+                <Admin authenticated={this.props.Authenticated} userType={this.props.UserType}/>
                 <LoggedIn type="profile" authenticated={this.props.Authenticated} />
                 <LoggedIn type="login" authenticated={this.props.Authenticated} />
                 <NavItem>

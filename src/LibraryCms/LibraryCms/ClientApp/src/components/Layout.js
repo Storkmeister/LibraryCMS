@@ -11,7 +11,7 @@ export class Layout extends Component {
       <div>
         <NavMenu 
           Authenticated={this.props.Authenticated} 
-          userType={this.props.userType}
+          UserType={this.props.UserType}
         />
         <div className="content-container container">
           <NavSideBar />

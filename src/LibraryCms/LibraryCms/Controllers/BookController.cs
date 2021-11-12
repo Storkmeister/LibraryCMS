@@ -110,6 +110,31 @@ namespace LibraryCms.Controllers
             }
         }
 
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult GetAllBooks()
+        {
+            List<Book> books =
+                new();
+
+            books = _context.Books
+                .ToList();
+            if (books != null)
+            {
+                var json = JsonConvert.SerializeObject(books, Formatting.Indented);
+                IActionResult response = Ok(json);
+                return response;
+            }
+            else
+            {
+                var json = JsonConvert.SerializeObject(books, Formatting.Indented);
+                IActionResult response = BadRequest(json);
+                return response;
+            }
+        }
+
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult GetBooksByGenreId(int Id)

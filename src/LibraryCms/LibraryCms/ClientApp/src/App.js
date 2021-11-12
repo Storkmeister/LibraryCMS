@@ -11,6 +11,9 @@ import { CreateUser } from './views/CreateUser';
 import { SearchResults } from './views/searchResults';
 import { Category } from './views/Category';
 
+import { Dashboard } from './views/Dashboard';
+import { BookForm } from './views/BookForm';
+
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 
@@ -30,7 +33,7 @@ export default class App extends Component {
     super();
     this.state = {
       tokenValues: {
-        userType: 1,
+        userType: 2,
         Authenticated: true
       }
     }
@@ -47,7 +50,7 @@ export default class App extends Component {
     return (
       <Layout 
         Authenticated={this.state.tokenValues.Authenticated} 
-        userType={this.state.tokenValues.userType}
+        UserType={this.state.tokenValues.userType}
       >
         <Switch>
           <Route exact path='/' component={Home} />
@@ -55,7 +58,10 @@ export default class App extends Component {
           <Route exact path='/books/category/:genre' component={Category} />
           <Route exact path='/books/:id' component={DisplayItem} />
 
-          <PrivateRoute Authenticated={this.state.tokenValues.Authenticated} path='/profile'>
+          <PrivateRoute 
+            Authenticated={this.state.tokenValues.Authenticated} 
+            exact path='/profile'
+          >
             <Profile/>
           </PrivateRoute>
 
@@ -64,14 +70,14 @@ export default class App extends Component {
             userType={this.state.tokenValues.userType}
             path="/dashboard"
           >
-
+            <Dashboard path="/dashboard"/>
+            <BookForm path="/dashboard/books/create" type="create"/>
+            <BookForm path="/dashboard/books/edit" type="edit"/>
           </AdminRoute>
+          
           <Route exact path='/login' component={Login} />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/create-user' component={CreateUser} />
-          <Route path='/counter' component={Counter} />
-          <Route path='/fetch-data' component={FetchData} />
-          <Route path='/test' component={Test} />
           <Redirect  to="/" />
         </Switch>
       </Layout>
