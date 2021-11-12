@@ -188,6 +188,34 @@
             context.Books.AddOrUpdate(b => b.Id,
                 CrimeCity);
 
+            var User1 = new User()
+            {
+                Id = 1,
+                Email = "Test@Mail.dk",
+                Password = "Test123",
+                FullAddress = "Test street 27 1000 Test City",
+                LoanLimit = 3,
+                ApprovedUser = false,
+                IsAdmin = false
+            };
+
+            context.Users.AddOrUpdate(u => u.Id,
+                User1);
+
+            var Admin1 = new User()
+            {
+                Id = 2,
+                Email = "Test@admin.dk",
+                Password = "Test123",
+                FullAddress = "Test street 27 1000 Test City",
+                LoanLimit = 3,
+                ApprovedUser = true,
+                IsAdmin = true
+            };
+
+            context.Users.AddOrUpdate(u => u.Id,
+                Admin1);
+
             //debug seed method
             //if (!System.Diagnostics.Debugger.IsAttached)
             //    System.Diagnostics.Debugger.Launch();

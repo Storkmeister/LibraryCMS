@@ -246,13 +246,12 @@ namespace LibraryCms.Controllers
             }
         }
 
-
         public User UserLogin(string Mail, string Pass)
         {
-            var UserInformation = _context.Users
+            var User = _context.Users
                 .Where(u => u.Password == Pass && u.Email == Mail)
                 .SingleOrDefault();
-            return UserInformation;
+            return User;
         }
     }
 

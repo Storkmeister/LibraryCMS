@@ -36,9 +36,7 @@ namespace LibraryCms.Controllers
             {
                 var JsonWebToken = GenerateJSONWebToken(user);
                 response = Ok(new { token = JsonWebToken });
-            }
-
-            return response;
+            }           return response;
         }
 
         private string GenerateJSONWebToken(User user)
@@ -62,12 +60,12 @@ namespace LibraryCms.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private User AuthenticateUser(User login)
+        private User AuthenticateUser(User user)
         {
             //Default equals null
             UserController User = new UserController();
             
-            return User.UserLogin(login.Email, login.Password);
+            return User.UserLogin(user.Email, user.Password);
         }
 
     }
