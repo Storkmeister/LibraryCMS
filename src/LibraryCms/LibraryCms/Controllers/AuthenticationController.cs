@@ -13,8 +13,9 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
-    
-    public class AuthenticationController : Controller
+    [Route("[controller]")]
+    [ApiController]
+    public class AuthenticationController : ControllerBase
     {
 
         private IConfiguration _config;
@@ -47,6 +48,7 @@ namespace LibraryCms.Controllers
             //Adding Specific infomation to our new variable 'Claim'
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.IsAdmin.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
