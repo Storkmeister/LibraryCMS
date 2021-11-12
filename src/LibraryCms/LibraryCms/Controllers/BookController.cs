@@ -191,53 +191,76 @@ namespace LibraryCms.Controllers
             }
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPut]
-        public IActionResult UpdateBook([FromBody] Book book, Genre genre)
+        public IActionResult UpdateBook([FromBody] Book book)
         {
 
-            //TODO: Verify that user is admin. Then proceed to create a new book
-
-            try
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
             {
-                var currentBook = _context.Books
-                    .Where(b => b.Id == book.Id)
-                    .SingleOrDefault();
-
-                _context.Entry(currentBook).State = EntityState.Detached;
-
-                book.Id = currentBook.Id;
-                book.Title = currentBook.Title;
-                book.Author = currentBook.Author;
-                book.Resume = currentBook.Resume;
-                book.PicturePath = currentBook.PicturePath;
-                book.PageCount = currentBook.PageCount;
-                book.Publisher = currentBook.Publisher;
-                book.PublishedOn = currentBook.PublishedOn;
-                book.Status = currentBook.Status;
-                book.DefaultRentalDays = currentBook.DefaultRentalDays;
-                book.BooksInStock = currentBook.BooksInStock;
-                if(genre != null || genre.Name != "")
+                try
                 {
-                    book.AddGenre(genre);
+                    _context.Books.Attach(book);
+                    var bookEntry = _context.Entry(book);
+
+                    bookEntry.Property("Id").IsModified = false;
+                    bookEntry.State = EntityState.Modified;
+                    _context.SaveChanges();
+
+                    var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                catch
+                {
+                    var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                    IActionResult response = BadRequest(json);
+                    return response;
                 }
 
-                _context.Books.Attach(book);
-
-                var bookEntry = _context.Entry(book);
-
-                bookEntry.Property("Id").IsModified = false;
-                _context.Entry(book).State = EntityState.Modified;
-                _context.SaveChanges();
-
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
-                IActionResult response = Ok(json);
+            }
+            else
+            {
+                IActionResult response = BadRequest("You Need To Be An Administrator To Do This Action.");
                 return response;
             }
-            catch
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public IActionResult DeleteBook([FromBody] int Id)
+        {
+
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
             {
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
-                IActionResult response = BadRequest(json);
+                try
+                {
+                    var book = new Book() { Id = Id };
+
+                    _context.Entry(book).State = EntityState.Deleted;
+                    _context.SaveChanges();
+
+                    var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                catch
+                {
+                    var json = JsonConvert.SerializeObject("Book could not be deleted.", Formatting.Indented);
+                    IActionResult response = BadRequest(json);
+                    return response;
+                }
+
+            }
+            else
+            {
+                IActionResult response = BadRequest("You Need To Be An Administrator To Do This Action.");
                 return response;
             }
         }
