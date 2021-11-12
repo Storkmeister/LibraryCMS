@@ -28,7 +28,10 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId)).SingleOrDefault() != null)
+            if (NameId != null && 
+                _context.Users
+                .Where(u => u.Id == Convert.ToInt32(NameId) &&
+                        u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
             {
 
                 //finding the book from the rentals bookid provided by the body
