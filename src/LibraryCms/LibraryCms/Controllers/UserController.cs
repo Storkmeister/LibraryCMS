@@ -106,10 +106,13 @@ namespace LibraryCms.Controllers
                 try
                 {
                     _context.Users.Attach(user);
+                    
                     var userEntry = _context.Entry(user);
 
                     userEntry.Property("Id").IsModified = false;
                     userEntry.Property("IsAdmin").IsModified = false;
+                    userEntry.Property("LoanLimit").IsModified = false;
+                    
                     userEntry.State = EntityState.Modified;
                     _context.SaveChanges();
 
