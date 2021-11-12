@@ -119,8 +119,8 @@ export class Test extends Component {
               'Status': 1,
               'DefaultRentalDays': 3,
               'BooksInStock': 5,
-              'Author': {'Name': "Barack Obama"},
-              'Genres': [{"Id": 1}],
+              'Author': "Barack Obama",
+            'Genres': [{ "GenreId": 1 }, { "GenreId": 4 }],
               'Rentals': [] 
         })
       })

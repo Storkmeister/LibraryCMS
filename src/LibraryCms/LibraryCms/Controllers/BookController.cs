@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
+    [ApiController]
     public class BookController : ControllerBase
     {
 
@@ -49,10 +50,6 @@ namespace LibraryCms.Controllers
                 .Where(b => b.Author.Contains(searchtext))
                 .ToList();
 
-            foreach (Book book in Books)
-            {
-                
-            }
 
             var json = JsonConvert.SerializeObject(Books, Formatting.Indented);
             IActionResult response = Ok(json);
@@ -158,11 +155,10 @@ namespace LibraryCms.Controllers
             {
                 _context.Books.Add(book);
 
-                foreach (var bookGenres in book.Genres)
-                {
-                    Genre genre = new Genre() { Id = bookGenres.Genre.Id, Name = bookGenres.Genre.Name, PicturePath = bookGenres.Genre.PicturePath };
-                    book.AddGenre(genre);
-                }
+                //EF automatically refers to the related tables foreign key if the foreign key
+                //is provided by the body related element.
+                //In this case, it's GenreId being provided in the body's Genre[]
+                //e.g. [{"GenreId" : 1}]
 
                 _context.SaveChanges();
 

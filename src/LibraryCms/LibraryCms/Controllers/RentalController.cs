@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
+    [ApiController]
     public class RentalController : ControllerBase
     {
 

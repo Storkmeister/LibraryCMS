@@ -68,7 +68,7 @@ namespace LibraryCms
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            //app.UseAuthentication();
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

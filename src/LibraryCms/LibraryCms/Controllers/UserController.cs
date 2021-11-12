@@ -1,10 +1,15 @@
 ﻿using LibraryCmsShared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
@@ -55,5 +60,15 @@ namespace LibraryCms.Controllers
                 return response;
             }
         }
+
+        public User UserLogin(string Mail, string Pass)
+        {
+            var UserInformation = _context.Users
+                .Where(u => u.Password == Pass && u.Email == Mail)
+                .SingleOrDefault();
+            return UserInformation;
+        }
     }
+
+
 }
