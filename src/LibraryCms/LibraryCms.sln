@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryCms", "LibraryCms\LibraryCms.csproj", "{7955DC79-1A8D-4D2B-8109-642994FC5628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryCms", "LibraryCms\LibraryCms.csproj", "{7955DC79-1A8D-4D2B-8109-642994FC5628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryCmsShared", "LibraryCmsShared\LibraryCmsShared.csproj", "{7A9C4C7D-BCCA-4572-8F41-C770AB967AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryCmsShared", "LibraryCmsShared\LibraryCmsShared.csproj", "{7A9C4C7D-BCCA-4572-8F41-C770AB967AA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
-    [ApiController]
+    
     public class AuthenticationController : Controller
     {
 
@@ -65,11 +65,9 @@ namespace LibraryCms.Controllers
         private User AuthenticateUser(User login)
         {
             //Default equals null
-            User user = null;
-
-            UserController UserL = new UserController();
-            user = UserL.UserLogin(login.Email, login.Password);
-            return user;
+            UserController User = new UserController();
+            
+            return User.UserLogin(login.Email, login.Password);
         }
 
     }

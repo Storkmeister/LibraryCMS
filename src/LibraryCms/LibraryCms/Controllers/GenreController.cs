@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
-    [ApiController]
     public class GenreController : ControllerBase
     {
 
