@@ -34,21 +34,21 @@ namespace LibraryCms.Controllers
 
             if (user != null)
             {
-                var tokenString = GenerateJSONWebToken(user);
-                response = Ok(new { token = tokenString });
+                var JsonWebToken = GenerateJSONWebToken(user);
+                response = Ok(new { token = JsonWebToken });
             }
 
             return response;
         }
 
-        private string GenerateJSONWebToken(User userInfo)
+        private string GenerateJSONWebToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             //Adding Specific infomation to our new variable 'Claim'
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.NameId, userInfo.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
