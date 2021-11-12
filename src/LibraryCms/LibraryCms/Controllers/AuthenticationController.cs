@@ -50,7 +50,7 @@ namespace LibraryCms.Controllers
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.NameId, userInfo.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+            };
 
             //Here we create and add information to our token
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],

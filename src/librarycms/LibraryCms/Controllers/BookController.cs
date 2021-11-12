@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCms.Controllers
 {
+    [ApiController]
     public class BookController : ControllerBase
     {
 
@@ -49,10 +50,6 @@ namespace LibraryCms.Controllers
                 .Where(b => b.Author.Contains(searchtext))
                 .ToList();
 
-            foreach (Book book in Books)
-            {
-                
-            }
 
             var json = JsonConvert.SerializeObject(Books, Formatting.Indented);
             IActionResult response = Ok(json);
@@ -150,32 +147,37 @@ namespace LibraryCms.Controllers
         public IActionResult CreateBook([FromBody] Book book)
         {
             //prepare response data
+            Dictionary<string, string> data =
+                new();
             //TODO: Verify that user is admin. Then proceed to create a new book
 
             try
             {
                 _context.Books.Add(book);
-                _context.Books.Attach(book);
 
-                List<Genre> genres = book.Genres
-                    .Select(g => g.Genre).ToList();
-
-                foreach (var genre in genres)
-                {
-                    book.AddGenre(genre);
-                }
+                //EF automatically refers to the related tables foreign key if the foreign key
+                //is provided by the body related element.
+                //In this case, it's GenreId being provided in the body's Genre[]
+                //e.g. [{"GenreId" : 1}]
 
                 _context.SaveChanges();
 
                 //set response data
+                data.Add("state", "true");
+                data.Add("description", "Book successfully added!");
+                data.Add("data", "");
 
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
             }
             catch
             {
-                var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                data.Add("state", "false");
+                data.Add("description", "Book Could not be added!");
+                data.Add("data", "");
+
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 IActionResult response = BadRequest(json);
                 return response;
             }
