@@ -7,7 +7,10 @@ export class Category extends Component {
     constructor(){
         super();
         this.state = {
-            title: "",
+            title: {
+                Id: 0,
+                Name: ""
+            },
             items: []
         };
     }
@@ -15,10 +18,20 @@ export class Category extends Component {
     async componentDidMount(){
         const title = await this.getGenreById(this.props.match.params.genre);
         const items = await this.getBooksByGenre(this.props.match.params.genre);
-        console.log(items);
         this.setState({title: title.Name});
         this.setState({items: items});
+        console.log('INit mount');
+    }
 
+    async componentDidUpdate(){
+        //If Condition prevents a infinite loop
+        if(parseInt(this.props.match.params.genre) !== this.state.title.Id){
+            const title = await this.getGenreById(this.props.match.params.genre);
+            const items = await this.getBooksByGenre(this.props.match.params.genre);
+            this.setState({title: title});
+            this.setState({items: items});
+            console.log('update mount');
+        };
     }
 
     /**
@@ -53,7 +66,7 @@ export class Category extends Component {
         return (
         <div>
             <div className="search-result-grid">
-                <h2>{this.state.title}</h2>
+                <h2>{this.state.title.Name}</h2>
                 <div className="category-filter-container">
 
                 {

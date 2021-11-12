@@ -19,7 +19,7 @@ export class DisplayItem extends Component {
                 Status: 1,
                 DefaultRentalDays: 0,
                 BooksInStock: 0,
-                Authors: [],
+                Author: "",
                 Genres: [],
                 Rentals: []
             },
