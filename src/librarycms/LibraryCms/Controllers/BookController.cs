@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace LibraryCms.Controllers
 {
-    [ApiController]
     public class BookController : ControllerBase
     {
 
@@ -142,7 +142,7 @@ namespace LibraryCms.Controllers
         }
 
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         public IActionResult CreateBook([FromBody] Book book)
         {
@@ -150,36 +150,44 @@ namespace LibraryCms.Controllers
             Dictionary<string, string> data =
                 new();
             //TODO: Verify that user is admin. Then proceed to create a new book
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if(NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null) { 
+                try
+                {
+                    _context.Books.Add(book);
 
-            try
+                    //EF automatically refers to the related tables foreign key if the foreign key
+                    //is provided by the body related element.
+                    //In this case, it's GenreId being provided in the body's Genre[]
+                    //e.g. [{"GenreId" : 1}]
+
+                    _context.SaveChanges();
+
+                    //set response data
+                    data.Add("state", "true");
+                    data.Add("description", "Book successfully added!");
+                    data.Add("data", "");
+
+                    var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                catch
+                {
+                    data.Add("state", "false");
+                    data.Add("description", "Book Could not be added!");
+                    data.Add("data", "");
+
+                    var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                    IActionResult response = BadRequest(json);
+                    return response;
+                }
+                
+            } else
             {
-                _context.Books.Add(book);
-
-                //EF automatically refers to the related tables foreign key if the foreign key
-                //is provided by the body related element.
-                //In this case, it's GenreId being provided in the body's Genre[]
-                //e.g. [{"GenreId" : 1}]
-
-                _context.SaveChanges();
-
-                //set response data
-                data.Add("state", "true");
-                data.Add("description", "Book successfully added!");
-                data.Add("data", "");
-
-                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-                IActionResult response = Ok(json);
-                return response;
-            }
-            catch
-            {
-                data.Add("state", "false");
-                data.Add("description", "Book Could not be added!");
-                data.Add("data", "");
-
-                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-                IActionResult response = BadRequest(json);
-                return response;
+                return BadRequest("Invalid Credentials");
             }
         }
 
