@@ -128,7 +128,7 @@ export class Test extends Component {
         return response.json();
       }).then((response) => {
         console.log(response)
-        if(response.state == true){
+        if(response.state === true){
           return true;
         } else {
           return false;

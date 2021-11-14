@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './../style/NavMenu.css';
+import AuthService from './AuthService';
+
+let Auth = new AuthService();
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -21,6 +24,13 @@ export class NavMenu extends Component {
     });
   }
 
+  logout = () => {
+    Auth.signOut();
+    const [loggedIn, isAdmin] = this.props.checkUserLevel();
+    this.props.authorizedStatusHandler(loggedIn, isAdmin);
+    //this.props.history.push('/');
+  }
+
   render () {
 
     /**
@@ -36,7 +46,7 @@ export class NavMenu extends Component {
     function LoggedIn(props){
       let element;
       if(props.type === 'profile'){
-        if(props.authenticated){
+        if(props.loggedIn){
           element = 
             <NavItem>
               <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
@@ -46,7 +56,7 @@ export class NavMenu extends Component {
           return null;
         }
       } else if(props.type === 'login'){
-        if(!props.authenticated){
+        if(!props.loggedIn){
           element =
             <NavItem>
               <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
@@ -55,7 +65,7 @@ export class NavMenu extends Component {
         } else {
           element = 
             <NavItem>
-              <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>
+              <NavLink to="/" tag={Link} className="text-dark" onClick={props.logout}>Logout</NavLink>
             </NavItem>
             
           return element;
@@ -66,7 +76,7 @@ export class NavMenu extends Component {
     }
 
     function Admin(props){
-      if(props.authenticated && props.userType === 2){
+      if(props.loggedIn && props.isAdmin){
             const element = 
             <NavItem>
               <NavLink tag={Link} className="text-dark" to="/dashboard">Dashboard</NavLink>
@@ -80,47 +90,25 @@ export class NavMenu extends Component {
     return (
         <header className="navbar-header">
             <Container>
-            <div className="navbar-container">
-              <div className="nav-container">
-                <Link to="/">
-                  <h4>Library CMS</h4>
-                </Link>
+              <div className="navbar-container">
+                <div className="nav-container">
+                  <Link to="/">
+                    <h4>Library CMS</h4>
+                  </Link>
+                </div>
+                <div className="search_container">
+                  <input placeholder="Indtast title, genre ..."/>
+                  <button>Søg</button>
+                </div>
+                <ul className="nav-container navbar-nav flex-grow">
+                  <Admin isAdmin={this.props.isAdmin} loggedIn={this.props.loggedIn}/>
+                  <LoggedIn type="profile" loggedIn={this.props.loggedIn} />
+                  <LoggedIn type="login" loggedIn={this.props.loggedIn} logout={this.logout} />
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
+                  </NavItem>
+                </ul>
               </div>
-              <div className="search_container">
-                <input placeholder="Indtast title, genre ..."/>
-                <button>Søg</button>
-              </div>
-              <ul className="nav-container navbar-nav flex-grow">
-                <Admin authenticated={this.props.Authenticated} userType={this.props.UserType}/>
-                <LoggedIn type="profile" authenticated={this.props.Authenticated} />
-                <LoggedIn type="login" authenticated={this.props.Authenticated} />
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
-                </NavItem>
-              </ul>
-              
-            {/*
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-          <Container>
-            <NavbarBrand tag={Link} to="/">LibraryCms</NavbarBrand>
-            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
-                </NavItem>
-              </ul>
-            </Collapse>
-          </Container>  
-        </Navbar>
-            */}
-                    </div>
             </Container>
       </header>
     );

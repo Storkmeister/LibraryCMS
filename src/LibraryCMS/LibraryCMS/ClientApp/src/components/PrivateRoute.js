@@ -1,10 +1,10 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router';
 
 function PrivateRoute ({ children, ...rest }) {
     return (
       <Route {...rest} render={() => {
-        return rest.Authenticated === true
+        return rest.loggedIn
           ? children
           : <Redirect to='/login' />
       }} />

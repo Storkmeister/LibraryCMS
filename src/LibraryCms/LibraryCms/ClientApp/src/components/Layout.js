@@ -9,9 +9,12 @@ export class Layout extends Component {
   render () {
     return (
       <div>
-        <NavMenu 
-          Authenticated={this.props.Authenticated} 
-          UserType={this.props.UserType}
+        <NavMenu
+          history={this.props.history}
+          loggedIn={this.props.loggedIn}
+          isAdmin={this.props.isAdmin}
+          authorizedStatusHandler={this.props.authorizedStatusHandler} 
+          checkUserLevel={this.props.checkUserLevel}
         />
         <div className="content-container container">
           <NavSideBar />

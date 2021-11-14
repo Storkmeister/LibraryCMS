@@ -5,9 +5,12 @@ import './../style/login.css';
 
 let Auth = new AuthService();
 
-const Logout = () => {
-    Auth.signOut();
+const Logout = (props) => {
     const history = useHistory();
+    Auth.signOut();
+    const [loggedIn, isAdmin] = props.checkUserLevel();
+    props.authorizedStatusHandler(loggedIn, isAdmin);
+    
     history.push('/');
 
     return null;

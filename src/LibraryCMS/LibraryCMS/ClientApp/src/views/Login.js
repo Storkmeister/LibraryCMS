@@ -1,51 +1,46 @@
-import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useHistory } from "react-router-dom";
 import './../style/login.css';
 import AuthService from './../components/AuthService';
 
-
 let Auth = new AuthService();
 
-export class Login extends Component {
-    static displayName = Login.name;
-    constructor(){
-        super();
-        this.state = {
-            email: "",
-            password: ""
-        }
-    }
 
-    async componentDidMount(){
+
+
+const Login = (props) => {
+    const history = useHistory();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    
+    const handleEmailChange = event => setEmail(event.target.value);
+    const handlePasswordChange = event => setPassword(event.target.value);
+
+    const getSession = async (email, password, checkUserLevel, authorizedStatusHandler) => {
+        const test = await Auth.login(email, password)
+        const [loggedIn, isAdmin] = checkUserLevel();
+        authorizedStatusHandler(loggedIn, isAdmin);
+    
         
+        history.push('/');
     }
 
-    handleEmail = (e) => {
-        this.setState({email: e.currentTarget.value})
-    }
 
-    handlePassword = (e) => {
-        this.setState({password: e.currentTarget.value})
-    }
 
-    login = (e) => {
-        console.log(e.currentTarget);
 
-        Auth.login(this.state.email, this.state.password)
-    }
 
-    render(){
-        return (
+    return (
         <div id="login-container">
             <h3>Login</h3>
             <p>Indtast dine login oplysninger for at logge ind på siden</p>
             <div className="">
                 <label>Brugernavn</label>
-                <input id="email" type="text" onChange={this.handleEmail} />
+                <input id="email" type="text" onChange={handleEmailChange} value={email}/>
                 <label>Kodeord</label>
-                <input id="password" type="password" onChange={this.handlePassword}/>
-                <button onClick={this.login}>Login</button>
+                <input id="password" type="password" onChange={handlePasswordChange} value={password}/>
+                <button onClick={(event) => getSession(email, password, props.checkUserLevel, props.authorizedStatusHandler)}>Login</button>
             </div>
         </div>
-        )}
+    )
 }
+export default Login;
