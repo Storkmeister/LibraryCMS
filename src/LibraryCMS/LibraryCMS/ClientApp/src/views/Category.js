@@ -15,7 +15,7 @@ export class Category extends Component {
         };
     }
 
-    async componentDidMount(){
+    async componentWillMount(){
         const title = await this.getGenreById(this.props.match.params.genre);
         const items = await this.getBooksByGenre(this.props.match.params.genre);
         this.setState({title: title.Name});

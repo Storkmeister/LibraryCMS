@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import "./../style/layout.css";
 import { Link } from "react-router-dom";
 export class NavSideBar extends Component {
   static displayName = NavSideBar.name;
