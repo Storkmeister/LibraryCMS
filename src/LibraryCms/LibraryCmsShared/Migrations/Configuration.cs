@@ -192,14 +192,14 @@
             {
                 Id = 1,
                 Email = "Test@Mail.dk",
-                Password = "Test123",
+                Password = BCrypt.Net.BCrypt.HashPassword("Test123"),
                 FullAddress = "Test street 27 1000 Test City",
                 LoanLimit = 3,
                 ApprovedUser = false,
                 IsAdmin = false,
                 Created = DateTime.UtcNow
             };
-            User1.Password = BCrypt.Net.BCrypt.HashPassword(User1.Password);
+
             context.Users.AddOrUpdate(u => u.Id,
                 User1);
 
@@ -207,14 +207,13 @@
             {
                 Id = 2,
                 Email = "Test@admin.dk",
-                Password = "Test123",
+                Password = BCrypt.Net.BCrypt.HashPassword("Test123"),
                 FullAddress = "Test street 27 1000 Test City",
                 LoanLimit = 3,
                 ApprovedUser = true,
                 IsAdmin = true,
                 Created = DateTime.UtcNow
             };
-            Admin1.Password = BCrypt.Net.BCrypt.HashPassword(Admin1.Password);
             context.Users.AddOrUpdate(u => u.Id,
                 Admin1);
 
