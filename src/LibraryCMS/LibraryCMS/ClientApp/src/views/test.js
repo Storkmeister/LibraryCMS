@@ -120,7 +120,7 @@ export class Test extends Component {
               'DefaultRentalDays': 3,
               'BooksInStock': 5,
               'Author': "Barack Obama",
-            'Genres': [{ "GenreId": 1 }, { "GenreId": 4 }],
+              'Genres': [{ "GenreId": 1 }, { "GenreId": 4 }],
               'Rentals': [] 
         })
       })

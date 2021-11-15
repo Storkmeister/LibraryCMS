@@ -11,8 +11,6 @@ function AdminRoute ({ children, ...rest }) {
             return element;
           }
         }
-          
-        
 
       } else {
         return <Redirect to='/login' />

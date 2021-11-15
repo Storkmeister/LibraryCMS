@@ -37,7 +37,7 @@ export default class App extends Component {
     }
   }
   
-  async componentDidMount(){
+  componentWillMount(){
      const [loggedIn, isAdmin] = this.checkUserLevel();
      this.setState({loggedIn: loggedIn, isAdmin: isAdmin})
      console.log(history)
@@ -51,12 +51,6 @@ export default class App extends Component {
     return [Auth.loggedIn(), Auth.checkIsAdmin()]
   }
 
-  /*
-  async componentDidUpdate(){
-    const token = await Auth.getToken();
-    this.setState({token: token});
- };
-*/
   render () {
     return (
       <Router history={history}>

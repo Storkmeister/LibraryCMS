@@ -3,6 +3,8 @@ import { Container } from 'reactstrap';
 import { NavMenu } from './NavMenu';
 import { NavSideBar } from './NavSideBar';
 
+import "./../style/layout.css";
+
 export class Layout extends Component {
   static displayName = Layout.name;
 
