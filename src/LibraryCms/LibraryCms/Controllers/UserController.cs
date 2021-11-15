@@ -71,6 +71,7 @@ namespace LibraryCms.Controllers
                 user.ApprovedUser = false;
                 user.LoanLimit = 3;
                 user.Created = DateTime.UtcNow;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
                 _context.SaveChanges();
 
@@ -107,7 +108,8 @@ namespace LibraryCms.Controllers
                 try
                 {
                     _context.Users.Attach(user);
-                    
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
                     var userEntry = _context.Entry(user);
 
                     userEntry.Property("Id").IsModified = false;
