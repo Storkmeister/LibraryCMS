@@ -21,6 +21,29 @@ namespace LibraryCms.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        public IActionResult GetRentals()
+        {
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null &&
+                _context.Users
+                .Where(u => u.Id.ToString() == NameId &&
+                        u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
+            {
+                var claimId = Convert.ToInt32(NameId);
+                var rentals = _context.Rentals.Where(r => r.UserId == claimId).ToList();
+
+                var json = JsonConvert.SerializeObject(rentals, Formatting.Indented);
+                IActionResult response = Ok(json);
+                return response;
+            }
+            return null;
+        }
+
+
+        [Authorize]
         [HttpPost]
         public IActionResult RentBook([FromBody] Rental rental)
         {
@@ -30,7 +53,7 @@ namespace LibraryCms.Controllers
             var NameId = claim.FirstOrDefault().Value;
             if (NameId != null && 
                 _context.Users
-                .Where(u => u.Id == Convert.ToInt32(NameId) &&
+                .Where(u => u.Id.ToString() == NameId &&
                         u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
             {
 
@@ -40,7 +63,7 @@ namespace LibraryCms.Controllers
                 //setting the return deadline to be the rental date provided by the body + 
                 //the books default rental days
                 rental.ReturnDeadline = rental.RentalDate.AddDays(bookToRent.DefaultRentalDays);
-
+                rental.UserId = Convert.ToInt32(NameId);
                 //Attaching the book to rent to the context
                 _context.Books.Attach(bookToRent);
 

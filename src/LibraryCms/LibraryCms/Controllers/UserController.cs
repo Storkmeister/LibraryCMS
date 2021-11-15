@@ -211,8 +211,45 @@ namespace LibraryCms.Controllers
         }
 
         [Authorize]
+        [HttpPut]
+        public IActionResult DisapproveUser([FromBody] User user)
+        {
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
+            {
+                try
+                {
+                    _context.Users.Attach(user);
+                    user.ApprovedUser = false;
+                    var userEntry = _context.Entry(user);
+                    userEntry.Property("Id").IsModified = false;
+                    userEntry.State = EntityState.Modified;
+                    _context.SaveChanges();
+
+                    var json = JsonConvert.SerializeObject(user, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                catch
+                {
+                    var json = JsonConvert.SerializeObject(user, Formatting.Indented);
+                    IActionResult response = BadRequest(json);
+                    return response;
+                }
+
+            }
+            else
+            {
+                IActionResult response = BadRequest("You Need To Be Logged In To Do This Action.");
+                return response;
+            }
+        }
+
+        [Authorize]
         [HttpDelete]
-        public IActionResult DeleteGenre([FromBody] int Id)
+        public IActionResult DeleteUser([FromBody] int Id)
         {
 
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
