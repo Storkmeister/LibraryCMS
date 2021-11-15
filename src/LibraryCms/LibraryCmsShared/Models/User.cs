@@ -16,7 +16,7 @@ namespace LibraryCmsShared.Models
         public int Id { get; set; }
         [Required, StringLength(80)]
         public string Email { get; set; }
-        [Required, StringLength(50)]
+        [Required, StringLength(120)]
         public string Password { get; set; }
         [Required, StringLength(120)]
         public string FullAddress { get; set; }
@@ -24,6 +24,7 @@ namespace LibraryCmsShared.Models
         public bool ApprovedUser { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
+        public DateTime Created { get; set; }
         public ICollection<Rental> Rentals { get; set; }
     }
 }

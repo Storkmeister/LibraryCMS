@@ -70,6 +70,7 @@ namespace LibraryCms.Controllers
                 user.IsAdmin = false;
                 user.ApprovedUser = false;
                 user.LoanLimit = 3;
+                user.Created = DateTime.UtcNow;
 
                 _context.SaveChanges();
 
@@ -249,9 +250,15 @@ namespace LibraryCms.Controllers
         public User UserLogin(string Mail, string Pass)
         {
             var User = _context.Users
-                .Where(u => u.Password == Pass && u.Email == Mail)
+                .Where(u => u.Email == Mail)
                 .SingleOrDefault();
-            return User;
+
+            bool isValidPassword = BCrypt.Net.BCrypt.Verify(Pass, User.Password);
+            if (isValidPassword)
+            {
+                return User;
+            }
+            return null;
         }
     }
 

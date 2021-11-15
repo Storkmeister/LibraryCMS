@@ -196,9 +196,10 @@
                 FullAddress = "Test street 27 1000 Test City",
                 LoanLimit = 3,
                 ApprovedUser = false,
-                IsAdmin = false
+                IsAdmin = false,
+                Created = DateTime.UtcNow
             };
-
+            User1.Password = BCrypt.Net.BCrypt.HashPassword(User1.Password);
             context.Users.AddOrUpdate(u => u.Id,
                 User1);
 
@@ -210,9 +211,10 @@
                 FullAddress = "Test street 27 1000 Test City",
                 LoanLimit = 3,
                 ApprovedUser = true,
-                IsAdmin = true
+                IsAdmin = true,
+                Created = DateTime.UtcNow
             };
-
+            Admin1.Password = BCrypt.Net.BCrypt.HashPassword(Admin1.Password);
             context.Users.AddOrUpdate(u => u.Id,
                 Admin1);
 
