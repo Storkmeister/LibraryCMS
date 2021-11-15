@@ -198,7 +198,7 @@
                 ApprovedUser = false,
                 IsAdmin = false
             };
-
+            User1.Password = BCrypt.Net.BCrypt.HashPassword(User1.Password);
             context.Users.AddOrUpdate(u => u.Id,
                 User1);
 
@@ -212,7 +212,7 @@
                 ApprovedUser = true,
                 IsAdmin = true
             };
-
+            Admin1.Password = BCrypt.Net.BCrypt.HashPassword(Admin1.Password);
             context.Users.AddOrUpdate(u => u.Id,
                 Admin1);
 
