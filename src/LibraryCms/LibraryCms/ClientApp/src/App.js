@@ -102,6 +102,7 @@ export default class App extends Component {
                 checkUserLevel={this.checkUserLevel}/>
             </Route>
             <Route exact path='/create-user' component={CreateUser} />
+            <Route exact path='/test' component={Test} />
             <Redirect  to="/" />
           </Switch>
         </Layout>
