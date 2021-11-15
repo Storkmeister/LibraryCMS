@@ -94,11 +94,17 @@ namespace LibraryCms.Controllers
             Book gotBook = new Book();
 
             gotBook = _context.Books
+                .Include(b => b.Genres)
                 .Where(b => b.Id == Id)
                 .SingleOrDefault();
+
             if (gotBook != null)
             {
-                var json = JsonConvert.SerializeObject(gotBook, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(gotBook, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                    });
                 IActionResult response = Ok(json);
                 return response;
             }
@@ -119,10 +125,15 @@ namespace LibraryCms.Controllers
                 new();
 
             books = _context.Books
+                .Include(b => b.Genres)
                 .ToList();
             if (books != null)
             {
-                var json = JsonConvert.SerializeObject(books, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(books, Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                });
                 IActionResult response = Ok(json);
                 return response;
             }
