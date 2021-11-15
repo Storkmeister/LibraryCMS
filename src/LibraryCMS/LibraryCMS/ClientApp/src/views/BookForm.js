@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import AuthService from './../components/AuthService';
 import Autocomplete from '@mui/material/Autocomplete';
 import Select from '@mui/material/Select';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -8,9 +9,17 @@ import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import './../style/bookForm.css';
 import { TextField } from '@mui/material';
 import moment from 'moment';
+
+const Input = styled('input')({
+    display: 'none',
+  });
+
+  let Auth = new AuthService();
 
 export class BookForm extends Component {
     static displayName = BookForm.name;
@@ -18,18 +27,17 @@ export class BookForm extends Component {
         super();
         this.state = {
             book: {
-                Id: undefined,
                 Title: "",
                 Resume: "",
-                PicturePath: '',
-                PageCount: "",
+                PicturePath: '/book/image.png',
+                PageCount: 1,
                 Publisher: "",
-                PublishedOn: '',
-                Status: "",
-                DefaultRentalDays: "",
-                BooksInStock: "",
+                PublishedOn: moment().format(),
+                Status: 1,
+                DefaultRentalDays: 1,
+                BooksInStock: 1,
                 Author: "",
-                Genres: ['test'],
+                Genres: [],
                 Rentals: []
             },
             books: [
@@ -39,7 +47,8 @@ export class BookForm extends Component {
                 Id: undefined
             },
             allGenres: [],
-            selectedGenres: []
+            selectedGenres: [],
+            uploadFile: {}
         };
     }
 
@@ -52,7 +61,7 @@ export class BookForm extends Component {
     }
 
     async componentDidUpdate(){
-        if(this.state.selectedBook.Id !== this.state.book.Id && this.state.selectedBook.Id !== undefined){
+        if(this.state.selectedBook.Id !== this.state.book?.Id && this.state.selectedBook.Id !== undefined){
             let book = await this.getBookById(this.state.selectedBook.Id);
             //Handle date format
             book.PublishedOn = this.parseDate(book.PublishedOn);
@@ -71,20 +80,24 @@ export class BookForm extends Component {
     }
 
     handleChipSelectorChange = (e, value) =>{
-        let book = this.state.book;
-        
-        for(let genre of e.target.value){
-            const item = {GenreId: genre}
-            book.Genres.push(item);
-        }
-        this.setState({book: book})
-
-
-        
         this.setState({selectedGenres: e.target.value});
     }
-    
 
+
+    handlePictureUpload = async (e) => {
+        console.log(e.target.files[0]);
+        this.setState({uploadFile: e.target.files[0]});
+        const response = await this.savePicture(e.target.files[0]);
+        console.log(response);
+    }
+
+    handleSaveBook = async (e) => {
+        let book = this.state.book;
+        //Resolve genres from names to IDs
+
+        const response = await this.createBook(book);
+    }
+    
     getBookById = async (id) => {
         const result = await fetch(`/Book/GetBook/${parseInt(id)}`,{
             method:"get"
@@ -125,6 +138,53 @@ export class BookForm extends Component {
         });
       }
 
+      savePicture = async (image) => {
+        const data = new FormData();
+        data.append('Picture', image);
+        return await fetch(`/Genre/GetGenres`,{
+            method:"POST",
+            headers: {'Content-Type': 'multipart/form-data'},
+            body: data
+
+        })
+        .then(function (response) {
+            return response.json();
+        }).then((response) => {
+            console.log(response);
+            return response;
+        }).catch(error => {
+            console.log(error);
+            return error;
+        });
+    }
+
+    /**
+   * 
+   * @param {object} book 
+   * @returns {boolean} state
+   */
+    createBook = (book) => {
+    fetch('/Book/CreateBook', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${Auth.getToken()}`,
+        },
+        body: JSON.stringify(book)
+      })
+      .then(function (response) {
+        return response.json();
+      }).then((response) => {
+        console.log(response)
+        if(response.state === true){
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+
     parseDate = date => {
         return moment(date).format("DD MMMM YYYY");
     }
@@ -159,10 +219,26 @@ export class BookForm extends Component {
                     value={this.state.book.Title} 
                     onChange={event => this.handleFormChange(event)}
                 />
-                <TextField id="PicturePath" label="Upload et coverbillede" variant="outlined" 
-                    value={this.state.book.PicturePath} 
-                    onChange={event => this.handleFormChange(event)}
+                <div>
+                <TextField
+                    disabled
+                    id="filled-disabled"
+                    label="Coverbillede"
+                    variant="filled"
+                    value={this.state.book.PicturePath}
                 />
+                    <label htmlFor="contained-button-file">
+                        <Input 
+                            accept="image/*" 
+                            id="contained-button-file" 
+                            type="file"
+                            onChange={this.handlePictureUpload} 
+                        />
+                        <Button variant="contained" component="span">
+                            Upload
+                        </Button>
+                    </label>
+                </div>
                 <TextField id="Author" label="Forfatter" variant="outlined" 
                     value={this.state.book.Author} 
                     onChange={event => this.handleFormChange(event)}
@@ -222,60 +298,10 @@ export class BookForm extends Component {
                     value={this.state.book.Resume} 
                     onChange={event => this.handleFormChange(event)}
                 />
-                
-                
-
-                {/*
-                
-                <label htmlFor="title">Titel</label>
-                <input id="Title" 
-                    value={this.state.book.Title} 
-                    onChange={event => this.handleFormChange(event)} />
-                <label htmlFor="Resume">Resume</label>
-                <input id="Resume"
-                 value={this.state.book.Resume} 
-                 onChange={event => this.handleFormChange(event)}/>
-                <label htmlFor="PicturePath">Bogcover</label>
-                <input id="PicturePath"
-                value={this.state.book.PicturePath} 
-                 onChange={event => this.handleFormChange(event)}/>
-                <label htmlFor="PageCount">Antal sider</label>
-                <input id="PageCount"
-                value={this.state.book.PageCount} 
-                onChange={event => this.handleFormChange(event)}/>
-                <label htmlFor="Publisher">Forlag</label>
-                <input id="Publisher"
-                value={this.state.book.Publisher} 
-                onChange={event => this.handleFormChange(event)}/>
-                <label htmlFor="PublishedOn">Udgivelsesdato</label>
-                <input id="PublishedOn"
-                value={this.state.book.PublishedOn} 
-                onChange={event => this.handleFormChange(event)}/>
-                <label htmlFor="Status">Status</label>
-                <input id="Status"
-                value={this.state.book.Status} 
-                onChange={event => this.handleFormChange(event)}/>
-                <label htmlFor="DefaultRentalDays">Standard Udlånsdage</label>
-                <input id="DefaultRentalDays"
-                value={this.state.book.DefaultRentalDays} 
-                onChange={event => this.handleFormChange(event)}/>
-                <label htmlFor="BooksInStock">Antal på lager</label>
-                <input id="BooksInStock"
-                value={this.state.book.BooksInStock} 
-                onChange={event => this.handleFormChange(event)}/>
-
-
-                <label htmlFor="Genre">Genre</label>
-                <input id="Genre"/>
-
-                */}
-                <h5>Nuværrende udlån</h5>
-                <ul>
-                    <li>rental1</li>
-                    <li>rental2</li>
-                    <li>rental3</li>
-                </ul>
-                <button>Gem</button>
+            
+                <Button variant="contained" size="large" onClick={this.handleSaveBook}>
+                    Large
+                </Button>
             </div>
         </div>
         )}

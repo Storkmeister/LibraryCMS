@@ -23,7 +23,8 @@ export class DisplayItem extends Component {
                 Genres: [],
                 Rentals: []
             },
-            date: new Date()
+            date: new Date(),
+            genreNames: []
         };
         this.handleDateChange = this.handleDateChange.bind(this);
     }
@@ -33,6 +34,18 @@ export class DisplayItem extends Component {
         //Handle date format
         item.PublishedOn = this.parseDate(item.PublishedOn);
         this.setState({item: item});
+        
+        let genreIds = [];
+        for(const genre of item.Genres){
+            genreIds.push(genre.GenreId)
+        }
+        let namesArray = []
+        for(const Id of genreIds){
+            const name = await this.getGenreById(Id);
+            namesArray.push(name.Name);
+        }
+        this.setState({genreNames: namesArray})
+
     }
 
     handleDateChange(date){
@@ -67,6 +80,17 @@ export class DisplayItem extends Component {
         });
         return result
     }
+
+    getGenreById = async (id) => {
+        return await fetch(`/Genre/getGenreById?Id=${id}`,{
+          method:"get"
+        })
+        .then(function (response) {
+          return response.json();
+        }).then((response) => {
+          return response;
+        });
+      } 
         
 
     setStartDate = () => {
@@ -100,10 +124,10 @@ export class DisplayItem extends Component {
                             <td>{this.state.item.Publisher}</td>
                         </tr>
                         <tr>
-                            <td>Genre:</td>
+                            <td>Genre(r):</td>
                             <td>
                             {
-                                this.state.item.Genres.map((item, key) => {
+                                this.state.genreNames.map((item, key) => {
                                     return <div key={key}>{item}</div>
                                 })
                             }
