@@ -68,16 +68,10 @@ export default class App extends Component {
           checkUserLevel={this.checkUserLevel}
         >
           <Switch>
-              <PublicRoute exact path='/' component={Home} 
-              />
-              <PublicRoute exact path='/search' component={SearchResults} 
-              />
-
-              <PublicRoute exact path='/books/category/:genre' 
-              component={Category} 
-              />
-              <PublicRoute exact path='/books/:id' comFponent={DisplayItem} 
-              />
+            <Route exact path='/' component={Home} />
+            <Route exact path='/search' component={SearchResults} />
+            <Route exact path='/books/category/:genre' component={Category} />
+            <Route exact path='/books/:id' component={DisplayItem} />
             <PrivateRoute
               loggedIn={this.state.loggedIn}
               isAdmin={this.state.isAdmin}
