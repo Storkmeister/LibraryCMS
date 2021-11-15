@@ -24,6 +24,7 @@ namespace LibraryCmsShared.Models
         public bool ApprovedUser { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
+        public DateTime Created { get; set; }
         public ICollection<Rental> Rentals { get; set; }
     }
 }

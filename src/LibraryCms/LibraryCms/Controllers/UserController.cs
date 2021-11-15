@@ -70,6 +70,7 @@ namespace LibraryCms.Controllers
                 user.IsAdmin = false;
                 user.ApprovedUser = false;
                 user.LoanLimit = 3;
+                user.Created = DateTime.UtcNow;
 
                 _context.SaveChanges();
 
