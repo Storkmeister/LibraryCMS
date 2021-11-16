@@ -235,7 +235,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId && u.IsAdmin == true).SingleOrDefault() != null)
             {
                 try
                 {
