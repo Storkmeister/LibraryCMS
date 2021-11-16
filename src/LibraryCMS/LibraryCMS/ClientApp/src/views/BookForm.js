@@ -19,7 +19,7 @@ const Input = styled('input')({
     display: 'none',
   });
 
-  let Auth = new AuthService();
+let Auth = new AuthService();
 
 export class BookForm extends Component {
     static displayName = BookForm.name;
