@@ -27,15 +27,16 @@ export class BookForm extends Component {
         super();
         this.state = {
             book: {
+                Id: undefined,
                 Title: "",
                 Resume: "",
                 PicturePath: '/book/image.png',
-                PageCount: 1,
+                PageCount: 0,
                 Publisher: "",
-                PublishedOn: moment().format(),
+                PublishedOn: moment().format("DD-MM-YYYY"),
                 Status: 1,
-                DefaultRentalDays: 1,
-                BooksInStock: 1,
+                DefaultRentalDays: 0,
+                BooksInStock: 0,
                 Author: "",
                 Genres: [],
                 Rentals: []
@@ -65,7 +66,23 @@ export class BookForm extends Component {
             let book = await this.getBookById(this.state.selectedBook.Id);
             //Handle date format
             book.PublishedOn = this.parseDate(book.PublishedOn);
-            this.setState({book: book});
+            //Delete $id
+            delete book.$id;
+            //Handle Genres
+            let selectedGenres = []
+            for(const selected of book.Genres){
+                for(const genre of this.state.allGenres){
+                    if(selected.GenreId === genre.Id){
+                        selectedGenres.push(genre.Name);
+                    }
+                }
+            }
+            book.Genres = []
+            this.setState({
+                book: book, 
+                selectedGenres: selectedGenres
+            });
+            
         }
     }
 
@@ -79,7 +96,7 @@ export class BookForm extends Component {
         this.setState({book: book})
     }
 
-    handleChipSelectorChange = (e, value) =>{
+    handleChipSelectorChange = (e) =>{
         this.setState({selectedGenres: e.target.value});
     }
 
@@ -91,11 +108,46 @@ export class BookForm extends Component {
         console.log(response);
     }
 
-    handleSaveBook = async (e) => {
+    handleCreateBook = async (e) => {
         let book = this.state.book;
-        //Resolve genres from names to IDs
 
-        const response = await this.createBook(book);
+        //Resolve genres from names to IDs
+        let genreArray = [];
+        for(const selected of this.state.selectedGenres){
+            for(const genre of this.state.allGenres){
+                if (selected === genre.Name){
+                    genreArray.push({GenreId: genre.Id})
+                }
+            }
+        }
+        book.Genres = genreArray;
+        
+        //Set date to correct format
+        book.PublishedOn = moment(book.PublishedOn, "DD-MM-YYYY").format()
+        //Remove undefined Id property
+        delete book.Id
+
+        const response = await this.BookAction(book,'CreateBook', 'POST');
+    }
+
+    handleEditBook = async (e) => {
+        let book = this.state.book;
+
+        //Resolve genres from names to IDs
+        let genreArray = [];
+        for(const selected of this.state.selectedGenres){
+            for(const genre of this.state.allGenres){
+                if (selected === genre.Name){
+                    genreArray.push({GenreId: genre.Id})
+                }
+            }
+        }
+        book.Genres = genreArray;
+        
+        //Set date to correct format
+        book.PublishedOn = moment(book.PublishedOn, "DD-MM-YYYY").format()
+
+        const response = await this.BookAction(book, 'UpdateBook', 'PUT');
     }
     
     getBookById = async (id) => {
@@ -136,7 +188,7 @@ export class BookForm extends Component {
           console.log(error);
           return error;
         });
-      }
+    }
 
       savePicture = async (image) => {
         const data = new FormData();
@@ -160,12 +212,13 @@ export class BookForm extends Component {
 
     /**
    * 
-   * @param {object} book 
+   * @param {object} book Book object
+   * @param {object} method GET / POST / PUT / DELETE 
    * @returns {boolean} state
    */
-    createBook = (book) => {
-    fetch('/Book/CreateBook', {
-        method: 'POST',
+    BookAction = (book, endpoint, method) => {
+    fetch(`/Book/${endpoint}`, {
+        method: method,
         mode: "cors",
         headers: {
             'Content-type': 'application/json',
@@ -186,7 +239,7 @@ export class BookForm extends Component {
     }
 
     parseDate = date => {
-        return moment(date).format("DD MMMM YYYY");
+        return moment(date).format("DD-MM-YYYY");
     }
 
 
@@ -209,6 +262,20 @@ export class BookForm extends Component {
             return element
         }
 
+        function ActionButton(props){
+            let element;
+            if(props.type === "edit"){
+                element = <Button id="book-save-button" variant="contained" size="large" onClick={props.handleEditBook}>
+                    Gem ændringer
+                </Button>
+            } else {
+                element = <Button id="book-save-button" variant="contained" size="large" onClick={props.handleCreateBook}>
+                    Opret Bog
+                </Button>
+            }
+            return element
+        }
+
         return (
         <div>
             <div className="bookform-container">
@@ -219,22 +286,21 @@ export class BookForm extends Component {
                     value={this.state.book.Title} 
                     onChange={event => this.handleFormChange(event)}
                 />
-                <div>
-                <TextField
-                    disabled
-                    id="filled-disabled"
-                    label="Coverbillede"
-                    variant="filled"
-                    value={this.state.book.PicturePath}
-                />
-                    <label htmlFor="contained-button-file">
+                <div id="picture-path-column">
+                    <TextField
+                        disabled
+                        label="Coverbillede"
+                        variant="filled"
+                        value={this.state.book.PicturePath}
+                    />
+                    <label id="upload-label" htmlFor="contained-button-file">
                         <Input 
                             accept="image/*" 
                             id="contained-button-file" 
                             type="file"
                             onChange={this.handlePictureUpload} 
                         />
-                        <Button variant="contained" component="span">
+                        <Button  variant="contained" component="span">
                             Upload
                         </Button>
                     </label>
@@ -286,7 +352,7 @@ export class BookForm extends Component {
                         ))}
                     </Select>
                 </FormControl>
-                <TextField id="PublishedOn" label="Udgivelsesdato" variant="outlined" 
+                <TextField id="PublishedOn" label="Udgivelsesdato (dd-mm-yyyy)" variant="outlined" 
                     value={this.state.book.PublishedOn} 
                     onChange={event => this.handleFormChange(event)}
                 />
@@ -294,14 +360,12 @@ export class BookForm extends Component {
                     value={this.state.book.DefaultRentalDays} 
                     onChange={event => this.handleFormChange(event)}
                 />
-                <TextField id="Resume" label="Resumé" multiline variant="outlined"  rows={4}
+                <TextField id="Resume" className="book-resume" label="Resumé" multiline variant="outlined"  rows={4}
                     value={this.state.book.Resume} 
                     onChange={event => this.handleFormChange(event)}
                 />
-            
-                <Button variant="contained" size="large" onClick={this.handleSaveBook}>
-                    Large
-                </Button>
+
+                <ActionButton type={this.props.type} handleEditBook={this.handleEditBook} handleCreateBook={this.handleCreateBook}/>
             </div>
         </div>
         )}

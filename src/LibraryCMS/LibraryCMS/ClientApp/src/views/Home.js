@@ -11,7 +11,7 @@ export class Home extends Component {
         }
     }
 
-    async componentDidMount(){
+    async componentWillMount(){
         this.setState({categories: await this.getAllGenres()});
     }
 
