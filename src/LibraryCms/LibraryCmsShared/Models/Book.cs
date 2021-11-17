@@ -30,6 +30,7 @@ namespace LibraryCmsShared.Models
         public int Status { get; set; }
         public int DefaultRentalDays { get; set; }
         public int BooksInStock { get; set; }
+        
 
         public ICollection<BookGenres> Genres { get; set; }
         public ICollection<Rental> Rentals { get; set; }
@@ -57,6 +58,14 @@ namespace LibraryCmsShared.Models
         public void AddGenre(int genreId)
         {
             Genres.Add(new BookGenres()
+            {
+                GenreId = genreId
+            });
+        }
+
+        public void RemoveGenre(int genreId)
+        {
+            Genres.Remove(new BookGenres()
             {
                 GenreId = genreId
             });

@@ -14,6 +14,7 @@ namespace LibraryCmsShared
         }
         public DbSet<Book> Books { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<BookGenres> BookGenres {  get; set; }
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<User> Users { get; set; }
 
