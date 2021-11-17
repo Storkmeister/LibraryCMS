@@ -91,7 +91,7 @@ namespace LibraryCms.Controllers
         [HttpGet]
         public IActionResult GetBook(int Id)
         {
-            Book gotBook = new Book();
+            Book gotBook = new ();
 
             gotBook = _context.Books
                 .Include(b => b.Genres)
@@ -239,18 +239,50 @@ namespace LibraryCms.Controllers
             {
                 try
                 {
-                    _context.Books.Attach(book);
-                    var bookEntry = _context.Entry(book);
+                    var currentBook = _context.Books.Include(b => b.Genres).Where(b => b.Id == book.Id).SingleOrDefault();
+                    currentBook.Author = book.Author;
+                    currentBook.BooksInStock = book.BooksInStock;
+                    currentBook.DefaultRentalDays = book.DefaultRentalDays;
+                    currentBook.PageCount = book.PageCount;
+                    currentBook.PicturePath = book.PicturePath;
+                    currentBook.PublishedOn = book.PublishedOn;
+                    currentBook.Publisher = book.Publisher;
+                    currentBook.Resume = book.Resume;
+                    currentBook.Status = book.Status;
+                    currentBook.Title = book.Title;
 
+                    List<int> NewIdList = book.Genres.Select(b => b.GenreId).ToList();
+                    List<int> OldIdList = currentBook.Genres.Select(b => b.GenreId).ToList();
+                    NewIdList.ForEach(item => OldIdList.Remove(item));
+
+                    _context.Books.Attach(currentBook);
+                    foreach (var id in NewIdList)
+                    {
+                        if (!currentBook.Genres.Select(g => g.GenreId).Contains(id))
+                        {
+                            currentBook.AddGenre(id);
+                        }
+                    }
+
+                    foreach (var id in OldIdList)
+                    {
+                        if (currentBook.Genres.Select(g => g.GenreId).Contains(id))
+                        {
+                            _context.BookGenres.Remove(_context.BookGenres.Single(bg => bg.GenreId == id && bg.BookId == currentBook.Id));
+                            _context.SaveChanges();
+                        }
+                    }
+
+                    var bookEntry = _context.Entry(currentBook);
                     bookEntry.Property("Id").IsModified = false;
                     bookEntry.State = EntityState.Modified;
                     _context.SaveChanges();
 
-                    var json = JsonConvert.SerializeObject(book, Formatting.Indented,
-                        new JsonSerializerSettings
-                        {
-                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                        });
+                    var json = JsonConvert.SerializeObject(currentBook, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                    });
                     IActionResult response = Ok(json);
                     return response;
                 }
