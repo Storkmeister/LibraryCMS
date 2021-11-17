@@ -77,12 +77,11 @@ export class BookForm extends Component {
                     }
                 }
             }
-            book.Genres = []
+            //book.Genres = []
             this.setState({
                 book: book, 
                 selectedGenres: selectedGenres
             });
-            
         }
     }
 
@@ -135,12 +134,33 @@ export class BookForm extends Component {
 
         //Resolve genres from names to IDs
         let genreArray = [];
-        for(const selected of this.state.selectedGenres){
+        for(const [key, value] of Object.entries(this.state.selectedGenres)){
+            
             for(const genre of this.state.allGenres){
-                if (selected === genre.Name){
+                if (value === genre.Name){
                     genreArray.push({GenreId: genre.Id})
+                    /*
+                    let ID;
+                    for(const bookGenre of book.Genres){
+                        if(bookGenre.GenreId === genre.Id){
+                            ID = bookGenre.Id
+                            break;
+                        }
+                    }
+                    let obj = {
+                        BookId: book.Id,
+                        GenreId: genre.Id,
+                        Id: (ID ? ID : null),
+                        Genre: null
+                    }
+                    if(obj.Id === null){
+                        delete obj.Id;
+                    }
+                    genreArray.push(obj)
+                    */
                 }
             }
+            
         }
         book.Genres = genreArray;
         

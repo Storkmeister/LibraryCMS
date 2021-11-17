@@ -24,7 +24,14 @@ export class DisplayItem extends Component {
                 Rentals: []
             },
             date: new Date(),
-            genreNames: []
+            genreNames: [],
+            rentalObj: {
+                UserId: 0,
+                BookId: 0,
+                BookTitle: "",
+                RentalDate: "2020-01-09",
+                ReturnDeadline: "2020-01-15"
+            }
         };
         this.handleDateChange = this.handleDateChange.bind(this);
     }

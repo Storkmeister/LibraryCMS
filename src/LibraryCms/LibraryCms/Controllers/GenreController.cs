@@ -29,12 +29,17 @@ namespace LibraryCms.Controllers
                 = new ();
 
             Genres = _context.Genres
+                .Include(g => g.Books)
                 .OrderBy(g => g.Name)
                 .ToList();
 
             if (Genres != null)
             {
-                var json = JsonConvert.SerializeObject(Genres, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(Genres, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                    });
                 IActionResult response = Ok(json);
                 return response;
             }

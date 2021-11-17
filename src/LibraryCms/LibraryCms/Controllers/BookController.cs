@@ -246,13 +246,21 @@ namespace LibraryCms.Controllers
                     bookEntry.State = EntityState.Modified;
                     _context.SaveChanges();
 
-                    var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                    var json = JsonConvert.SerializeObject(book, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        });
                     IActionResult response = Ok(json);
                     return response;
                 }
                 catch
                 {
-                    var json = JsonConvert.SerializeObject(book, Formatting.Indented);
+                    var json = JsonConvert.SerializeObject(book, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        });
                     IActionResult response = BadRequest(json);
                     return response;
                 }
