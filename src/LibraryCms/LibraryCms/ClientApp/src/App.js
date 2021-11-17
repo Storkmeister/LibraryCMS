@@ -13,6 +13,7 @@ import { Category } from './views/Category';
 
 import { Dashboard } from './views/Dashboard';
 import { BookForm } from './views/BookForm';
+import DeleteObject from './components/DeleteObject';
 
 import PublicRoute from './components/PublicRoute';
 import PrivateRoute from './components/PrivateRoute';
@@ -82,6 +83,7 @@ export default class App extends Component {
               <Dashboard path="/dashboard"/>
               <BookForm path="/dashboard/books/create" type="create"/>
               <BookForm path="/dashboard/books/edit" type="edit"/>
+              <DeleteObject path="/dashboard/books/delete" type="book" title="Slet Bog"/>
             </AdminRoute>
             
             <Route exact path='/login'>
