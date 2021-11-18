@@ -1,5 +1,5 @@
 footer {
-    background-color: grey;
+    background-color: #E9E9E9;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -8,7 +8,9 @@ footer {
     grid-template-columns: 10% 26.66% 26.66% 26.66% 10%;
     padding: 15px;
 }
-
-footer > div > div > a {
-    color: black;
-}
+    footer div h5 {
+        color: #515151
+    }
+    footer > div > div > a {
+        color: #515151;
+    }
