@@ -157,6 +157,11 @@ namespace LibraryCms.Controllers
                         userEntry.State = EntityState.Modified;
                         _context.SaveChanges();
                     }
+                    else
+                    {
+                        IActionResult NoMatch = BadRequest("Old password did not match with current password.");
+                        return NoMatch;
+                    }
 
 
                     var json = JsonConvert.SerializeObject(user, Formatting.Indented);
