@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import AuthService from './../components/AuthService';
 import Autocomplete from '@mui/material/Autocomplete';
 import Select from '@mui/material/Select';
@@ -230,11 +229,11 @@ export class BookForm extends Component {
         });
     }
 
-    /**
+   /**
    * 
    * @param {object} book Book object
    * @param {object} method GET / POST / PUT / DELETE 
-   * @returns {boolean} state
+   * @returns {boolean} HTTP Response
    */
     BookAction = (book, endpoint, method) => {
     fetch(`/Book/${endpoint}`, {

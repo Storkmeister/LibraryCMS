@@ -28,7 +28,6 @@ export class NavMenu extends Component {
     Auth.signOut();
     const [loggedIn, isAdmin] = this.props.checkUserLevel();
     this.props.authorizedStatusHandler(loggedIn, isAdmin);
-    //this.props.history.push('/');
   }
 
   render () {
@@ -70,6 +69,17 @@ export class NavMenu extends Component {
             
           return element;
         }
+      } else if(props.type === "create-account") {
+        if(!props.loggedIn){
+          element = 
+            <NavItem>
+              <NavLink to="/create-user" tag={Link} className="text-dark">Opret konto</NavLink>
+            </NavItem>
+            return element;
+        } else {
+          return null;
+        }
+        
       } else {
         return null;
       }
@@ -104,9 +114,12 @@ export class NavMenu extends Component {
                   <Admin isAdmin={this.props.isAdmin} loggedIn={this.props.loggedIn}/>
                   <LoggedIn type="profile" loggedIn={this.props.loggedIn} />
                   <LoggedIn type="login" loggedIn={this.props.loggedIn} logout={this.logout} />
+                  <LoggedIn type="create-account" loggedIn={this.props.loggedIn} logout={this.logout} />
+                  {/*
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/test">Test</NavLink>
                   </NavItem>
+                  */}
                 </ul>
               </div>
             </Container>

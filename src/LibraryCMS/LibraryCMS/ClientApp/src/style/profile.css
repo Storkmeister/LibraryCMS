@@ -45,3 +45,10 @@
       align-items: center;
       justify-content: center;
   }
+
+  .profile-information-container {
+      display: grid;
+      grid-template-areas: ".";
+      grid-template-columns: 100%;
+      
+  }

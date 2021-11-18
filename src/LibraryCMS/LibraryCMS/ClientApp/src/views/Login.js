@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from "react-router-dom";
+import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 import './../style/login.css';
 import AuthService from './../components/AuthService';
 
@@ -33,12 +35,24 @@ const Login = (props) => {
         <div id="login-container">
             <h3>Login</h3>
             <p>Indtast dine login oplysninger for at logge ind på siden</p>
-            <div className="">
-                <label>Brugernavn</label>
-                <input id="email" type="text" onChange={handleEmailChange} value={email}/>
-                <label>Kodeord</label>
-                <input id="password" type="password" onChange={handlePasswordChange} value={password}/>
-                <button onClick={(event) => getSession(email, password, props.checkUserLevel, props.authorizedStatusHandler)}>Login</button>
+            <div className="login-form">
+                <TextField id="email" label="Email" variant="outlined" 
+                    className="login-email-field" type="text"
+                    value={email} 
+                    onChange={event => handleEmailChange(event)}
+                />
+
+                <TextField id="password" label="Password" variant="outlined" 
+                    className="login-password-field" type="password"
+                    value={password} 
+                    onChange={event => handlePasswordChange(event)}
+                />
+
+                <Button id="user-save-button" variant="contained" size="large" 
+                    onClick={(event) => getSession(email, password, props.checkUserLevel, props.authorizedStatusHandler)}
+                >
+                    Login
+                </Button>
             </div>
         </div>
     )

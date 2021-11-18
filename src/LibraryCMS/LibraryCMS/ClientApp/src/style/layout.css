@@ -3,7 +3,7 @@
     gap: 5px;
     grid-template-columns: 1fr 4fr;
     grid-template-areas:
-        "nav main"
+        "nav main";
 }
 
 .content-container > div[class=container]{

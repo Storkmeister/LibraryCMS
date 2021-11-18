@@ -37,9 +37,9 @@ getAllGenres = async () => {
   render () {
     return (
         <nav>
-          <details>
+          <details open="true">
             <summary>
-              Books
+              Bøger
             </summary>
               <ul>
                 {
@@ -50,45 +50,14 @@ getAllGenres = async () => {
                 }
               </ul>
           </details>
-          <details>
+         
+          <details open="true">
             <summary>
-              Music
+              Sider
             </summary>
               <ul>
-                <li><Link to={'/test'}>Fantasy</Link></li>
-                <li><Link to={'/counter'}>Horror</Link></li>
-                <li><Link to={'/fetch-data'}>Romantic</Link></li>
-              </ul>
-          </details>
-          <details>
-            <summary>
-              Content sides
-            </summary>
-              <ul>
-                <li><Link to={'/test'}>Fantasy</Link></li>
-                <li><Link to={'/counter'}>Horror</Link></li>
-                <li><Link to={'/fetch-data'}>Romantic</Link></li>
-              </ul>
-          </details>
-          <details>
-            <summary>
-              Archive
-            </summary>
-              <ul>
-                <li><Link to={'/test'}>Fantasy</Link></li>
-                <li><Link to={'/counter'}>Horror</Link></li>
-                <li><Link to={'/fetch-data'}>Romantic</Link></li>
-              </ul>
-          </details>
-          <details>
-            <summary>
-              About us
-            </summary>
-              <ul>
-                <li><Link to={'/'}>Front page</Link></li>
-                <li><Link to={'/search'}>Search list</Link></li>
-                <li><Link to={'/item'}>Display item</Link></li>
-                <li><Link to={'/test'}>test</Link></li>
+                <li><Link to={'/'}>About us</Link></li>
+                <li><Link to={'/search'}>Kontakt</Link></li>
               </ul>
           </details>
         </nav>

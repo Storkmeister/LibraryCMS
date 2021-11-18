@@ -33,9 +33,23 @@ export class Home extends Component {
     render(){
         return (
         <div>
-            <h3>Kategori</h3>
-            <p>Vælg en kategori du finder interessant og lån en bog online!</p>
             <div className="category-container">
+              <div>
+                <h4>Velkommen til Library CMS</h4>
+                <p>Her kan du låne bøger hvis du har en konto.</p>
+              </div>
+              <div>
+                <h4>Hurtig Menu</h4>
+                <ul>
+                  <li><Link to="/">Alle Bøger</Link></li>
+                  <li><Link to="/">Bibliotekets SpecialUdvalg</Link></li>
+                  <li><Link to="/">Om Projektet</Link></li>
+                </ul>
+              </div>
+
+
+
+            {/*
                 {
                     this.state.categories.map((item, key) => {
                         const element = 
@@ -45,6 +59,7 @@ export class Home extends Component {
                         return element
                     })
                 }
+            */}
             </div>
         </div>
         )}
