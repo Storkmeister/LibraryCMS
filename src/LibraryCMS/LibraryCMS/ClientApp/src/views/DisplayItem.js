@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import AuthService from './../components/AuthService';
 import moment from 'moment';
 import MyDatePicker from './../components/DatePicker';
+import Button from '@mui/material/Button';
 import './../style/displayitem.css';
+
+let Auth = new AuthService();
 
 export class DisplayItem extends Component {
     static displayName = DisplayItem.name;
@@ -26,11 +29,9 @@ export class DisplayItem extends Component {
             date: new Date(),
             genreNames: [],
             rentalObj: {
-                UserId: 0,
                 BookId: 0,
                 BookTitle: "",
-                RentalDate: "2020-01-09",
-                ReturnDeadline: "2020-01-15"
+                RentalDate: moment().format()
             }
         };
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -38,9 +39,17 @@ export class DisplayItem extends Component {
 
     async componentDidMount(){
         let item = await this.getBookById(this.props.match.params.id);
+        const nextRental = await this.getNextRentalAvailableById(item.Id);
         //Handle date format
         item.PublishedOn = this.parseDate(item.PublishedOn);
         this.setState({item: item});
+        this.setState({
+            rentalObj: {
+                BookId: item.Id,
+                BookTitle: item.Title,
+                RentalDate: moment().format()
+            }});
+        this.setState({nextRental: nextRental});
         
         let genreIds = [];
         for(const genre of item.Genres){
@@ -59,6 +68,13 @@ export class DisplayItem extends Component {
         //const dateFormatted = moment(date).format();
         this.setState({date: date});
     }
+
+
+    handleCreateRental = async () => {
+        let response = await this.postRentBook(this.state.rentalObj);
+        console.log(response);
+    }
+
 
     parseDate = date => {
         return moment(date).format("DD MMMM YYYY");
@@ -98,11 +114,43 @@ export class DisplayItem extends Component {
           return response;
         });
       } 
+
+      getNextRentalAvailableById = async (id) => {
+        return await fetch(`/Rental/GetNextAvailableRentalDate?bookId=${id}`,{
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${Auth.getToken()}`,
+            },
+            method:"get"
+        })
+        .then(function (response) {
+          return response.json();
+        }).then((response) => {
+          return response;
+        });
+      } 
         
 
-    setStartDate = () => {
+    
 
-    }
+
+    postRentBook = async (rental) => {
+        return await fetch(`/Rental/RentBook` ,{
+          method:"POST",
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${Auth.getToken()}`,
+        },
+          body: JSON.stringify(rental)
+        })
+        .then(function (response) {
+          return response.json();
+        }).then((response) => {
+          return response;
+        });
+      } 
+
+
 
     render(){
 
@@ -144,12 +192,21 @@ export class DisplayItem extends Component {
                     </tbody>
                 </table>
                 <div>
-                    <MyDatePicker 
-                        selectedDate={this.state.date} 
-                        endDate={this.calcEndDate(this.state.date, this.state.item.DefaultRentalDays)} 
-                        onDateChange={this.handleDateChange} 
-                    />
-                    <button>Lån</button>
+                    <p>Bøger på lager: {this.state.item.BooksInStock}</p>
+                    <div className="datepicker-form">
+                        <span>Udlånsdato: </span>
+                        <MyDatePicker 
+                            selectedDate={this.state.date} 
+                            endDate={this.calcEndDate(this.state.date, this.state.item.DefaultRentalDays)} 
+                            onDateChange={this.handleDateChange} 
+
+                            
+                        />
+                    </div>
+                    <Button id="user-save-button" variant="contained" size="large" 
+                        onClick={this.handleCreateRental}>
+                        Lån
+                    </Button>
                 </div>
             </div>
             

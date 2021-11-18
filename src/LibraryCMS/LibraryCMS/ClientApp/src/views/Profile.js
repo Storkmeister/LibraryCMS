@@ -83,6 +83,9 @@ export class Profile extends Component {
             user.Password = this.state.newPassword
             const response = await this.userAction(user, 'UpdateUser', 'PUT', `?oldpassword=${this.state.oldPassword}`);
             console.log(response);
+            if(!response.Email){
+                throw response;
+            }
         } catch(e){
             console.error(e);
         }
@@ -110,9 +113,16 @@ export class Profile extends Component {
             body: JSON.stringify(user)
         })
         .then(function (response) {
-        return response.json();
+            if(response.status !== 200){
+                throw response.text();
+            }
+            return response.json();
         }).then((response) => {
-        return response;
+            return response;
+        })
+        .catch(error => {
+            console.log(error)
+            return error;
         });
         return response;
     };

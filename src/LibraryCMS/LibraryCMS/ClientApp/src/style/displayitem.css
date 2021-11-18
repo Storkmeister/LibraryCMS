@@ -46,3 +46,13 @@
  #item-table > tr:nth-child(even) {
     background-color: #eeeeee;
   }
+
+
+  .datepicker-form{
+      display: flex;
+      margin-bottom: 16px;
+  }
+
+  .datepicker-form > span{
+    margin-right: 5px;
+}

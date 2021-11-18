@@ -103,8 +103,7 @@ namespace LibraryCms.Controllers
             var NameId = claim.FirstOrDefault().Value;
             if (NameId != null &&
                 _context.Users
-                .Where(u => u.Id.ToString() == NameId &&
-                        u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
+                .Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
             {
                 var book = _context.Books.Where(b => b.Id == bookId).SingleOrDefault();
                 var nextAvailableRentalDate = _context.Rentals.Where(br => br.BookId == book.Id)
