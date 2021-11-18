@@ -37,7 +37,7 @@ getAllGenres = async () => {
   render () {
     return (
         <nav>
-          <details open="true">
+          <details open={true}>
             <summary>
               Bøger
             </summary>
@@ -51,7 +51,7 @@ getAllGenres = async () => {
               </ul>
           </details>
          
-          <details open="true">
+          <details open={true}>
             <summary>
               Sider
             </summary>
