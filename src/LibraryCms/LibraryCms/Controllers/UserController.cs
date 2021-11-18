@@ -141,12 +141,14 @@ namespace LibraryCms.Controllers
             {
                 try
                 {
-                    _context.Users.Attach(user);
-                    if(BCrypt.Net.BCrypt.Verify(oldpassword, _context.Users.Where(u => u.Id.ToString() == NameId).Select(u => u.Password).SingleOrDefault()))
+                    var currentUser = _context.Users.Where(u => u.Id == user.Id).SingleOrDefault();
+                    _context.Users.Attach(currentUser);
+                    if(BCrypt.Net.BCrypt.Verify(oldpassword, currentUser.Password))
                     {
-                        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-
-                        var userEntry = _context.Entry(user);
+                        currentUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                        currentUser.FullAddress = user.FullAddress;
+                        currentUser.Email = user.Email;
+                        var userEntry = _context.Entry(currentUser);
 
                         userEntry.Property("Id").IsModified = false;
                         userEntry.Property("IsAdmin").IsModified = false;
