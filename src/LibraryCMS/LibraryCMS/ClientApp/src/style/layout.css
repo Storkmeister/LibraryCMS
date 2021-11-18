@@ -1,6 +1,6 @@
 .content-container{
     display: grid;
-    gap: 5px;
+    /*gap: 5px;*/
     grid-template-columns: 1fr 4fr;
     grid-template-areas:
         "nav main";
@@ -9,6 +9,7 @@
     .content-container > div[class=container] {
         padding-top: 15px;
         background-color: #FFEDD8;
+        min-height:80vh;
     }
 
     .content-container > nav {

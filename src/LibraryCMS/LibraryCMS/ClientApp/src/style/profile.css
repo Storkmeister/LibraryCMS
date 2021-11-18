@@ -7,7 +7,7 @@
     grid-template-rows: 100px 100%;
     grid-template-columns: 400px 400px;
     justify-content: space-evenly;
-    grid-gap: 20px;
+    /*grid-gap: 20px;*/
 }
 
 .profile-container > div {
