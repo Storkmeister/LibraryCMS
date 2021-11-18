@@ -35,7 +35,11 @@ namespace LibraryCms.Controllers
                 var claimId = Convert.ToInt32(NameId);
                 var rentals = _context.Rentals.Where(r => r.UserId == claimId).ToList();
 
-                var json = JsonConvert.SerializeObject(rentals, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(rentals, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                    });
                 IActionResult response = Ok(json);
                 return response;
             }
@@ -47,7 +51,6 @@ namespace LibraryCms.Controllers
         [HttpPost]
         public IActionResult RentBook([FromBody] Rental rental)
         {
-
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
@@ -70,6 +73,7 @@ namespace LibraryCms.Controllers
                 //modifying the books rental table
                 bookToRent.AddRental(rental);
 
+
                 //setting the rental state to modified so the changes will be saved by EF
                 var bookEntry = _context.Entry(bookToRent);
                 bookEntry.State = System.Data.Entity.EntityState.Modified;
@@ -77,11 +81,11 @@ namespace LibraryCms.Controllers
                 //saving the changes
                 _context.SaveChanges();
 
+
                 //returning the rental object so the frontend knows what was saved to the db if everything went well.
                 var json = JsonConvert.SerializeObject(rental, Formatting.Indented);
                 IActionResult response = Ok(json);
                 return response;
-
             } 
             else
             {
@@ -89,5 +93,37 @@ namespace LibraryCms.Controllers
                 return response;
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetNextAvailableRentalDate(int bookId)
+        {
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null &&
+                _context.Users
+                .Where(u => u.Id.ToString() == NameId &&
+                        u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
+            {
+                var book = _context.Books.Where(b => b.Id == bookId).SingleOrDefault();
+                var nextAvailableRentalDate = _context.Rentals.Where(br => br.BookId == book.Id)
+                    .Select(r => r.ReturnDeadline)
+                    .OrderBy(r => r)
+                    .SingleOrDefault();
+
+
+
+                var json = JsonConvert.SerializeObject(nextAvailableRentalDate, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                    });
+                IActionResult response = Ok(json);
+                return response;
+            }
+            return null;
+        }
+
     }
 }
