@@ -6,16 +6,19 @@
         "nav main";
 }
 
-.content-container > div[class=container]{
-    padding-top: 15px;
-}
+    .content-container > div[class=container] {
+        padding-top: 15px;
+        background-color: #FFEDD8;
+    }
 
-.content-container > nav {
-    padding-top: 15px;
-}
+    .content-container > nav {
+        padding-top: 15px;
+        padding-left: 40px;
+        background-color: #ECD3B7;
+    }
 
 ul{
-    list-style: circle;
+    list-style: none;
 }
 
 li{
