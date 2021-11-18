@@ -19,12 +19,16 @@ const Login = (props) => {
     const handlePasswordChange = event => setPassword(event.target.value);
 
     const getSession = async (email, password, checkUserLevel, authorizedStatusHandler) => {
-        const test = await Auth.login(email, password)
-        const [loggedIn, isAdmin] = checkUserLevel();
-        authorizedStatusHandler(loggedIn, isAdmin);
-    
+        const response = await Auth.login(email, password)
         
-        history.push('/');
+        if(response.status === 200 || response.token){
+            const [loggedIn, isAdmin] = checkUserLevel();
+            authorizedStatusHandler(loggedIn, isAdmin);
+            history.push('/');
+        } else {
+            //Failed
+        }
+        
     }
 
 

@@ -17,10 +17,17 @@ export default class AuthService{
     })
       .then(response => response.json())
       .then((response) => {
+        if(response.status === 200 || response.token){
+          
           this.setToken(response.token);
           return Promise.resolve(response);
+          
+        } return Promise.reject(response);
       })
-      .catch(error => {console.log(error)});
+      .catch(error => {
+        console.log(error)
+        return error;
+      });
   }
 
   loggedIn = () =>  {

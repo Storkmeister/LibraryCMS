@@ -12,7 +12,6 @@ export class Profile extends Component {
         super();
         this.state = {
             user:{
-                Name: "Jacob",
                 Email: "Jacob.wistroem@gmail.com",
                 FullAddress: "Rådhushaven 7, 3480 Fredensborg",
                 oldPassword: "",
@@ -64,7 +63,7 @@ export class Profile extends Component {
         console.log(response);
     }
 
-    /**
+   /**
    * 
    * @param {object} user User object
    * @param {object} method GET / POST / PUT / DELETE 
@@ -125,11 +124,6 @@ export class Profile extends Component {
                 </div>
                 <div className="profile-information-container">
                     <h6>Brugeroplysninger</h6>
-                    <TextField id="Name" label="Navn" variant="outlined" className="user-input-field"
-                        value={this.state.user.Name} 
-                        onChange={event => this.handleFormChange(event)}
-                    />
-
                     <TextField id="Email" label="Email" variant="outlined" className="user-input-field"
                         value={this.state.user.Email} 
                         onChange={event => this.handleFormChange(event)}

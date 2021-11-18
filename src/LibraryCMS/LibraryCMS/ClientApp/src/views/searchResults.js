@@ -125,77 +125,74 @@ export class SearchResults extends Component {
         };
     }
 
-    componentDidMount(){
-
+    async componentWillMount(){
+        const title = await this.getGenreById(this.props.match.params.genre);
+        const items = await this.getBooksByGenre(this.props.match.params.genre);
+        this.setState({title: title.Name});
+        this.setState({items: items});
     }
+
+    async componentDidUpdate(){
+        //If Condition prevents a infinite loop
+        if(parseInt(this.props.match.params.genre) !== this.state.title.Id){
+            const title = await this.getGenreById(this.props.match.params.genre);
+            const items = await this.getBooksByGenre(this.props.match.params.genre);
+            this.setState({title: title});
+            this.setState({items: items});
+            console.log('update mount');
+        };
+    }
+
+    /**
+     * Fetch all books from the database
+     * 
+     * @returns database data as objects in array
+     */
+     getBooksByGenre = async (keyword) => {
+        const endpoint = 'GetBooksByGenreId';
+        return await fetch(`/Book/${endpoint}?Id=${keyword}`,{
+          method:"get"
+        })
+        .then(function (response) {
+          return response.json();
+        }).then((response) => {
+          return response;
+        });
+      }
+    
+      getGenreById = async (id) => {
+        return await fetch(`/Genre/getGenreById?Id=${id}`,{
+          method:"get"
+        })
+        .then(function (response) {
+          return response.json();
+        }).then((response) => {
+          return response;
+        });
+      } 
 
     render(){
         return (
         <div>
             <div className="search-result-grid">
-                <h2>{this.state.genre}</h2>
+                <h2>{this.state.title.Name}</h2>
                 <div className="category-filter-container">
+                    {
+                        this.state.items.map((item, key) => {
+                            const element = 
+                            <div key={key} className="item-card">
+                                <Link to={`/books/${item.Id}`}>
+                                    <div>
+                                        <img src={`/img/${item.PicturePath}`} alt="BookCover"/>
+                                    </div>
+                                </Link>
+                                <Link to={`/books/${item.Id}`}><h3>{item.Title}</h3></Link>
+                                <Link to={`/books/${item.Id}`}><p>{item.Author}</p></Link>
+                            </div>
 
-                {
-                    this.state.items.map((item, key) => {
-                        const element = 
-                        <div key={key} className="item-card">
-                            <Link to="/img">
-                                <div>
-                                    <img src={item.PicturePath} alt="BookCover"/>
-                                </div>
-                            </Link>
-                            <Link to="/title"><h3>{item.title}</h3></Link>
-                            <Link to="/author"><p>{item.Authors[0]}</p></Link>
-                        </div>
-
-                        return element;
-                    })
-                }
-                {/*
-                <div>
-                    <input placeholder=""/>
-                    <button>Søg</button>
-                </div>
-                <table id="search-results">
-                    <col id="search-table-title" span="1" />
-                    <col id="search-table-description" span="1" />
-                    <col id="search-table-link" span="1" />
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>decription</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.state.items.map((item, key) => {
-                                const element = 
-                                    <tr key={key}>
-                                        <td>
-                                            <div>
-                                                <img alt="cover"/>
-                                                <h4>{item.title}</h4>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p>{item.resume}</p>
-                                        </td>
-                                        <td className="table-action">
-                                            <Link to="/item">Åben</Link>
-                                        </td>
-                                    </tr>;
-
-                                return element;
-                            })
-                        }
-                    </tbody>
-                </table>
-                */}
-
-                
-
+                            return element;
+                        })
+                    }
                 </div>
             </div>
         </div>
