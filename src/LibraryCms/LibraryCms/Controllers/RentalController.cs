@@ -105,21 +105,37 @@ namespace LibraryCms.Controllers
                 _context.Users
                 .Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
             {
+
                 var book = _context.Books.Where(b => b.Id == bookId).SingleOrDefault();
-                var nextAvailableRentalDate = _context.Rentals.Where(br => br.BookId == book.Id)
-                    .Select(r => r.ReturnDeadline)
-                    .OrderBy(r => r)
-                    .SingleOrDefault();
+                if(_context.Rentals.Where(r => r.BookId == book.Id).Count() > 0)
+                {
+                    var nextAvailableRentalDate = _context.Rentals.Where(br => br.BookId == book.Id)
+                        .Select(r => r.ReturnDeadline)
+                        .OrderBy(r => r)
+                        .SingleOrDefault();
 
+                    var json = JsonConvert.SerializeObject(nextAvailableRentalDate, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        });
+                    IActionResult response = Ok(json);
+                    return response;
 
+                } 
+                else
+                {
+                    DateTime nextAvailableRentalDate = DateTime.UtcNow;
 
-                var json = JsonConvert.SerializeObject(nextAvailableRentalDate, Formatting.Indented,
-                    new JsonSerializerSettings
-                    {
-                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                    });
-                IActionResult response = Ok(json);
-                return response;
+                    var json = JsonConvert.SerializeObject(nextAvailableRentalDate, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        });
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+
             }
             return null;
         }
