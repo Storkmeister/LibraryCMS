@@ -40,12 +40,13 @@ export class Profile extends Component {
     }
 
     async componentDidMount() {
-        const user = await this.userAction(undefined, 'GetUsers', 'GET');
+        const user = await this.userAction(undefined, 'GetUser', 'GET');
         const rentalHistory = await this.rentalAction(undefined, 'GetRentals', 'GET');
         if(user !== undefined){
             this.setState({user: user});
-            this.setState({rental: rentalHistory});
+            
         }
+        this.setState({rental: (rentalHistory ? rentalHistory : [])});
         console.log(user);
         console.log(rentalHistory);
     }
@@ -69,8 +70,8 @@ export class Profile extends Component {
    * @param {object} method GET / POST / PUT / DELETE 
    * @returns {boolean} HTTP Response
    */
-     userAction = (user, endpoint, method) => {
-        fetch(`/User/${endpoint}`, {
+    userAction = async (user, endpoint, method) => {
+        const response = await fetch(`/User/${endpoint}`, {
             method: method,
             mode: "cors",
             headers: {
@@ -84,6 +85,7 @@ export class Profile extends Component {
         }).then((response) => {
         return response;
         });
+        return response;
     };
 
      /**
@@ -92,8 +94,8 @@ export class Profile extends Component {
    * @param {object} method GET / POST / PUT / DELETE 
    * @returns {boolean} HTTP Response
    */
-      rentalAction = (rental, endpoint, method) => {
-        fetch(`/Rental/${endpoint}`, {
+      rentalAction = async (rental, endpoint, method) => {
+        const response = await fetch(`/Rental/${endpoint}`, {
             method: method,
             mode: "cors",
             headers: {
@@ -107,6 +109,7 @@ export class Profile extends Component {
         }).then((response) => {
         return response;
         });
+        return response;
     };
 
 
