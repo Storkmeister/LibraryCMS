@@ -24,7 +24,7 @@
     grid-template-columns: 60% 40%;
     grid-template-rows: 400px;
     grid-template-areas: ". .";
-    gap: 50px;
+    /*gap: 50px;*/
     margin: 25px;
 }
 

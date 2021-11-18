@@ -1,12 +1,12 @@
 footer {
     background-color: #E9E9E9;
-    position: fixed;
     bottom: 0;
     width: 100%;
     height: 200px;
     display: grid;
     grid-template-columns: 10% 26.66% 26.66% 26.66% 10%;
     padding: 15px;
+    margin-top: auto;
 }
     footer div h5 {
         color: #515151

@@ -38,7 +38,8 @@ namespace LibraryCms.Controllers
                     .ToList();
 
 
-                if(users.Count > 0) { 
+                if (users.Count > 0)
+                {
                     var json = JsonConvert.SerializeObject(users, Formatting.Indented);
                     IActionResult response = Ok(json);
                     return response;
@@ -46,6 +47,39 @@ namespace LibraryCms.Controllers
                 else
                 {
                     IActionResult response = Ok("There are no users to retrieve.");
+                    return response;
+                }
+            }
+            else
+            {
+                IActionResult response = BadRequest("You need to be an administrator to get this data.");
+                return response;
+            }
+        }
+
+        [Authorize]
+        public IActionResult GetUser()
+        {
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
+            {
+                var user = _context.Users
+                    .Select(u => u)
+                    .Where(u => u.Id.ToString() == NameId)
+                    .SingleOrDefault();
+
+
+                if (user != null)
+                {
+                    var json = JsonConvert.SerializeObject(user, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                else
+                {
+                    IActionResult response = Ok("There is no user to retrieve. Something went wrong");
                     return response;
                 }
             }
