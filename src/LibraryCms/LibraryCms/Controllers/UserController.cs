@@ -132,7 +132,7 @@ namespace LibraryCms.Controllers
 
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateUser([FromBody] User user)
+        public IActionResult UpdateUser([FromBody] User user, string oldpassword)
         {
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
@@ -142,16 +142,20 @@ namespace LibraryCms.Controllers
                 try
                 {
                     _context.Users.Attach(user);
-                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                    if(BCrypt.Net.BCrypt.Verify(oldpassword, _context.Users.Where(u => u.Id.ToString() == NameId).Select(u => u.Password).SingleOrDefault()))
+                    {
+                        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
-                    var userEntry = _context.Entry(user);
+                        var userEntry = _context.Entry(user);
 
-                    userEntry.Property("Id").IsModified = false;
-                    userEntry.Property("IsAdmin").IsModified = false;
-                    userEntry.Property("LoanLimit").IsModified = false;
-                    
-                    userEntry.State = EntityState.Modified;
-                    _context.SaveChanges();
+                        userEntry.Property("Id").IsModified = false;
+                        userEntry.Property("IsAdmin").IsModified = false;
+                        userEntry.Property("LoanLimit").IsModified = false;
+
+                        userEntry.State = EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+
 
                     var json = JsonConvert.SerializeObject(user, Formatting.Indented);
                     IActionResult response = Ok(json);
