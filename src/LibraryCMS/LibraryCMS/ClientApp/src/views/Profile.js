@@ -14,10 +14,11 @@ export class Profile extends Component {
             user:{
                 Email: "Jacob.wistroem@gmail.com",
                 FullAddress: "Rådhushaven 7, 3480 Fredensborg",
-                oldPassword: "",
-                newPassword: "",
-                repeatNewPassword: "",
+                
             },
+            oldPassword: "",
+            newPassword: "",
+            repeatNewPassword: "",
             books: [
                 {
                     Title: "Harry potter yo",
@@ -57,11 +58,35 @@ export class Profile extends Component {
         this.setState({user: user})
     }
 
+    handleOldPasswordChange = (e) =>{
+        this.setState({oldPassword: e.currentTarget.value})
+    }
+
+    handlenewPasswordChange = (e) =>{
+        this.setState({newPassword: e.currentTarget.value})
+    }
+
+    handleRepeatNewPasswordChange = (e) =>{
+        this.setState({repeatNewPassword: e.currentTarget.value})
+    }
+
 
     handleSaveUser = async (e) => {
-        const user = this.state.user;
-        const response = await this.userAction(user, 'UpdateUser', 'POST');
-        console.log(response);
+        try {
+            const user = this.state.user;
+            console.log(user)
+
+            if(this.state.newPassword !== this.state.repeatNewPassword){
+                throw "Passwords doesnt match";
+            }
+
+            user.Password = this.state.newPassword
+            const response = await this.userAction(user, 'UpdateUser', 'PUT', `?oldpassword=${this.state.oldPassword}`);
+            console.log(response);
+        } catch(e){
+            console.error(e);
+        }
+        
     }
 
    /**
@@ -70,8 +95,12 @@ export class Profile extends Component {
    * @param {object} method GET / POST / PUT / DELETE 
    * @returns {boolean} HTTP Response
    */
-    userAction = async (user, endpoint, method) => {
-        const response = await fetch(`/User/${endpoint}`, {
+    userAction = async (user, endpoint, method, paramQuery) => {
+        let url = `/User/${endpoint}`;
+        if(paramQuery){
+            url = url + paramQuery;
+        }
+        const response = await fetch(url, {
             method: method,
             mode: "cors",
             headers: {
@@ -141,20 +170,20 @@ export class Profile extends Component {
                     
                     <TextField id="oldPassword" label="Gammelt kodeord" variant="outlined" 
                     className="user-input-field" type="password"
-                        value={this.state.user.oldPassword} 
-                        onChange={event => this.handleFormChange(event)}
+                        value={this.state.oldPassword} 
+                        onChange={event => this.handleOldPasswordChange(event)}
                     />
                 
                     <TextField id="newPassword" label="Nyt Kodeord" variant="outlined" 
                     className="user-input-field" type="password"
-                        value={this.state.user.newPassword} 
-                        onChange={event => this.handleFormChange(event)}
+                        value={this.state.newPassword} 
+                        onChange={event => this.handlenewPasswordChange(event)}
                     />
                 
                     <TextField id="repeatNewPassword" label="Gentag Kodeord" variant="outlined" 
                     className="user-input-field" type="password"
-                        value={this.state.user.repeatNewPassword} 
-                        onChange={event => this.handleFormChange(event)}
+                        value={this.state.repeatNewPassword} 
+                        onChange={event => this.handleRepeatNewPasswordChange(event)}
                     />
                 
                     <Button id="user-save-button" variant="contained" size="large" onClick={this.handleSaveUser}>

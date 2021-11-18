@@ -132,12 +132,12 @@ namespace LibraryCms.Controllers
 
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateUser([FromBody] User user, string oldpassword)
+        public IActionResult UpdateUser(string oldpassword, [FromBody] User user)
         {
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId)).SingleOrDefault() != null)
+            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
             {
                 try
                 {
