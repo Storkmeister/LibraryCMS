@@ -143,9 +143,31 @@ namespace LibraryCms.Controllers
                 {
                     var currentUser = _context.Users.Where(u => u.Id == user.Id).SingleOrDefault();
                     _context.Users.Attach(currentUser);
-                    if(BCrypt.Net.BCrypt.Verify(oldpassword, currentUser.Password))
+                    if(user.Password.Length > 0) { 
+                        if(BCrypt.Net.BCrypt.Verify(oldpassword, currentUser.Password))
+                        {
+                            //update user with password change
+                            currentUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                            currentUser.FullAddress = user.FullAddress;
+                            currentUser.Email = user.Email;
+                            var userEntry = _context.Entry(currentUser);
+
+                            userEntry.Property("Id").IsModified = false;
+                            userEntry.Property("IsAdmin").IsModified = false;
+                            userEntry.Property("LoanLimit").IsModified = false;
+
+                            userEntry.State = EntityState.Modified;
+                            _context.SaveChanges();
+                        }
+                        else
+                        {
+                            IActionResult NoMatch = BadRequest("Old password did not match with current password.");
+                            return NoMatch;
+                        }
+                    }
+                    else
                     {
-                        currentUser.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                        //update user without password change
                         currentUser.FullAddress = user.FullAddress;
                         currentUser.Email = user.Email;
                         var userEntry = _context.Entry(currentUser);
@@ -156,11 +178,6 @@ namespace LibraryCms.Controllers
 
                         userEntry.State = EntityState.Modified;
                         _context.SaveChanges();
-                    }
-                    else
-                    {
-                        IActionResult NoMatch = BadRequest("Old password did not match with current password.");
-                        return NoMatch;
                     }
 
 
