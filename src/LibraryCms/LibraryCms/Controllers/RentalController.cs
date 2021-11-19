@@ -27,10 +27,8 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null &&
-                _context.Users
-                .Where(u => u.Id.ToString() == NameId &&
-                        u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
+            if (NameId != null && 
+                _context.Users.Where(u => u.Rentals.Count < u.LoanLimit && u.Id.ToString() == NameId).SingleOrDefault() != null)
             {
                 var claimId = Convert.ToInt32(NameId);
                 var rentals = _context.Rentals.Where(r => r.UserId == claimId).ToList();
@@ -56,8 +54,7 @@ namespace LibraryCms.Controllers
             var NameId = claim.FirstOrDefault().Value;
             if (NameId != null && 
                 _context.Users
-                .Where(u => u.Id.ToString() == NameId &&
-                        u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
+                .Where(u => u.Id.ToString() == NameId && u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
             {
 
                 //finding the book from the rentals bookid provided by the body
@@ -101,9 +98,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null &&
-                _context.Users
-                .Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsUser(NameId))
             {
 
                 var book = _context.Books.Where(b => b.Id == bookId).SingleOrDefault();
