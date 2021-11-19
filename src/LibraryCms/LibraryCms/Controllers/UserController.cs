@@ -58,6 +58,39 @@ namespace LibraryCms.Controllers
         }
 
         [Authorize]
+        public IActionResult GetAdminUsers()
+        {
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
+            {
+                var users = _context.Users
+                    .Select(u => u)
+                    .Where(u => u.IsAdmin == true)
+                    .ToList();
+
+
+                if (users.Count > 0)
+                {
+                    var json = JsonConvert.SerializeObject(users, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                else
+                {
+                    IActionResult response = Ok("There are no users to retrieve.");
+                    return response;
+                }
+            }
+            else
+            {
+                IActionResult response = BadRequest("You need to be an administrator to get this data.");
+                return response;
+            }
+        }
+
+        [Authorize]
         public IActionResult GetUser()
         {
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
@@ -202,7 +235,7 @@ namespace LibraryCms.Controllers
 
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateUserToAdmin([FromBody] User user)
+        public IActionResult UpgradeUserToAdmin([FromBody] User user)
         {
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
@@ -450,6 +483,7 @@ namespace LibraryCms.Controllers
 
         public User UserLogin(string Mail, string Pass)
         {
+            try { 
             var User = _context.Users
                 .Where(u => u.Email == Mail)
                 .SingleOrDefault();
@@ -460,6 +494,11 @@ namespace LibraryCms.Controllers
                 return User;
             }
             return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 
