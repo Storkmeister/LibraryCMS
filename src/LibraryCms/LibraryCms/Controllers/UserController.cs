@@ -446,7 +446,7 @@ namespace LibraryCms.Controllers
 
         [Authorize]
         [HttpDelete]
-        public IActionResult DeleteUser([FromBody] int Id)
+        public IActionResult DeleteUser([FromBody] User user)
         {
 
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
@@ -456,9 +456,9 @@ namespace LibraryCms.Controllers
             {
                 try
                 {
-                    var user = new User() { Id = Id };
+                    var userToDelete = _context.Users.Where(u => u.Id == user.Id).SingleOrDefault();
 
-                    _context.Entry(user).State = EntityState.Deleted;
+                    _context.Entry(userToDelete).State = EntityState.Deleted;
 
                     _context.SaveChanges();
 
