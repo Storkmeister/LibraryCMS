@@ -238,6 +238,44 @@ namespace LibraryCms.Controllers
         }
 
         [Authorize]
+        [HttpPut]
+        public IActionResult DowngradeAdminToUser([FromBody] User user)
+        {
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
+            {
+                try
+                {
+                    _context.Users.Attach(user);
+                    user.IsAdmin = false;
+                    var userEntry = _context.Entry(user);
+                    userEntry.Property("Id").IsModified = false;
+                    userEntry.State = EntityState.Modified;
+                    _context.SaveChanges();
+
+                    var json = JsonConvert.SerializeObject(user, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                catch
+                {
+                    var json = JsonConvert.SerializeObject(user, Formatting.Indented);
+                    IActionResult response = BadRequest(json);
+                    return response;
+                }
+
+            }
+            else
+            {
+                IActionResult response = BadRequest("You Need To Be Logged In To Do This Action.");
+                return response;
+            }
+        }
+
+
+        [Authorize]
         [HttpGet]
         public IActionResult GetUnapprovedUsers()
         {
