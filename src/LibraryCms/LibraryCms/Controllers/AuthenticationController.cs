@@ -19,10 +19,12 @@ namespace LibraryCms.Controllers
     {
 
         private IConfiguration _config;
+        private static LibraryCmsShared.Context _context;
 
         public AuthenticationController(IConfiguration config)
         {
             _config = config;
+            _context = new LibraryCmsShared.Context();
         }
 
         [AllowAnonymous]
@@ -60,6 +62,30 @@ namespace LibraryCms.Controllers
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public static bool IsUser(string nameid)
+        {
+            if (_context.Users.Where(u => u.Id.ToString() == nameid).SingleOrDefault() != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool IsAdminUser(string nameid)
+        {
+            if (_context.Users.Where(u => u.Id.ToString() == nameid && u.IsAdmin == true).SingleOrDefault() != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private User AuthenticateUser(User user)
