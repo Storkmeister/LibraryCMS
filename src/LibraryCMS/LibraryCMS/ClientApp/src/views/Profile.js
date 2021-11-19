@@ -13,29 +13,22 @@ export class Profile extends Component {
         super();
         this.state = {
             user:{
-                Email: "Jacob.wistroem@gmail.com",
-                FullAddress: "Rådhushaven 7, 3480 Fredensborg",
+                Email: "",
+                FullAddress: "",
                 
             },
             oldPassword: "",
             newPassword: "",
             repeatNewPassword: "",
-            rental: [
-                
-            ]
+            rental: []
         };
     }
 
     async componentDidMount() {
         const user = await this.userAction(undefined, 'GetUser', 'GET');
+        this.setState({user: user});
         const rentalHistory = await this.rentalAction(undefined, 'GetRentals', 'GET');
-        if(user !== undefined){
-            this.setState({user: user});
-            
-        }
         this.setState({rental: (rentalHistory ? rentalHistory : [])});
-        console.log(user);
-        console.log(rentalHistory);
     }
 
     handleFormChange = (e) =>{

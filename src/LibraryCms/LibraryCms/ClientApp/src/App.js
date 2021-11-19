@@ -89,7 +89,7 @@ export default class App extends Component {
               <UserObject path="/dashboard/users/fromadmin" title="Administrator til bruger" type="fromAdmin"/>
               <UserObject path="/dashboard/users/unconfirm" title="Afbekræft bruger" type="unconfirm"/>
               <UserObject path="/dashboard/users/confirm" title="Bekræft bruger" type="confirm"/>
-              <DeleteObject path="/dashboard/users/delete" title="Slet Bruger" type="user" endpointList="GetAllUsers" endpointAction="deleteUser"/>
+              <UserObject path="/dashboard/users/delete" title="Slet Bruger" type="delete" endpointList="GetUsers" endpointAction="DeleteUser"/>
               <BookForm path="/dashboard/books/create" type="create"/>
               <BookForm path="/dashboard/books/edit" type="edit"/>
               <DeleteObject path="/dashboard/books/delete" title="Slet Bog" type="book" endpointList="GetAllBooks" endpointAction="deletebook"/>

@@ -15,7 +15,9 @@ export class UserObject extends Component {
         this.state = {
             userList: [],
             user: {},
-            refresh: false
+            refresh: false,
+            endpointList: "",
+            endpointAction: ""
         };
     }
 
@@ -31,12 +33,16 @@ export class UserObject extends Component {
                 endpoint = 'DisapproveUser'
                 break;
             case 'toAdmin':
-                endpointList = '';
-                endpoint = 'UpdateUserToAdmin'
+                endpointList = 'GetUsers';
+                endpoint = 'UpgradeUserToAdmin'
                 break;
             case 'fromAdmin':
-                endpointList = '';
-                endpoint = ''
+                endpointList = 'GetAdminUsers';
+                endpoint = 'DowngradeAdminToUser'
+                break;
+            case 'delete':
+                endpointList = 'GetUsers';
+                endpoint = 'DeleteUser'
                 break;
             default:
                 endpointList = undefined;
@@ -59,9 +65,9 @@ export class UserObject extends Component {
     }
 
     handleUserAction = async (e) => {
-        const response = await this.userAction(this.state.user, "ApproveUser", "PUT");
+        const response = await this.userAction(this.state.user, this.state.endpointAction, "PUT");
         console.log(response);
-        const List = await this.userAction(undefined, 'GetUnapprovedUsers', 'GET');
+        const List = await this.userAction(undefined, this.state.endpointList, 'GET');
         this.setState({userList: List});
         this.setState({user: { Id:0, Email: "" }});
         this.setState({refresh: !this.state.refresh});
@@ -113,7 +119,7 @@ export class UserObject extends Component {
                     renderInput={(params) => 
                     <TextField {...params} label={this.props.title} variant="outlined" />}
                 />
-                <Button id="book-delete-button" variant="contained" size="large" onClick={async () => {await this.handleUserAction()}}>
+                <Button id="user-action-button" variant="contained" size="large" onClick={async () => {await this.handleUserAction()}}>
                             Bekræft Bruger
                 </Button>
             </div>
