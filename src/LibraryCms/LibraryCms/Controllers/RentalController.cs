@@ -46,11 +46,11 @@ namespace LibraryCms.Controllers
                 }
                 else
                 {
-                    IActionResult response = StatusCode(205, "No rentals found");
+                    IActionResult response = StatusCode(205);
                     return response;
                 }
             }
-            IActionResult failedResponse = StatusCode(450, "User needs to be logged in.");
+            IActionResult failedResponse = StatusCode(450);
             return failedResponse;
         }
 
