@@ -28,20 +28,30 @@ namespace LibraryCms.Controllers
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
             if (NameId != null && 
-                _context.Users.Where(u => u.Rentals.Count < u.LoanLimit && u.Id.ToString() == NameId).SingleOrDefault() != null)
+                _context.Users.Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
             {
+                
                 var claimId = Convert.ToInt32(NameId);
                 var rentals = _context.Rentals.Where(r => r.UserId == claimId).ToList();
 
-                var json = JsonConvert.SerializeObject(rentals, Formatting.Indented,
-                    new JsonSerializerSettings
-                    {
-                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                    });
-                IActionResult response = Ok(json);
-                return response;
+                if(rentals.Count < 1) 
+                { 
+                    var json = JsonConvert.SerializeObject(rentals, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        });
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                else
+                {
+                    IActionResult response = StatusCode(205, "No rentals found");
+                    return response;
+                }
             }
-            return null;
+            IActionResult failedResponse = StatusCode(450, "User needs to be logged in.");
+            return failedResponse;
         }
 
 
