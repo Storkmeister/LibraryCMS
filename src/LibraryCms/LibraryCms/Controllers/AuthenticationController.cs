@@ -19,10 +19,12 @@ namespace LibraryCms.Controllers
     {
 
         private IConfiguration _config;
+        private LibraryCmsShared.Context _context;
 
         public AuthenticationController(IConfiguration config)
         {
             _config = config;
+            _context = new LibraryCmsShared.Context();
         }
 
         [AllowAnonymous]
@@ -60,6 +62,18 @@ namespace LibraryCms.Controllers
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public bool IsUser(int id, string nameid)
+        {
+            if(_context.Users.Where(u => u.Id == id).SingleOrDefault() != null)
+            {
+                return true;
+            }
+            else
+            { 
+                return false; 
+            }
         }
 
         private User AuthenticateUser(User user)
