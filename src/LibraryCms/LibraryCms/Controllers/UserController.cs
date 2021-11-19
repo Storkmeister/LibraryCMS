@@ -238,6 +238,37 @@ namespace LibraryCms.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        public IActionResult GetUnapprovedUsers()
+        {
+            var jwt = HttpContext.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claim = jwt.Claims;
+            var NameId = claim.FirstOrDefault().Value;
+            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId && u.IsAdmin == true).SingleOrDefault() != null)
+            {
+                try
+                {
+                    List<User> users = _context.Users.Where(u => u.ApprovedUser == false).ToList();
+
+                    var json = JsonConvert.SerializeObject(users, Formatting.Indented);
+                    IActionResult response = Ok(json);
+                    return response;
+                }
+                catch
+                {
+                    IActionResult response = StatusCode(205, "There are no un-approved users :)");
+                    return response;
+                }
+
+            }
+            else
+            {
+                IActionResult response = BadRequest("You Need To Be Logged In To Do This Action.");
+                return response;
+            }
+        }
+
+        [Authorize]
         [HttpPut]
         public IActionResult ApproveUser([FromBody] User user)
         {
