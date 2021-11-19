@@ -13,8 +13,8 @@ let Auth = new AuthService();
    * @param {object} method GET / POST / PUT / DELETE 
    * @returns {boolean} HTTP Response
    */
-  const userAction = (user, endpoint, method) => {
-    fetch(`/User/${endpoint}`, {
+  const userAction = async (user, endpoint, method) => {
+    return await fetch(`/User/${endpoint}`, {
         method: method,
         mode: "cors",
         headers: {
@@ -42,14 +42,29 @@ const CreateUser = (props) => {
     const handlePasswordChange = event => setPassword(event.target.value);
 
     const createUser = async (address, email, password, userAction) => {
-        const user = {
-            Email: email,
-            Password: password,
-            FullAddress: address
+        try{
+            const user = {
+                Email: email,
+                Password: password,
+                FullAddress: address
+            }
+            const response = await userAction(user, 'CreateUser', 'POST');
+
+            if(response.state == "false"){
+                throw response.description;
+            }
+
+            const authenticationReponse = await Auth.login(email, password)
+            if(authenticationReponse.status === 200 || authenticationReponse.token){
+                const [loggedIn, isAdmin] = props.checkUserLevel();
+                props.authorizedStatusHandler(loggedIn, isAdmin);
+                history.push('/profile');
+            } else {
+                throw 'could not establish authentication';
+            }
+        } catch(e){
+            console.error(e);
         }
-        const response = await userAction(user, 'CreateUser', 'POST');
-        console.log(response);
-        //history.push('/');
     }
 
 
@@ -83,7 +98,7 @@ const CreateUser = (props) => {
                 <Button id="user-save-button" variant="contained" size="large" 
                     onClick={(event) => createUser(address, email, password, userAction)}
                 >
-                    Login
+                    Opret konto
                 </Button>
             </div>
         </div>

@@ -205,7 +205,7 @@ export class DisplayItem extends Component {
                             
                         />
                     </div>
-                    <Button id="user-save-button" variant="contained" size="large" disabled={!this.props.loggedIn}
+                    <Button id="rent-button" variant="contained" size="large" disabled={!(this.props.loggedIn && this.state.item.BooksInStock != 0)}
                         onClick={this.handleCreateRental}>
                         Lån
                     </Button>
