@@ -30,7 +30,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
             {
                 var users = _context.Users
                     .Select(u => u)
@@ -63,7 +63,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsUser(NameId))
             {
                 var user = _context.Users
                     .Select(u => u)
@@ -137,7 +137,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsUser(NameId))
             {
                 try
                 {
@@ -207,7 +207,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
             {
                 try
                 {
@@ -244,7 +244,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
             {
                 try
                 {
@@ -275,7 +275,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id.ToString() == NameId && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
             {
                 try
                 {
@@ -306,7 +306,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
             {
                 try
                 {
@@ -343,7 +343,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
             {
                 try
                 {
@@ -381,7 +381,7 @@ namespace LibraryCms.Controllers
             var jwt = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claim = jwt.Claims;
             var NameId = claim.FirstOrDefault().Value;
-            if (NameId != null && _context.Users.Where(u => u.Id == Convert.ToInt32(NameId) && u.IsAdmin == true).SingleOrDefault() != null)
+            if (NameId != null && AuthenticationController.IsAdminUser(NameId))
             {
                 try
                 {

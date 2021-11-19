@@ -19,7 +19,7 @@ namespace LibraryCms.Controllers
     {
 
         private IConfiguration _config;
-        private LibraryCmsShared.Context _context;
+        private static LibraryCmsShared.Context _context;
 
         public AuthenticationController(IConfiguration config)
         {
@@ -64,15 +64,27 @@ namespace LibraryCms.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public bool IsUser(int id, string nameid)
+        public static bool IsUser(string nameid)
         {
-            if(_context.Users.Where(u => u.Id == id).SingleOrDefault() != null)
+            if (_context.Users.Where(u => u.Id.ToString() == nameid).SingleOrDefault() != null)
             {
                 return true;
             }
             else
-            { 
-                return false; 
+            {
+                return false;
+            }
+        }
+
+        public static bool IsAdminUser(string nameid)
+        {
+            if (_context.Users.Where(u => u.Id.ToString() == nameid && u.IsAdmin == true).SingleOrDefault() != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
