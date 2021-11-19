@@ -6,9 +6,12 @@ import Button from '@mui/material/Button';
 
 let Auth = new AuthService();
 
-const getAllBooks = async () => {
-    const result = await fetch(`/Book/GetAllBooks`,{
-        method:"get"
+const getAllItems = async (type, endpoint) => {
+    const result = await fetch(`/${type}/${endpoint}`,{
+        method:"GET",
+        headers: {
+            'Authorization': `Bearer ${Auth.getToken()}`,
+        },
     })
     .then(function (response) {
         return response.json();
@@ -19,8 +22,8 @@ const getAllBooks = async () => {
 }
 
 
-const DeleteAction = (Id, controller, endpoint) => {
-    fetch(`/${controller}/${endpoint}`, {
+const DeleteAction = async (Id, controller, endpoint) => {
+    return await fetch(`/${controller}/${endpoint}`, {
         method: "DELETE",
         mode: "cors",
         headers: {
@@ -30,8 +33,10 @@ const DeleteAction = (Id, controller, endpoint) => {
         body: Id
       })
       .then(function (response) {
+        console.log(response);
         return response.json();
       }).then((response) => {
+        console.log(response);
         return response;
       });
 }
@@ -41,11 +46,10 @@ const handleOnSelect = (e, value, setObject) => {
     setObject(value)
  }
 
- const handleDeleteBook = async (e, setObjectList, setObject, refresh, setRefresh) => {
-     console.log('KEK');
-     const response = await DeleteAction(e, "book", "deletebook");
+ const handleDeleteItem = async (e, setObjectList, setObject, refresh, setRefresh, props) => {
+     const response = await DeleteAction(e, props.type, props.endpointAction);
      console.log(response);
-     const List = await getAllBooks();
+     const List = await getAllItems(props.type, props.endpointList);
      setObjectList(List); 
      setObject({Id:0, Title: ""});
      setRefresh(!refresh)
@@ -64,20 +68,13 @@ function DeleteObject ({ children, ...rest }) {
 
     //Only called once because of empty array
     useEffect( async () => {
-        const List = await getAllBooks();
+        const List = await getAllItems(rest.type, rest.endpointList);
         setObjectList(List);    
      }, []);
 
      useEffect( async () => {
         console.log(object)
      });
-     
-
-    //if(rest.type === "book"){
-    //    let book = getBookById();
-    //}
-
-
 
   return (
    <div>
@@ -95,7 +92,7 @@ function DeleteObject ({ children, ...rest }) {
             renderInput={(params) => 
             <TextField {...params} label={rest.title} variant="outlined" />}
         />
-        <Button id="book-delete-button" variant="contained" size="large" onClick={async () => {await handleDeleteBook(object.Id, setObjectList, setObject, refresh, setRefresh)}}>
+        <Button id="delete-button" variant="contained" size="large" onClick={async () => {await handleDeleteItem(object.Id, setObjectList, setObject, refresh, setRefresh, rest)}}>
                     Slet
         </Button>
    </div>

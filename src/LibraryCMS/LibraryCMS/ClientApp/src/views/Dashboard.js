@@ -23,10 +23,12 @@ export class Dashboard extends Component {
                 <div>
                     <h6>Users</h6>
                     <ul>
-                        <li><Link to="/dashboard/users/create">Opret</Link></li>
-                        <li><Link to="/dashboard/users/edit">Rediger</Link></li>
-                        <li><Link to="/dashboard/users/delete">Slet</Link></li>
-                        <li><Link to="/dashboard/users/confirm">Bekræft</Link></li>
+                        <li><Link to="/dashboard/users/toadmin">Bruger til administrator</Link></li>
+                        <li><Link to="/dashboard/users/fromadmin">Administrator til bruger</Link></li>
+                        <li><Link to="/dashboard/users/confirm">Bekræft bruger</Link></li>
+                        <li><Link to="/dashboard/users/unconfirm">Afbekræft bruger</Link></li>
+                        <li><Link to="/dashboard/users/delete">Slet bruger</Link></li>
+                        
                     </ul>
                 </div>
                 <div>

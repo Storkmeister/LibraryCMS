@@ -11,7 +11,7 @@ import CreateUser from './views/CreateUser';
 import { SearchResults } from './views/searchResults';
 import { Category } from './views/Category';
 
-import { UserConfirm } from './views/UserConfirm';
+import { UserObject } from './views/UserObject';
 
 import { Dashboard } from './views/Dashboard';
 import { BookForm } from './views/BookForm';
@@ -85,10 +85,14 @@ export default class App extends Component {
               path="/dashboard"
             >
               <Dashboard path="/dashboard"/>
-              <UserConfirm path="/dashboard/users/confirm"/>
+              <UserObject path="/dashboard/users/toadmin" title="Bruger til administrator" type="toAdmin"/>
+              <UserObject path="/dashboard/users/fromadmin" title="Administrator til bruger" type="fromAdmin"/>
+              <UserObject path="/dashboard/users/unconfirm" title="Afbekræft bruger" type="unconfirm"/>
+              <UserObject path="/dashboard/users/confirm" title="Bekræft bruger" type="confirm"/>
+              <DeleteObject path="/dashboard/users/delete" title="Slet Bruger" type="user" endpointList="GetAllUsers" endpointAction="deleteUser"/>
               <BookForm path="/dashboard/books/create" type="create"/>
               <BookForm path="/dashboard/books/edit" type="edit"/>
-              <DeleteObject path="/dashboard/books/delete" type="book" title="Slet Bog"/>
+              <DeleteObject path="/dashboard/books/delete" title="Slet Bog" type="book" endpointList="GetAllBooks" endpointAction="deletebook"/>
             </AdminRoute>
             
             <Route exact path='/login'>
@@ -102,7 +106,11 @@ export default class App extends Component {
                 authorizedStatusHandler={this.authorizedStatusHandler} 
                 checkUserLevel={this.checkUserLevel}/>
             </Route>
-            <Route exact path='/create-user' component={CreateUser} />
+            <Route exact path='/create-user'>
+              <CreateUser 
+                authorizedStatusHandler={this.authorizedStatusHandler} 
+                checkUserLevel={this.checkUserLevel}/>
+            </Route>
             <Route exact path='/test' component={Test} />
             <Redirect  to="/" />
           </Switch>

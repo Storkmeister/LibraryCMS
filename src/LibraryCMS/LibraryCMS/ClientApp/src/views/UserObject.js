@@ -2,26 +2,50 @@ import React, { Component } from 'react';
 import AuthService from './../components/AuthService';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
-import './../style/userConfirm.css';
+import './../style/userObject.css';
 import { TextField } from '@mui/material';
 import moment from 'moment';
 
 let Auth = new AuthService();
 
-export class UserConfirm extends Component {
-    static displayName = UserConfirm.name;
+export class UserObject extends Component {
+    static displayName = UserObject.name;
     constructor(){
         super();
         this.state = {
-            newUsers: [],
+            userList: [],
             user: {},
             refresh: false
         };
     }
 
     async componentWillMount(){
-        const newUsers =  await this.userAction(undefined, 'getConfirmUsers', 'GET');
-        this.setState({newUsers: newUsers});
+        let endpoint, endpointList;
+        switch(this.props.type){
+            case 'confirm':
+                endpointList = 'GetUnapprovedUsers';
+                endpoint = 'ApproveUser'
+                break;
+            case 'unconfirm':
+                endpointList = 'GetApprovedUsers';
+                endpoint = 'DisapproveUser'
+                break;
+            case 'toAdmin':
+                endpointList = '';
+                endpoint = 'UpdateUserToAdmin'
+                break;
+            case 'fromAdmin':
+                endpointList = '';
+                endpoint = ''
+                break;
+            default:
+                endpointList = undefined;
+                endpoint = undefined;
+        }
+        this.setState({endpointList: endpointList, endpointAction: endpoint});
+
+        const users =  await this.userAction(undefined, endpointList, 'GET');
+        this.setState({userList: users});
     }
 
     handleOnSelect = (e, value) => {
@@ -29,21 +53,20 @@ export class UserConfirm extends Component {
     }
 
     handleInputChange = (e, value = "") => {
-        const user = this.state.user
-        user.Email = value;
-        this.setState({user: user});
+        this.setState({user: {
+            Email: value
+        }});
     }
 
-    handleConfirmUser = async (e) => {
-        const response = await this.userAction(this.state.user, "confirmUser", "PUT");
+    handleUserAction = async (e) => {
+        const response = await this.userAction(this.state.user, "ApproveUser", "PUT");
         console.log(response);
-        const List = await this.userAction(undefined, 'getConfirmUsers', 'GET');
-        this.setState({newUsers: List});
-        this.setState({user: {Id:0, Title: ""}});
+        const List = await this.userAction(undefined, 'GetUnapprovedUsers', 'GET');
+        this.setState({userList: List});
+        this.setState({user: { Id:0, Email: "" }});
         this.setState({refresh: !this.state.refresh});
     }
-
-
+    
 
    /**
    * 
@@ -51,8 +74,8 @@ export class UserConfirm extends Component {
    * @param {object} method GET / POST / PUT / DELETE 
    * @returns {boolean} HTTP Response
    */
-    userAction = (user, endpoint, method) => {
-        fetch(`/User/${endpoint}`, {
+    userAction = async (user, endpoint, method) => {
+        return await fetch(`/User/${endpoint}`, {
             method: method,
             mode: "cors",
             headers: {
@@ -77,22 +100,21 @@ export class UserConfirm extends Component {
     render(){
         return (
             <div>
-                <h5>Bekræft nyoprettet brugere</h5>
+                <h5>{this.props.title}</h5>
                 <Autocomplete
                     id="combo-box-demo"
                     key={this.state.refresh}
                     onChange={(event, value) => this.handleOnSelect(event, value)}
                     onInputChange={(event,value) => this.handleInputChange(event, value)}
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
                     inputValue={this.state.Email}
-                    options={this.state.newUsers}
+                    options={this.state.userList}
                     getOptionLabel={(option) => option.Email}
                     style={{ width: 300 }}
                     renderInput={(params) => 
-                    <TextField {...params} label={"Brugere"} variant="outlined" />}
+                    <TextField {...params} label={this.props.title} variant="outlined" />}
                 />
-                <Button id="book-delete-button" variant="contained" size="large" onClick={async () => {await this.handleConfirmUser()}}>
-                            Slet
+                <Button id="book-delete-button" variant="contained" size="large" onClick={async () => {await this.handleUserAction()}}>
+                            Bekræft Bruger
                 </Button>
             </div>
     )};
