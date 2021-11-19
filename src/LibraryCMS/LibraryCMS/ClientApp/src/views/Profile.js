@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import AuthService from './../components/AuthService';
+import moment from 'moment';
 import './../style/profile.css';
 
 let Auth = new AuthService();
@@ -19,23 +20,8 @@ export class Profile extends Component {
             oldPassword: "",
             newPassword: "",
             repeatNewPassword: "",
-            books: [
-                {
-                    Title: "Harry potter yo",
-                    Date: "01-01-2020 - 19-01-2020"
-                },
-                {
-                    Title: "Harry potter yo",
-                    Date: "01-01-2020 - 19-01-2020"
-                },
-                {
-                    Title: "Harry potter yo",
-                    Date: "01-01-2020 - 19-01-2020"
-                },
-                {
-                    Title: "Harry potter yo",
-                    Date: "01-01-2020 - 19-01-2020"
-                }
+            rental: [
+                
             ]
         };
     }
@@ -211,11 +197,11 @@ export class Profile extends Component {
                         </thead>
                         <tbody>
                             {
-                                this.state.books.map((item, key ) => {
+                                this.state.rental.map((item, key ) => {
                                     const element =
                                     <tr key={key}>
-                                        <td>{item.Title}</td>
-                                        <td>{item.Date}</td>
+                                        <td>{item.BookTitle}</td>
+                                        <td>{moment(item.RentalDate).format("DD/MM/YYYY") + ' - ' + moment(item.ReturnDeadline).format("DD/MM/YYYY")}</td>
                                     </tr>
                                     return element;
                                 })
