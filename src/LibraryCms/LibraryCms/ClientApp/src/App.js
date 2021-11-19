@@ -11,6 +11,8 @@ import CreateUser from './views/CreateUser';
 import { SearchResults } from './views/searchResults';
 import { Category } from './views/Category';
 
+import { UserConfirm } from './views/UserConfirm';
+
 import { Dashboard } from './views/Dashboard';
 import { BookForm } from './views/BookForm';
 import DeleteObject from './components/DeleteObject';
@@ -66,7 +68,9 @@ export default class App extends Component {
             <Route exact path='/' component={Home} />
             <Route exact path='/search' component={SearchResults} />
             <Route exact path='/books/category/:genre' component={Category} />
-            <Route exact path='/books/:id' component={DisplayItem} />
+            <Route exact path='/books/:id' render={
+              (props) => <DisplayItem {...props} loggedIn={this.state.loggedIn}/>
+            }/>
             <PrivateRoute
               loggedIn={this.state.loggedIn}
               isAdmin={this.state.isAdmin}
@@ -81,6 +85,7 @@ export default class App extends Component {
               path="/dashboard"
             >
               <Dashboard path="/dashboard"/>
+              <UserConfirm path="/dashboard/users/confirm"/>
               <BookForm path="/dashboard/books/create" type="create"/>
               <BookForm path="/dashboard/books/edit" type="edit"/>
               <DeleteObject path="/dashboard/books/delete" type="book" title="Slet Bog"/>

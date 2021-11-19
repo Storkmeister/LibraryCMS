@@ -112,7 +112,7 @@ namespace LibraryCms.Controllers
                     var nextAvailableRentalDate = _context.Rentals.Where(br => br.BookId == book.Id)
                         .Select(r => r.ReturnDeadline)
                         .OrderBy(r => r)
-                        .SingleOrDefault();
+                        .FirstOrDefault();
 
                     var json = JsonConvert.SerializeObject(nextAvailableRentalDate, Formatting.Indented,
                         new JsonSerializerSettings
