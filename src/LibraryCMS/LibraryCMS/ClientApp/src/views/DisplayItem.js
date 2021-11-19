@@ -39,17 +39,17 @@ export class DisplayItem extends Component {
 
     async componentDidMount(){
         let item = await this.getBookById(this.props.match.params.id);
-        const nextRental = await this.getNextRentalAvailableById(item.Id);
+        
         //Handle date format
         item.PublishedOn = this.parseDate(item.PublishedOn);
         this.setState({item: item});
+        
         this.setState({
             rentalObj: {
                 BookId: item.Id,
                 BookTitle: item.Title,
                 RentalDate: moment().format()
             }});
-        this.setState({nextRental: nextRental});
         
         let genreIds = [];
         for(const genre of item.Genres){
@@ -60,7 +60,10 @@ export class DisplayItem extends Component {
             const name = await this.getGenreById(Id);
             namesArray.push(name.Name);
         }
-        this.setState({genreNames: namesArray})
+        this.setState({genreNames: namesArray});
+
+        const nextRental = await this.getNextRentalAvailableById(item.Id);
+        this.setState({nextRental: nextRental});
 
     }
 
@@ -187,7 +190,6 @@ export class DisplayItem extends Component {
                                 })
                             }
                             </td>
-
                         </tr>
                     </tbody>
                 </table>
@@ -203,7 +205,7 @@ export class DisplayItem extends Component {
                             
                         />
                     </div>
-                    <Button id="user-save-button" variant="contained" size="large" 
+                    <Button id="user-save-button" variant="contained" size="large" disabled={!this.props.loggedIn}
                         onClick={this.handleCreateRental}>
                         Lån
                     </Button>
