@@ -51,20 +51,22 @@ const handleOnSelect = (e, value, setObject) => {
      console.log(response);
      const List = await getAllItems(props.type, props.endpointList);
      setObjectList(List); 
-     setObject({Id:0, Title: ""});
+     setObject({Id:0, [props.renderKey]: ""});
      setRefresh(!refresh)
  }
 
-const handleInputChange = (e, value = "", setObject) => {
-    setObject({Id:0, Title: value});
-}
+
 
 
 function DeleteObject ({ children, ...rest }) {
     const [objectList, setObjectList] = useState([]);
-    const [object, setObject] = useState({Id:0, Title: ""});
+    const [object, setObject] = useState({Id:0, [rest.renderKey]: ""});
     const [refresh, setRefresh] = useState(false);
 
+
+    const handleInputChange = (e, value = "", setObject) => {
+        setObject({Id:0, [rest.renderKey]: value});
+    }
 
     //Only called once because of empty array
     useEffect( async () => {
@@ -85,9 +87,9 @@ function DeleteObject ({ children, ...rest }) {
             onChange={(event, value) => handleOnSelect(event, value, setObject)}
             onInputChange={(event,value) => handleInputChange(event, value, setObject)}
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            inputValue={object.Title}
+            inputValue={object[rest.renderKey]}
             options={objectList}
-            getOptionLabel={(option) => option.Title}
+            getOptionLabel={(option) => option[rest.renderKey]}
             style={{ width: 300 }}
             renderInput={(params) => 
             <TextField {...params} label={rest.title} variant="outlined" />}

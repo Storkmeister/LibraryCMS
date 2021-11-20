@@ -20,15 +20,34 @@ export class Profile extends Component {
             oldPassword: "",
             newPassword: "",
             repeatNewPassword: "",
-            rental: []
+            rental: [
+                {
+                BookTitle: "",
+                RentalDate: "",
+                ReturnDeadline: ""
+            }
+        ]
         };
     }
+
+/*
+ 
+                */
+
 
     async componentDidMount() {
         const user = await this.userAction(undefined, 'GetUser', 'GET');
         this.setState({user: user});
         const rentalHistory = await this.rentalAction(undefined, 'GetRentals', 'GET');
-        this.setState({rental: (rentalHistory ? rentalHistory : [])});
+        if(rentalHistory.status !== 200 && rentalHistory.status){
+            console.error('No rentals could be fetched')
+            this.setState({rental: [
+                
+            ]});
+        } else {
+            this.setState({rental: rentalHistory});
+        }
+        
     }
 
     handleFormChange = (e) =>{
@@ -123,9 +142,12 @@ export class Profile extends Component {
             body: JSON.stringify(rental)
         })
         .then(function (response) {
-        return response.json();
+            if(response.status !== 200){
+                return response;
+            }
+            return response.json();
         }).then((response) => {
-        return response;
+            return response;
         });
         return response;
     };

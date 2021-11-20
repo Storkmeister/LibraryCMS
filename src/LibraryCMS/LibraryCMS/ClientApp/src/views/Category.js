@@ -20,7 +20,6 @@ export class Category extends Component {
         const items = await this.getBooksByGenre(this.props.match.params.genre);
         this.setState({title: title.Name});
         this.setState({items: items});
-        console.log('INit mount');
     }
 
     async componentDidUpdate(){

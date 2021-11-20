@@ -21,7 +21,7 @@ export class Dashboard extends Component {
             <h5>Dashboard</h5>
             <div className="dashboard-container">
                 <div>
-                    <h6>Users</h6>
+                    <h6>Brugere</h6>
                     <ul>
                         <li><Link to="/dashboard/users/toadmin">Bruger til administrator</Link></li>
                         <li><Link to="/dashboard/users/fromadmin">Administrator til bruger</Link></li>
@@ -32,11 +32,19 @@ export class Dashboard extends Component {
                     </ul>
                 </div>
                 <div>
-                    <h6>Books</h6>
+                    <h6>Bøger</h6>
                     <ul>
                         <li><Link to="/dashboard/books/create">Opret</Link></li>
                         <li><Link to="/dashboard/books/edit">Rediger</Link></li>
                         <li><Link to="/dashboard/books/delete">Slet</Link></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6>Genre</h6>
+                    <ul>
+                        <li><Link to="/dashboard/genres/create">Opret</Link></li>
+                        <li><Link to="/dashboard/genres/edit">Rediger</Link></li>
+                        <li><Link to="/dashboard/genres/delete">Slet</Link></li>
                     </ul>
                 </div>
             </div>

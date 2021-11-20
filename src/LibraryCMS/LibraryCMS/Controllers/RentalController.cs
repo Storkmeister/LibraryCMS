@@ -34,7 +34,7 @@ namespace LibraryCms.Controllers
                 var claimId = Convert.ToInt32(NameId);
                 var rentals = _context.Rentals.Where(r => r.UserId == claimId).ToList();
 
-                if(rentals.Count < 1) 
+                if(rentals.Count > 1) 
                 { 
                     var json = JsonConvert.SerializeObject(rentals, Formatting.Indented,
                         new JsonSerializerSettings

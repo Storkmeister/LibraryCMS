@@ -15,9 +15,9 @@ import { UserObject } from './views/UserObject';
 
 import { Dashboard } from './views/Dashboard';
 import { BookForm } from './views/BookForm';
+import { GenreForm } from './views/GenreForm';
 import DeleteObject from './components/DeleteObject';
 
-import PublicRoute from './components/PublicRoute';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 
@@ -90,9 +90,14 @@ export default class App extends Component {
               <UserObject path="/dashboard/users/unconfirm" title="Afbekræft bruger" type="unconfirm"/>
               <UserObject path="/dashboard/users/confirm" title="Bekræft bruger" type="confirm"/>
               <UserObject path="/dashboard/users/delete" title="Slet Bruger" type="delete" endpointList="GetUsers" endpointAction="DeleteUser"/>
+
               <BookForm path="/dashboard/books/create" type="create"/>
               <BookForm path="/dashboard/books/edit" type="edit"/>
-              <DeleteObject path="/dashboard/books/delete" title="Slet Bog" type="book" endpointList="GetAllBooks" endpointAction="deletebook"/>
+              <DeleteObject path="/dashboard/books/delete" title="Slet Bog" type="book" endpointList="GetAllBooks" endpointAction="deletebook" renderKey="Title"/>
+
+              <GenreForm path="/dashboard/genres/create" type="create"/>
+              <GenreForm path="/dashboard/genres/edit" type="edit"/>
+              <DeleteObject path="/dashboard/genres/delete" title="Slet Genre" type="genre" endpointList="GetGenres" endpointAction="DeleteGenre" renderKey="Name"/>
             </AdminRoute>
             
             <Route exact path='/login'>

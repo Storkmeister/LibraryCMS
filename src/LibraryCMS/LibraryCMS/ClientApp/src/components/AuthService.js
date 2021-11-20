@@ -74,7 +74,7 @@ export default class AuthService{
 
   getUserLevel = (token) => {
     const decoded = decode(token);
-    return (decoded?.sub == 'True')
+    return (decoded?.sub === 'True')
   }
 
 }

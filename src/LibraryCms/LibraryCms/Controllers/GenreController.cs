@@ -142,7 +142,11 @@ namespace LibraryCms.Controllers
                     genreEntry.State = EntityState.Modified;
                     _context.SaveChanges();
 
-                    var json = JsonConvert.SerializeObject(genre, Formatting.Indented);
+                    var json = JsonConvert.SerializeObject(genre, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        });
                     IActionResult response = Ok(json);
                     return response;
                 }
