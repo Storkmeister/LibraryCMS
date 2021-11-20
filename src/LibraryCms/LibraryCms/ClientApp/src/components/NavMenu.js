@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Container, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 import './../style/NavMenu.css';
 import AuthService from './AuthService';
 
@@ -14,7 +16,8 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      collapsed: true,
+      searchValue: ""
     };
   }
 
@@ -28,6 +31,17 @@ export class NavMenu extends Component {
     Auth.signOut();
     const [loggedIn, isAdmin] = this.props.checkUserLevel();
     this.props.authorizedStatusHandler(loggedIn, isAdmin);
+  }
+
+  handleInputChange = (e) => {
+    this.setState({[e.target.id]: e.target.value});
+  }
+
+  handleInitiateSearch = (e) => {
+    if(e.key === 'Enter' || e.key === undefined){
+      this.props.history.push(`/search/${this.state.searchValue}`);
+
+    }
   }
 
   render () {
@@ -107,8 +121,12 @@ export class NavMenu extends Component {
                   </Link>
                 </div>
                 <div className="search_container">
-                  <input placeholder="Indtast title, genre ..."/>
-                  <button>Søg</button>
+                  <TextField id="searchValue" label="Søg..." variant="standard" 
+                    value={this.state.searchValue} 
+                    onChange={(event) => this.handleInputChange(event)}
+                    onKeyUp={(event) => this.handleInitiateSearch(event)}
+                  />
+                  <Button id="layout-search-button" variant="contained" onClick={(event) => this.handleInitiateSearch(event)}>Søg</Button>
                 </div>
                 <ul className="nav-container navbar-nav flex-grow">
                   <Admin isAdmin={this.props.isAdmin} loggedIn={this.props.loggedIn}/>

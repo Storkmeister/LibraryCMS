@@ -66,3 +66,10 @@
     border-top-left-radius: 5px;
     margin-top: -0.5px; 
 }
+
+#search-headline-container{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-direction: row;
+}

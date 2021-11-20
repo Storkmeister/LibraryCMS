@@ -35,3 +35,7 @@ nav {
 body{
     background-color: #FFEDD8;
 }
+
+#layout-search-button {
+    align-self: center;
+}

@@ -8,7 +8,7 @@ import { Profile } from './views/Profile';
 import Login from './views/Login';
 import Logout from './views/Logout';
 import CreateUser from './views/CreateUser';
-import { SearchResults } from './views/searchResults';
+import { SearchResults } from './views/SearchResults';
 import { Category } from './views/Category';
 
 import { UserObject } from './views/UserObject';
@@ -66,7 +66,9 @@ export default class App extends Component {
         >
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/search' component={SearchResults} />
+            <Route exact path='/search/:title' render={
+              (props) => <SearchResults {...props} Title="Søgeresultater" />
+              }  />
             <Route exact path='/books/category/:genre' component={Category} />
             <Route exact path='/books/:id' render={
               (props) => <DisplayItem {...props} loggedIn={this.state.loggedIn}/>

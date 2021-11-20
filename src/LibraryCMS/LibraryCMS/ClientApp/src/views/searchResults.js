@@ -7,7 +7,6 @@ export class SearchResults extends Component {
     constructor(){
         super();
         this.state = {
-            genre: "Eventyr",
             items: [
                 {
                 title: "Harry Potter and the Deadly Hallow",
@@ -126,19 +125,17 @@ export class SearchResults extends Component {
     }
 
     async componentWillMount(){
-        const title = await this.getGenreById(this.props.match.params.genre);
-        const items = await this.getBooksByGenre(this.props.match.params.genre);
-        this.setState({title: title.Name});
+        const items = await this.getSearchResults(this.props.match.params.title);
         this.setState({items: items});
+        this.setState({search: this.props.match.params.title})
     }
 
     async componentDidUpdate(){
         //If Condition prevents a infinite loop
-        if(parseInt(this.props.match.params.genre) !== this.state.title.Id){
-            const title = await this.getGenreById(this.props.match.params.genre);
-            const items = await this.getBooksByGenre(this.props.match.params.genre);
-            this.setState({title: title});
+        if(this.props.match.params.title !== this.state.search){
+            const items = await this.getSearchResults(this.props.match.params.title);
             this.setState({items: items});
+            this.setState({search: this.props.match.params.title})
         };
     }
 
@@ -147,9 +144,9 @@ export class SearchResults extends Component {
      * 
      * @returns database data as objects in array
      */
-     getBooksByGenre = async (keyword) => {
-        const endpoint = 'GetBooksByGenreId';
-        return await fetch(`/Book/${endpoint}?Id=${keyword}`,{
+     getSearchResults = async (keyword) => {
+        const endpoint = 'SearchAllRentableBooks';
+        return await fetch(`/Book/${endpoint}?searchtext=${keyword}`,{
           method:"get"
         })
         .then(function (response) {
@@ -159,22 +156,15 @@ export class SearchResults extends Component {
         });
       }
     
-      getGenreById = async (id) => {
-        return await fetch(`/Genre/getGenreById?Id=${id}`,{
-          method:"get"
-        })
-        .then(function (response) {
-          return response.json();
-        }).then((response) => {
-          return response;
-        });
-      } 
 
     render(){
         return (
         <div>
             <div className="search-result-grid">
-                <h2>{this.state.title.Name}</h2>
+                <div id="search-headline-container">
+                    <h2>{this.props.Title}</h2>
+                    <p>Der er {this.state.items.length} bøger i denne søgning</p>
+                </div>
                 <div className="category-filter-container">
                     {
                         this.state.items.map((item, key) => {
