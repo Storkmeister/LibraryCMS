@@ -5,8 +5,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
+using System.Data.Entity;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace LibraryCms.Controllers
 {
@@ -29,18 +30,18 @@ namespace LibraryCms.Controllers
             var NameId = claim.FirstOrDefault().Value;
             if (NameId != null && 
                 _context.Users.Where(u => u.Id.ToString() == NameId).SingleOrDefault() != null)
-            {
-                
-                var claimId = Convert.ToInt32(NameId);
-                var rentals = _context.Rentals.Where(r => r.UserId == claimId).ToList();
+            {   
+                var rentals = _context.Rentals
+                    .Include(r => r.User)
+                    .Where(r => r.UserId.ToString() == NameId).ToList();
+
+                List<Rental> rentalsToReturn = new ();
 
                 if(rentals.Count > 1) 
-                { 
-                    var json = JsonConvert.SerializeObject(rentals, Formatting.Indented,
-                        new JsonSerializerSettings
-                        {
-                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                        });
+                {
+                    rentals.ForEach(r => r.User.Rentals.Clear());
+
+                    var json = JsonConvert.SerializeObject(rentals, Formatting.Indented);
                     IActionResult response = Ok(json);
                     return response;
                 }
