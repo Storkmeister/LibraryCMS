@@ -70,7 +70,11 @@ namespace LibraryCms
 
             
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = context =>
+                    context.Context.Response.Headers.Add("Cache-Control", "no-cache")
+            });
             app.UseSpaStaticFiles();
 
             app.UseRouting();
