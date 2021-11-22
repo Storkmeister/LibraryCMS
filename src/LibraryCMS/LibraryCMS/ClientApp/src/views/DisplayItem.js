@@ -62,8 +62,8 @@ export class DisplayItem extends Component {
         }
         this.setState({genreNames: namesArray});
 
-        const nextRental = await this.getNextRentalAvailableById(item.Id);
-        this.setState({nextRental: nextRental});
+        //const nextRental = await this.getNextRentalAvailableById(item.Id);
+        //this.setState({nextRental: nextRental});
 
     }
 
@@ -157,12 +157,42 @@ export class DisplayItem extends Component {
 
     render(){
 
-        
+        const RentalForm = () => {
+            let element = null;
+            if(this.props.loggedIn){
+                element = <div>
+                    <p>Bøger på lager: {this.state.item.BooksInStock}</p>
+                    
+                    <div className="datepicker-form">
+                        <span>Udlånsdato: </span>
+                        <MyDatePicker 
+                            selectedDate={this.state.date}
+                            onDateChange={this.handleDateChange}
+                            disabled={false}
+                            minDate={new Date()}
+                        />
+                        <p> - </p>
+                        <MyDatePicker 
+                            selectedDate={this.calcEndDate(this.state.date, this.state.item.DefaultRentalDays)}
+                            disabled={true}
+                        />
+                        {/*
+                            endDate={this.calcEndDate(this.state.date, this.state.item.DefaultRentalDays)}
+                        */}
+                    </div>
+                    <Button id="rent-button" variant="contained" size="large" disabled={!this.state.item.BooksInStock != 0}
+                        onClick={this.handleCreateRental}>
+                        Lån
+                    </Button>
+                </div>
+            }
+            return element;
+        }
 
         return (
         <div>
             <div className="item-grid">
-                <img alt="image"/>
+                <img alt="image" src={`/img/${this.state.item.PicturePath}`}/>
                 <div>
                     <h4>{this.state.item.Title}</h4>
                     <p>{this.state.item.Resume}</p>
@@ -193,23 +223,7 @@ export class DisplayItem extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <div>
-                    <p>Bøger på lager: {this.state.item.BooksInStock}</p>
-                    <div className="datepicker-form">
-                        <span>Udlånsdato: </span>
-                        <MyDatePicker 
-                            selectedDate={this.state.date} 
-                            endDate={this.calcEndDate(this.state.date, this.state.item.DefaultRentalDays)} 
-                            onDateChange={this.handleDateChange} 
-
-                            
-                        />
-                    </div>
-                    <Button id="rent-button" variant="contained" size="large" disabled={!(this.props.loggedIn && this.state.item.BooksInStock != 0)}
-                        onClick={this.handleCreateRental}>
-                        Lån
-                    </Button>
-                </div>
+                <RentalForm/>
             </div>
             
         </div>

@@ -3,14 +3,31 @@ footer {
     bottom: 0;
     width: 100%;
     height: 200px;
+}
+
+footer > div {
     display: grid;
-    grid-template-columns: 10% 26.66% 26.66% 26.66% 10%;
+    grid-template-columns: 33% 33% 33%;
     padding: 15px;
     margin-top: auto;
 }
-    footer div h5 {
-        color: #515151
-    }
-    footer > div > div > a {
-        color: #515151;
-    }
+
+footer > div > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+footer > div > div > div, footer > div > div > h5 {
+    text-align: start;
+}
+
+footer div h5 {
+    color: #515151
+}
+footer > div > div > div > a {
+    color: #515151;
+}
+

@@ -13,12 +13,15 @@ const MyDatePicker = (props) => {
 
   return (
     <DatePicker 
-    selected={props.selectedDate} 
+    className="datePicker"
+    selected={props.selectedDate}
     onChange={(date) => handleChange(date)}
     dateFormat="dd/MM/yyyy"
     selectsStart
     startDate={props.selectedDate}
     endDate={props.endDate}
+    disabled={props.disabled}
+    minDate={props.minDate}
      />
   );
 };

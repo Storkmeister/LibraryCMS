@@ -25,7 +25,7 @@
 
 .item-grid > div:last-child {
     height: 50px;
-    width: 75%;
+    width: 80%;
 }
 
 .item-grid > div:last-child > button {
@@ -55,4 +55,9 @@
 
   .datepicker-form > span{
     margin-right: 5px;
+}
+
+.datePicker{
+    width: 100px;
+    margin: 0px 5px;
 }
