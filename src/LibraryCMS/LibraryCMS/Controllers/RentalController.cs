@@ -37,7 +37,7 @@ namespace LibraryCms.Controllers
 
                 List<Rental> rentalsToReturn = new ();
 
-                if(rentals.Count > 1) 
+                if(rentals.Count >= 1) 
                 {
                     rentals.ForEach(r => r.User.Rentals.Clear());
 
@@ -65,7 +65,7 @@ namespace LibraryCms.Controllers
             var NameId = claim.FirstOrDefault().Value;
             if (NameId != null && 
                 _context.Users
-                .Where(u => u.Id.ToString() == NameId && u.Rentals.Count < u.LoanLimit).SingleOrDefault() != null)
+                .Where(u => u.Id.ToString() == NameId && u.ApprovedUser == true).SingleOrDefault() != null)
             {
 
                 //finding the book from the rentals bookid provided by the body
