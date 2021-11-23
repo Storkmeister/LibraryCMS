@@ -26,11 +26,13 @@ li{
     text-decoration: none;
 }
 
+/*
 nav {
     border-width: 0.5px;
     border-color: rgb(157, 157, 157);
     border-right-style: solid;
 }
+*/
 
 body{
     background-color: #FFEDD8;

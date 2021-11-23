@@ -12,6 +12,9 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import './../style/bookForm.css';
 import { TextField } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import MUILink from '@mui/material/Link';
 import moment from 'moment';
 
 const Input = styled('input')({
@@ -297,7 +300,17 @@ export class BookForm extends Component {
 
         return (
         <div>
+            <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+                <MUILink onClick={() => this.props.history.push('/')}>
+                    Forside
+                </MUILink>
+                <MUILink onClick={() => this.props.history.push('/dashboard')}>
+                    Dashboard
+                </MUILink>
+                <Typography color="text.primary">Bog formular</Typography>
+            </Breadcrumbs>
             <div className="bookform-container">
+                
                 <h5>Bog formular</h5>
                 <ComboBox type={this.props.type} data={this.state.books} handleEvent={this.handleSelector} selectedBook={this.state.selectedBook.Title}/>
                 

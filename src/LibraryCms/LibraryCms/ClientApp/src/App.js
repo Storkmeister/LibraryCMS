@@ -66,17 +66,17 @@ export default class App extends Component {
         >
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/search/:title' render={
+            <Route exact path='/Søgning/:title' render={
               (props) => <SearchResults {...props} Title="Søgeresultater" />
               }  />
-            <Route exact path='/books/category/:genre' component={Category} />
-            <Route exact path='/books/:id' render={
+            <Route exact path='/Kategori/:genre' component={Category} />
+            <Route exact path='/Bøger/:id' render={
               (props) => <DisplayItem {...props} loggedIn={this.state.loggedIn}/>
             }/>
             <PrivateRoute
               loggedIn={this.state.loggedIn}
               isAdmin={this.state.isAdmin}
-              exact path='/profile'
+              exact path='/Profil'
             >
               <Profile/>
             </PrivateRoute>
@@ -86,20 +86,20 @@ export default class App extends Component {
               isAdmin={this.state.isAdmin}
               path="/dashboard"
             >
-              <Dashboard path="/dashboard"/>
-              <UserObject path="/dashboard/users/toadmin" title="Bruger til administrator" type="toAdmin"/>
-              <UserObject path="/dashboard/users/fromadmin" title="Administrator til bruger" type="fromAdmin"/>
-              <UserObject path="/dashboard/users/unconfirm" title="Afbekræft bruger" type="unconfirm"/>
-              <UserObject path="/dashboard/users/confirm" title="Bekræft bruger" type="confirm"/>
-              <UserObject path="/dashboard/users/delete" title="Slet Bruger" type="delete" endpointList="GetUsers" endpointAction="DeleteUser"/>
+              <Dashboard path="/dashboard" history={history}/>
+              <UserObject path="/dashboard/users/toadmin" history={history} title="Bruger til administrator" type="toAdmin"/>
+              <UserObject path="/dashboard/users/fromadmin" history={history} title="Administrator til bruger" type="fromAdmin"/>
+              <UserObject path="/dashboard/users/unconfirm" history={history} title="Afbekræft bruger" type="unconfirm"/>
+              <UserObject path="/dashboard/users/confirm" history={history} title="Bekræft bruger" type="confirm"/>
+              <UserObject path="/dashboard/users/delete" history={history} title="Slet Bruger" type="delete" endpointList="GetUsers" endpointAction="DeleteUser"/>
 
-              <BookForm path="/dashboard/books/create" type="create"/>
-              <BookForm path="/dashboard/books/edit" type="edit"/>
-              <DeleteObject path="/dashboard/books/delete" title="Slet Bog" type="book" endpointList="GetAllBooks" endpointAction="deletebook" renderKey="Title"/>
+              <BookForm path="/dashboard/books/create" history={history} type="create"/>
+              <BookForm path="/dashboard/books/edit" history={history} type="edit"/>
+              <DeleteObject path="/dashboard/books/delete" history={history} title="Slet Bog" type="book" endpointList="GetAllBooks" endpointAction="deletebook" renderKey="Title"/>
 
-              <GenreForm path="/dashboard/genres/create" type="create"/>
-              <GenreForm path="/dashboard/genres/edit" type="edit"/>
-              <DeleteObject path="/dashboard/genres/delete" title="Slet Genre" type="genre" endpointList="GetGenres" endpointAction="DeleteGenre" renderKey="Name"/>
+              <GenreForm path="/dashboard/genres/create" history={history} type="create"/>
+              <GenreForm path="/dashboard/genres/edit" history={history} type="edit"/>
+              <DeleteObject path="/dashboard/genres/delete" history={history} title="Slet Genre" type="genre" endpointList="GetGenres" endpointAction="DeleteGenre" renderKey="Name"/>
             </AdminRoute>
             
             <Route exact path='/login'>

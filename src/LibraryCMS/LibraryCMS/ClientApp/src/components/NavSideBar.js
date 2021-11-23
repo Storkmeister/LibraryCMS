@@ -44,7 +44,7 @@ getAllGenres = async () => {
               <ul>
                 {
                   this.state.genres.map((item, key) => {
-                    return <li key={key}><Link to={`/books/category/${item.Id}`}>{item.Name}</Link></li>
+                    return <li key={key}><Link to={`/kategori/${item.Id}`}>{item.Name}</Link></li>
                   })
                   
                 }
@@ -57,7 +57,7 @@ getAllGenres = async () => {
             </summary>
               <ul>
                 <li><Link to={'/'}>About us</Link></li>
-                <li><Link to={'/search'}>Kontakt</Link></li>
+                <li><Link to={'/søgning'}>Kontakt</Link></li>
               </ul>
           </details>
         </nav>

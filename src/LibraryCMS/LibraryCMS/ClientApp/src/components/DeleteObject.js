@@ -3,6 +3,9 @@ import { TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import AuthService from './../components/AuthService';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import MUILink from '@mui/material/Link';
 
 let Auth = new AuthService();
 
@@ -74,12 +77,17 @@ function DeleteObject ({ children, ...rest }) {
         setObjectList(List);    
      }, []);
 
-     useEffect( async () => {
-        console.log(object)
-     });
-
   return (
    <div>
+       <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+            <MUILink onClick={() => rest.history.push('/')}>
+                Forside
+            </MUILink>
+            <MUILink onClick={() => rest.history.push('/dashboard')}>
+                Dashboard
+            </MUILink>
+            <Typography color="text.primary">{rest.title}</Typography>
+        </Breadcrumbs>
        <h5>{rest.title}</h5>
        <Autocomplete
             id="combo-box-demo"

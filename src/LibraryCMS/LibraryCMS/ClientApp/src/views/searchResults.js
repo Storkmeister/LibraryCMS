@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import './../style/searchResults.css';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import MUILink from '@mui/material/Link';
 
 export class SearchResults extends Component {
     static displayName = SearchResults.name;
@@ -8,118 +11,6 @@ export class SearchResults extends Component {
         super();
         this.state = {
             items: [
-                {
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                title: "Harry Potter and the Deadly Hallow - This is an extra long title for lols",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
-            {
-                title: "Harry Potter and the Deadly Hallow",
-                resume: "This is a description of the selected item...",
-                PicturePath: '/img/harrypotter.jpg',
-                PageCount: 104,
-                Publisher: "Egedahl",
-                PublishedOn: '01-01-2020',
-                Status: 1,
-                DefaultRentalDays: 3,
-                BooksInStock: 5,
-                Authors: ["J.K. Rowling", "HC ANDERSEN", "GEORGE J R R MARTIN"],
-                Genres: ["Horror", "Sci-fi", "Adventure", "Grimdark"],
-                Rentals: []
-            },
         ]
         };
     }
@@ -165,18 +56,24 @@ export class SearchResults extends Component {
                     <h2>{this.props.Title}</h2>
                     <p>Der er {this.state.items.length} bøger i denne søgning</p>
                 </div>
+                <Breadcrumbs aria-label="breadcrumb">
+                  <MUILink onClick={() => this.props.history.push('/')}>
+                    Forside
+                  </MUILink>
+                  <Typography color="text.primary">Søgning</Typography>
+                </Breadcrumbs>
                 <div className="category-filter-container">
                     {
                         this.state.items.map((item, key) => {
                             const element = 
                             <div key={key} className="item-card">
-                                <Link to={`/books/${item.Id}`}>
+                                <Link to={`/Bøger/${item.Id}`}>
                                     <div>
                                         <img src={`/img/${item.PicturePath}`} alt="BookCover"/>
                                     </div>
                                 </Link>
-                                <Link to={`/books/${item.Id}`}><h3>{item.Title}</h3></Link>
-                                <Link to={`/books/${item.Id}`}><p>{item.Author}</p></Link>
+                                <Link to={`/Bøger/${item.Id}`}><h3>{item.Title}</h3></Link>
+                                <Link to={`/Bøger/${item.Id}`}><p>{item.Author}</p></Link>
                             </div>
 
                             return element;

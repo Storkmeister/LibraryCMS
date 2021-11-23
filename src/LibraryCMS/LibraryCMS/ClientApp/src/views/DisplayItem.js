@@ -3,6 +3,9 @@ import AuthService from './../components/AuthService';
 import moment from 'moment';
 import MyDatePicker from './../components/DatePicker';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 import './../style/displayitem.css';
 
 let Auth = new AuthService();
@@ -64,7 +67,10 @@ export class DisplayItem extends Component {
 
         //const nextRental = await this.getNextRentalAvailableById(item.Id);
         //this.setState({nextRental: nextRental});
+        
 
+
+        console.log(this);
     }
 
     handleDateChange(date){
@@ -191,6 +197,17 @@ export class DisplayItem extends Component {
 
         return (
         <div>
+            <Breadcrumbs aria-label="breadcrumb">
+                <Link onClick={() => this.props.history.push('/')}>
+                Forside
+                </Link>
+                <Link
+                    onClick={() => this.props.history.goBack()}
+                >
+                {this.props.location.pathname.split('/').filter(x => x)[0]}
+                </Link>
+                <Typography color="text.primary">{this.state.item.Title}</Typography>
+            </Breadcrumbs>
             <div className="item-grid">
                 <img alt="image" src={`/img/${this.state.item.PicturePath}`}/>
                 <div>

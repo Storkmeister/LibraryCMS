@@ -39,7 +39,7 @@ export class NavMenu extends Component {
 
   handleInitiateSearch = (e) => {
     if(e.key === 'Enter' || e.key === undefined){
-      this.props.history.push(`/search/${this.state.searchValue}`);
+      this.props.history.push(`/Søgning/${this.state.searchValue}`);
 
     }
   }
@@ -58,11 +58,11 @@ export class NavMenu extends Component {
      */
     function LoggedIn(props){
       let element;
-      if(props.type === 'profile'){
+      if(props.type === 'profil'){
         if(props.loggedIn){
           element = 
             <NavItem>
-              <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
+              <NavLink tag={Link} className="text-dark" to="/profil">Profile</NavLink>
             </NavItem>
           return element;
         } else {
@@ -130,7 +130,7 @@ export class NavMenu extends Component {
                 </div>
                 <ul className="nav-container navbar-nav flex-grow">
                   <Admin isAdmin={this.props.isAdmin} loggedIn={this.props.loggedIn}/>
-                  <LoggedIn type="profile" loggedIn={this.props.loggedIn} />
+                  <LoggedIn type="profil" loggedIn={this.props.loggedIn} />
                   <LoggedIn type="login" loggedIn={this.props.loggedIn} logout={this.logout} />
                   <LoggedIn type="create-account" loggedIn={this.props.loggedIn} logout={this.logout} />
                   {/*

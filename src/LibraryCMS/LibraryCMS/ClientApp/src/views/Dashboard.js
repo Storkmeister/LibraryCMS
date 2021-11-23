@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import MUILink from '@mui/material/Link';
 import './../style/dashboard.css';
 
 export class Dashboard extends Component {
@@ -19,6 +22,12 @@ export class Dashboard extends Component {
         return (
         <div>
             <h5>Dashboard</h5>
+            <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+                <MUILink onClick={() => this.props.history.push('/')}>
+                    Forside
+                </MUILink>
+                <Typography color="text.primary">Dashboard</Typography>
+            </Breadcrumbs>
             <div className="dashboard-container">
                 <div>
                     <h6>Brugere</h6>
