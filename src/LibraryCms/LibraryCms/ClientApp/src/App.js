@@ -3,6 +3,8 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import AuthService from './components/AuthService';
 import { Home } from './views/Home';
+import Contact from './views/Contact';
+import AboutUs from './views/AboutUs';
 import { DisplayItem } from './views/DisplayItem';
 import { Profile } from './views/Profile';
 import Login from './views/Login';
@@ -66,6 +68,8 @@ export default class App extends Component {
         >
           <Switch>
             <Route exact path='/' component={Home} />
+            <Route exact path='/contact-us' component={Contact} />
+            <Route exact path='/about-us' component={AboutUs} />
             <Route exact path='/Søgning/:title' render={
               (props) => <SearchResults {...props} Title="Søgeresultater" />
               }  />

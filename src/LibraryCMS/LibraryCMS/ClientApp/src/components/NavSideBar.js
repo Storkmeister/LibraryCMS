@@ -56,8 +56,8 @@ getAllGenres = async () => {
               Sider
             </summary>
               <ul>
-                <li><Link to={'/'}>About us</Link></li>
-                <li><Link to={'/søgning'}>Kontakt</Link></li>
+                <li><Link to={'/about-us'}>Om os</Link></li>
+                <li><Link to={'/contact-us'}>Kontakt</Link></li>
               </ul>
           </details>
         </nav>

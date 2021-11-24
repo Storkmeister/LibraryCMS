@@ -45,6 +45,7 @@
     text-align: center;
     text-decoration: none;
     height: auto;
+    background-color: #eed3b6;
 }
 
 .item-card > a > h3 {

@@ -41,3 +41,21 @@ body{
 #layout-search-button {
     align-self: center;
 }
+
+a {
+    
+    text-decoration: none;
+}
+
+a:link {
+    color: black;
+}
+a:visited {
+    color: black;
+}
+a:hover {
+    color: black;
+}
+a:active {
+    color: black;
+}

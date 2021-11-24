@@ -45,20 +45,6 @@ export class Home extends Component {
                   <li><Link to="/">Om Projektet</Link></li>
                 </ul>
               </div>
-
-
-
-            {/*
-                {
-                    this.state.categories.map((item, key) => {
-                        const element = 
-                        <Link key={key} to={`books/category/${item.Id}`}>
-                            <p>{item.Name}</p>
-                        </Link>
-                        return element
-                    })
-                }
-            */}
             </div>
         </div>
         )}
