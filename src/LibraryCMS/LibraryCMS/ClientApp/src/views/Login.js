@@ -27,12 +27,18 @@ const Login = (props) => {
             history.push('/');
         } else {
             //Failed
+            console.log("ERROR");
+            console.log(response);
         }
         
     }
 
 
-
+    const handleInitiateLogin = (e) => {
+        if(e.key === 'Enter' || e.key === undefined){
+            getSession(email, password, props.checkUserLevel, props.authorizedStatusHandler);
+        }
+      }
 
 
     return (
@@ -44,12 +50,14 @@ const Login = (props) => {
                     className="login-email-field" type="text"
                     value={email} 
                     onChange={event => handleEmailChange(event)}
+                    onKeyUp={event => handleInitiateLogin(event)}
                 />
 
                 <TextField id="password" label="Password" variant="outlined" 
                     className="login-password-field" type="password"
                     value={password} 
                     onChange={event => handlePasswordChange(event)}
+                    onKeyUp={event => handleInitiateLogin(event)}
                 />
 
                 <Button id="user-save-button" variant="contained" size="large" 

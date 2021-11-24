@@ -68,7 +68,11 @@ const CreateUser = (props) => {
     }
 
 
-   
+    const handleInitiateCreateUser = (e) => {
+        if(e.key === 'Enter' || e.key === undefined){
+            createUser(address, email, password, userAction);
+        }
+      }
 
 
 
@@ -81,18 +85,21 @@ const CreateUser = (props) => {
                         className="login-address-field" type="text"
                         value={address} 
                         onChange={(event) => handleAddressChange(event)}
+                        onKeyUp={event => handleInitiateCreateUser(event)}
                 />
 
                 <TextField id="email" label="Email" variant="outlined" 
                         className="login-email-field" type="text"
                         value={email} 
                         onChange={event => handleEmailChange(event)}
+                        onKeyUp={event => handleInitiateCreateUser(event)}
                 />
 
                 <TextField id="password" label="Password" variant="outlined" 
                     className="login-password-field" type="password"
                     value={password} 
                     onChange={event => handlePasswordChange(event)}
+                    onKeyUp={event => handleInitiateCreateUser(event)}
                 />
 
                 <Button id="user-save-button" variant="contained" size="large" 
