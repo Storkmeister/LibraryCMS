@@ -44,7 +44,6 @@ export class Home extends Component {
                 <h4>Hurtig Menu</h4>
                 <ul>
                   <li><Link to="/Bøger">Alle Bøger</Link></li>
-                  <li><Link to="/">Bibliotekets SpecialUdvalg</Link></li>
                   <li><Link to="/about-us">Om Projektet</Link></li>
                 </ul>
               </div>
