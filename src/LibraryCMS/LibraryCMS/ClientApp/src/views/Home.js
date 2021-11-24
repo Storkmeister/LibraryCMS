@@ -35,13 +35,15 @@ export class Home extends Component {
             <div className="category-container">
               <div>
                 <h4>Velkommen til Library CMS</h4>
-                <p>Her kan du låne bøger hvis du har en konto.</p>
+                        <p>Her kan du låne bøger hvis du har en konto. Uden en konto kan du browse bibliotekets indhold via navigations baren I toppen. Klik blot på "Genrer" for at få en liste af genrer som du kan browse.</p>
+                        <p>Alle kan oprette en konto, dog kræver det at en bibliotekar bekræfter dig som bruger af systemet. For at kunne blive godkendt af en bibliotekar kræver det at adressen på kontoen er inden for bibliotekets kommune.</p>
+                        <p>Vi ønsker dig en god brugeroplevelse.</p>
+                        <p>- Team Library CMS</p>
               </div>
               <div>
                 <h4>Hurtig Menu</h4>
                 <ul>
                   <li><Link to="/">Alle Bøger</Link></li>
-                  <li><Link to="/">Bibliotekets SpecialUdvalg</Link></li>
                   <li><Link to="/">Om Projektet</Link></li>
                 </ul>
               </div>
